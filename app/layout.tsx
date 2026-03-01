@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "./components/global/navbar";
 import Footer from "./components/global/footer";
 import { ThemeProvider } from "./components/theme/theme-provider";
+import { AuroraBackground } from "./components/global/background";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -26,11 +27,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <div className="min-h-screen">
-            {children}
-          </div>
-          <Footer />
+          <AuroraBackground>
+            <Navbar />
+            <div className="min-h-screen z-10 w-full relative">
+              {children}
+            </div>
+            <Footer />
+          </AuroraBackground>
         </ThemeProvider>
       </body>
     </html>
