@@ -21,7 +21,7 @@ export function Features() {
             </div>
 
             {/* Grid Container with rounded corners to match Apple bento layout */}
-            <div className="grid grid-cols-1 md:grid-cols-3 bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-[2rem] overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3 bg-white/40 dark:bg-black/10 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-[2rem] overflow-hidden">
 
                 {/* ROW 1 */}
                 {/* Cell 1: Visual 1 - 3 Vertical Cards */}
