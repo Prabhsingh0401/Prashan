@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Hero } from "./components/home/hero";
+import { Features } from "./components/home/features";
 
 export const metadata: Metadata = {
   title: "Prashan | The Ultimate Paper Generator",
@@ -32,6 +33,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-start">
       <Hero />
+      <Features />
     </main>
   );
 }

@@ -24,7 +24,7 @@ export default function Navbar() {
                 </defs>
             </svg>
 
-            <nav className="relative overflow-hidden bg-white/60 dark:bg-black/40 border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/5">
+            <nav className="relative overflow-hidden bg-white/20 dark:bg-black/20 border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/5">
                 {/* Visual Glass Distortion Underlayer */}
                 <div className="absolute inset-x-0 -top-full -bottom-full -z-10 [filter:url(#liquid-glass)] backdrop-blur-2xl bg-white/10 dark:bg-black/20 pointer-events-none scale-110"></div>
 
