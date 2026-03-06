@@ -24,9 +24,12 @@ export default function Navbar() {
                 </defs>
             </svg>
 
-            <nav className="relative overflow-hidden bg-white/10 dark:bg-black/10 border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/5">
-                {/* Visual Glass Distortion Underlayer */}
-                <div className="absolute inset-x-0 -top-full -bottom-full -z-10 [filter:url(#liquid-glass)] backdrop-blur-2xl bg-white/10 dark:bg-black/10 pointer-events-none scale-110"></div>
+            <nav className="relative bg-white/10 dark:bg-black/10 border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/5">
+                {/* Visual Glass Distortion Wrapper */}
+                <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none -z-10">
+                    {/* Visual Glass Distortion Underlayer */}
+                    <div className="absolute inset-x-0 -top-full -bottom-full [filter:url(#liquid-glass)] backdrop-blur-2xl bg-white/10 dark:bg-black/10 scale-110"></div>
+                </div>
 
                 <div className="flex flex-wrap items-center justify-between p-3 px-5 relative z-10">
                     <Link href="/" className="flex items-center space-x-1 rtl:space-x-reverse transition-opacity hover:opacity-80">
@@ -68,7 +71,7 @@ export default function Navbar() {
                                     Home
                                 </Link>
                             </li>
-                            <li className="relative group">
+                            {/* <li className="relative group">
                                 <button
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                     className="flex items-center justify-between w-full py-2 px-3 rounded-lg font-medium text-foreground/80 md:w-auto hover:bg-black/5 md:hover:bg-transparent md:border-0 md:hover:text-foreground md:p-0 dark:hover:bg-white/5 md:dark:hover:bg-transparent transition-colors group"
@@ -76,7 +79,6 @@ export default function Navbar() {
                                     Services
                                     <ChevronDown className={`w-4 h-4 ms-1.5 opacity-70 group-hover:opacity-100 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                                 </button>
-                                {/* Dropdown menu actual body */}
                                 <div
                                     className={`${isDropdownOpen ? 'block' : 'hidden'} md:absolute top-full left-0 z-[999] w-44 bg-white dark:bg-[#1a1a1a] border border-black/5 dark:border-white/10 rounded-xl shadow-lg mt-2 md:mt-4 overflow-hidden`}
                                 >
@@ -98,7 +100,7 @@ export default function Navbar() {
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> */}
                             <li>
                                 <Link
                                     href="#"

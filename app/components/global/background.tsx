@@ -37,11 +37,11 @@ export const AuroraBackground = ({
                         "--white-gradient":
                             "repeating-linear-gradient(100deg,#fff_0%,#fff_7%,transparent_10%,transparent_12%,#fff_16%)",
 
-                        "--color-1": "#10b981",
-                        "--color-2": "#34d399",
-                        "--color-3": "#6ee7b7",
-                        "--color-4": "#2dd4bf",
-                        "--color-5": "#14b8a6",
+                        "--color-1": "#0d173b",
+                        "--color-2": "#1d3280ff",
+                        "--color-3": "#2948b6ff",
+                        "--color-4": "#2440a1ff",
+                        "--color-5": "#3256daff",
                         "--black": "#000",
                         "--white": "#fff",
                         "--transparent": "transparent",

@@ -77,7 +77,7 @@ export function Features() {
                 <div className="p-8 lg:p-10 border-b md:border-r border-black/5 dark:border-white/5 min-h-[300px] flex flex-col justify-center bg-white/20 dark:bg-black/20">
                     <div className="flex items-center space-x-2 mb-6 text-xs font-mono text-foreground font-bold tracking-widest uppercase">
                         <Terminal size={14} strokeWidth={2.5} />
-                        <span>LIVE SYSTEM FEED</span>
+                        <span>how does प्रशन actually works</span>
                     </div>
                     <div className="font-mono text-[11px] lg:text-xs text-foreground/60 space-y-3 leading-relaxed">
                         <p className="line-clamp-1"><span className="text-foreground/30 mr-2">[ ingest ]</span> Parsing raw curriculum PDF... <span className="text-foreground font-semibold">DONE</span></p>
@@ -91,8 +91,6 @@ export function Features() {
                 {/* Cell 3: Visual 3 */}
                 <div className="p-8 lg:p-10 border-b border-black/5 dark:border-white/5 min-h-[300px] flex flex-col justify-center bg-white/20 dark:bg-black/20">
                     <div className="w-full flex justify-between items-center relative mb-10 mt-4 px-2">
-                        <div className="absolute top-1/2 left-6 right-6 h-[1px] bg-black/10 dark:bg-white/10 -z-10 -translate-y-1/2"></div>
-
                         {[
                             { label: "UPLOAD", done: true },
                             { label: "PARSE", done: true },
