@@ -3,13 +3,99 @@ import Navbar from "./components/global/navbar";
 import Footer from "./components/global/footer";
 import { ThemeProvider } from "./components/theme/theme-provider";
 import { AuroraBackground } from "./components/global/background";
+import { Preloader } from "./components/global/preloader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Prashan | Question Paper Generator",
-  description: "Formatted question paper generation made for teachers",
+  // ── Core ──────────────────────────────────────────────────────────────
+  metadataBase: new URL("https://prashan.ai"),
+  title: {
+    default: "Prashan | AI Question Paper Generator for Teachers",
+    template: "%s | Prashan",
+  },
+  description:
+    "Prashan helps teachers create perfectly formatted, board-aligned question papers in under 3 minutes. No formatting, no prompting, no stress. CBSE, ICSE & State Board ready.",
+
+  // ── Canonical & robots ────────────────────────────────────────────────
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
+  // ── Discovery ─────────────────────────────────────────────────────────
+  keywords: [
+    "question paper generator",
+    "AI question paper",
+    "teacher tool India",
+    "CBSE question paper",
+    "ICSE exam paper",
+    "exam paper generator",
+    "automated question paper",
+    "school exam tool",
+    "prashan",
+    "प्रशन",
+  ],
+  authors: [{ name: "Prashan", url: "https://prashan.ai" }],
+  creator: "Prashan",
+  publisher: "Prashan",
+
+  // ── Icons ─────────────────────────────────────────────────────────────
   icons: {
-    icon: "/prashan_logo.svg",
+    icon: [
+      { url: "/prashan_logo.svg", type: "image/svg+xml" },
+    ],
+    apple: "/prashan_logo.svg",
+    shortcut: "/prashan_logo.svg",
+  },
+
+  // ── OpenGraph ─────────────────────────────────────────────────────────
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://prashan.ai",
+    siteName: "Prashan",
+    title: "Prashan | AI Question Paper Generator for Teachers",
+    description:
+      "Create perfectly formatted question papers in under 3 minutes. Board-aligned, print-ready, zero effort.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Prashan — AI Question Paper Generator",
+      },
+    ],
+  },
+
+  // ── Twitter / X ───────────────────────────────────────────────────────
+  twitter: {
+    card: "summary_large_image",
+    site: "@prashan_ai",
+    creator: "@prashan_ai",
+    title: "Prashan | AI Question Paper Generator for Teachers",
+    description:
+      "Create perfectly formatted question papers in under 3 minutes. Board-aligned, print-ready, zero effort.",
+    images: ["/og-image.png"],
+  },
+
+  // ── App / PWA hints ───────────────────────────────────────────────────
+  applicationName: "Prashan",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Prashan",
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 
@@ -27,6 +113,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Preloader />
           <AuroraBackground>
             <Navbar />
             <div className="min-h-screen z-10 w-full relative">
