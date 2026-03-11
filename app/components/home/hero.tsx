@@ -7,7 +7,7 @@ import { submitWaitlist } from "@/actions/waitlist";
 
 const painPoints = [
     "copy-pasting from old papers.",
-    "begging the IT room for a computer.",
+    "begging others for a computer.",
     "fighting with Word margins at 11 PM.",
     "redoing the format after every edit.",
     "hunting questions across 5 textbooks.",
@@ -74,11 +74,11 @@ export function Hero() {
 
                 {/* Headline — pain-first */}
                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter text-foreground mb-4 max-w-4xl leading-[1.08]">
-                    Stop wasting your<br className="hidden sm:block" /> Sunday night
+                    Stop wasting your<br className="hidden sm:block" /> time.
                 </h1>
 
                 {/* Rotating pain point */}
-                <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center mb-6 overflow-hidden">
+                <div className="h-28 sm:h-24 md:h-20 flex items-center justify-center mb-6 overflow-hidden px-4 w-full">
                     <p
                         className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground/30 transition-all duration-350"
                         style={{
@@ -94,8 +94,8 @@ export function Hero() {
 
                 {/* Sub-headline */}
                 <p className="text-lg sm:text-xl text-foreground/55 max-w-3xl mb-4 font-medium tracking-tight leading-relaxed">
-                    प्रशन builds your question paper in under minutes —<br className="hidden sm:block" />
-                    formatted, board-aligned, and print-ready. No prompting. No formatting. No stress.
+                    प्रशन builds your question paper in under minutes <br className="hidden sm:block" />
+                    formatted, board aligned, and print-ready. No prompting. No formatting. No stress.
                 </p>
 
                 {/* Social proof trust line */}
@@ -103,19 +103,19 @@ export function Hero() {
                     <div className="flex -space-x-2.5">
                         {[
                             { letter: "R", bg: "rgba(124,58,237,0.15)", border: "rgba(124,58,237,0.3)", text: "rgb(124,58,237)" },
-                            { letter: "P", bg: "rgba(5,150,105,0.15)",  border: "rgba(5,150,105,0.3)",  text: "rgb(5,150,105)" },
-                            { letter: "A", bg: "rgba(220,38,38,0.15)",  border: "rgba(220,38,38,0.3)",  text: "rgb(220,38,38)" },
-                            { letter: "S", bg: "rgba(217,119,6,0.15)",  border: "rgba(217,119,6,0.3)",  text: "rgb(217,119,6)" },
+                            { letter: "P", bg: "rgba(5,150,105,0.15)", border: "rgba(5,150,105,0.3)", text: "rgb(5,150,105)" },
+                            { letter: "A", bg: "rgba(220,38,38,0.15)", border: "rgba(220,38,38,0.3)", text: "rgb(220,38,38)" },
+                            { letter: "S", bg: "rgba(217,119,6,0.15)", border: "rgba(217,119,6,0.3)", text: "rgb(217,119,6)" },
                         ].map((avatar, i) => (
                             <div
                                 key={i}
-                                className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold backdrop-blur-md select-none"
+                                className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold select-none overflow-hidden"
                                 style={{
                                     backgroundColor: avatar.bg,
-                                    border: `1.5px solid ${avatar.border}`,
+                                    border: `1px solid ${avatar.border}`,
                                     color: avatar.text,
                                     zIndex: 4 - i,
-                                    boxShadow: `inset 0px 1px 0px rgba(255,255,255,0.45), 0px 1px 4px rgba(0,0,0,0.10)`,
+                                    boxShadow: `inset 0px 1px 0px rgba(255,255,255,0.2), 0px 1px 4px rgba(0,0,0,0.10)`,
                                 }}
                             >
                                 {avatar.letter}
@@ -170,8 +170,9 @@ export function Hero() {
                             </button>
                             <Link
                                 id="hero-learn-more"
-                                href="#learn-more"
+                                href="#features"
                                 className="btn-glass btn-glass-secondary w-full sm:w-auto !px-8 !py-4 !text-base sm:!text-lg group"
+
                             >
                                 See how it works
                                 <ChevronRight className="h-5 w-5 text-foreground/50 group-hover:text-foreground transition-all group-hover:translate-x-1" />

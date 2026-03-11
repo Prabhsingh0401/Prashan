@@ -47,7 +47,7 @@ export default function Navbar() {
                     <ul className="hidden lg:flex items-center font-medium space-x-10">
                         <li>
                             <Link
-                                href="#"
+                                href="/"
                                 className="text-foreground font-semibold"
                                 aria-current="page"
                             >
@@ -56,20 +56,20 @@ export default function Navbar() {
                         </li>
                         <li>
                             <Link
-                                href="#"
+                                href="/about"
                                 className="text-foreground/80 hover:text-foreground transition-colors"
                             >
                                 About
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link
                                 href="#"
                                 className="text-foreground/80 hover:text-foreground transition-colors"
                             >
                                 Pricing
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
 
                     {/* Right controls */}
@@ -106,7 +106,7 @@ export default function Navbar() {
                     <ul className="flex flex-col font-medium px-5 pb-4 pt-1 space-y-1 border-t border-black/5 dark:border-white/5">
                         <li>
                             <Link
-                                href="#"
+                                href="/"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="block py-2.5 px-3 rounded-xl text-foreground font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                                 aria-current="page"
@@ -116,14 +116,14 @@ export default function Navbar() {
                         </li>
                         <li>
                             <Link
-                                href="#"
+                                href="/about"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="block py-2.5 px-3 rounded-xl text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
                                 About
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link
                                 href="#"
                                 onClick={() => setIsMobileMenuOpen(false)}
@@ -131,7 +131,7 @@ export default function Navbar() {
                             >
                                 Pricing
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </nav>

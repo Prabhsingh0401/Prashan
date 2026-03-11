@@ -25,7 +25,7 @@ const steps = [
 
 export function Features() {
     return (
-        <section className="w-full max-w-[1400px] mx-auto px-4 py-5 relative z-10 font-sans">
+        <section id="features" className="w-full max-w-[1400px] mx-auto px-4 py-5 relative z-10 font-sans">
 
             {/* Section header */}
             <div className="flex flex-col items-center text-center mb-16">

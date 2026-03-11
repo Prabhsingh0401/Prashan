@@ -46,6 +46,15 @@ body {
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.02);
+  }
+}
+
 .stat-animate {
   opacity: 0;
   animation: stat-reveal 0.7s cubic-bezier(.7, .2, .2, 1) forwards;

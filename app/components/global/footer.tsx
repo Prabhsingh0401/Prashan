@@ -22,7 +22,7 @@ export default function Footer() {
                         </Link>
                     </div>
                     <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                        <div>
+                        {/* <div>
                             <h2 className="mb-6 text-sm font-semibold text-foreground uppercase">Resources</h2>
                             <ul className="text-foreground/70 font-medium">
                                 <li className="mb-4">
@@ -32,19 +32,19 @@ export default function Footer() {
                                     <Link href="#" className="hover:text-foreground transition-colors">Templates</Link>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
                         <div>
                             <h2 className="mb-6 text-sm font-semibold text-foreground uppercase">Follow us</h2>
                             <ul className="text-foreground/70 font-medium">
                                 <li className="mb-4">
-                                    <Link href="#" className="hover:text-foreground transition-colors">Github</Link>
+                                    <Link href="https://github.com/PrashanAI" className="hover:text-foreground transition-colors">Github</Link>
                                 </li>
                                 <li>
                                     <Link href="#" className="hover:text-foreground transition-colors">Twitter</Link>
                                 </li>
                             </ul>
                         </div>
-                        <div>
+                        {/* <div>
                             <h2 className="mb-6 text-sm font-semibold text-foreground uppercase">Legal</h2>
                             <ul className="text-foreground/70 font-medium">
                                 <li className="mb-4">
@@ -54,7 +54,7 @@ export default function Footer() {
                                     <Link href="#" className="hover:text-foreground transition-colors">Terms &amp; Conditions</Link>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <hr className="my-6 border-black/5 dark:border-white/5 sm:mx-auto lg:my-8" />
@@ -68,7 +68,7 @@ export default function Footer() {
                     </span>
                     <div className="flex mt-4 sm:justify-center sm:mt-0 space-x-3 text-foreground/60">
                         <Link
-                            href="#"
+                            href="https://github.com/PrashanAI"
                             className="btn-glass btn-glass-icon"
                             aria-label="GitHub"
                         >

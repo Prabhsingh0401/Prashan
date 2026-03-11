@@ -4,7 +4,7 @@ import { Stats } from "./components/home/stats";
 import { Features } from "./components/home/features";
 
 export const metadata: Metadata = {
-  title: "Prashan | Stop Wasting Your Sunday Night",
+  title: "Prashan | Stop Wasting Your Time",
   description:
     "Prashan builds board-aligned question papers in under 3 minutes. Select your class, subject & chapters — AI does the rest. CBSE, ICSE & State Board. Free early access.",
   alternates: {
