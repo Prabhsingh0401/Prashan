@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Navbar from "./components/global/navbar";
 import Footer from "./components/global/footer";
 import { ThemeProvider } from "./components/theme/theme-provider";
-import { AuroraBackground } from "./components/global/background";
 import { Preloader } from "./components/global/preloader";
 import "./globals.css";
 
@@ -114,13 +113,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Preloader />
-          <AuroraBackground>
+          <div className="relative flex min-h-screen w-full flex-col bg-[url('/backgroundGradientLight.svg')] dark:bg-[url('/backgroundGradientDark.svg')] bg-cover bg-center bg-fixed">
             <Navbar />
             <div className="min-h-screen z-10 w-full relative">
               {children}
             </div>
             <Footer />
-          </AuroraBackground>
+          </div>
         </ThemeProvider>
       </body>
     </html>

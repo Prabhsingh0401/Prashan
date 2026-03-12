@@ -80,7 +80,7 @@ export function Hero() {
                 {/* Rotating pain point */}
                 <div className="h-28 sm:h-24 md:h-20 flex items-center justify-center mb-6 overflow-hidden px-4 w-full">
                     <p
-                        className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground/30 transition-all duration-350"
+                        className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white transition-all duration-350"
                         style={{
                             opacity: animating ? 0 : 1,
                             transform: animating ? "translateY(-12px)" : "translateY(0)",
