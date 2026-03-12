@@ -113,7 +113,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Preloader />
-         <div className="relative flex min-h-screen w-full flex-col dark:bg-[url('/backgroundGradientDark.svg')] bg-cover bg-center bg-fixed dark:after:absolute dark:after:inset-0 dark:after:bg-black/60 after:pointer-events-none">
+          <div className="relative flex min-h-screen w-full flex-col dark:bg-[url('/backgroundGradientDark.svg')] bg-cover bg-center bg-fixed dark:after:absolute dark:after:inset-0 dark:after:bg-black/60 after:pointer-events-none">
             <Navbar />
             <div className="min-h-screen z-10 w-full relative">
               {children}

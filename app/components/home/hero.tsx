@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Loader2, ChevronDown } from "lucide-react";
 import { submitWaitlist } from "@/actions/waitlist";
+import { Toast } from "../ui/toast";
 
 const painPoints = [
     "copy-pasting from old papers.",
@@ -20,6 +21,11 @@ export function Hero() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [painIndex, setPainIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
+    const [toast, setToast] = useState<{ isVisible: boolean; message: string; type: "success" | "error" }>({
+        isVisible: false,
+        message: "",
+        type: "success",
+    });
 
     // Rotate pain points every 2.4s
     useEffect(() => {
@@ -33,21 +39,25 @@ export function Hero() {
         return () => clearInterval(interval);
     }, []);
 
+    const showToast = (message: string, type: "success" | "error") => {
+        setToast({ isVisible: true, message, type });
+    };
+
     const handleJoinWaitlist = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
             const result = await submitWaitlist(email);
             if (result.success) {
-                alert(`You're in! We've sent a welcome email to ${email}.`);
+                showToast(`Check your inbox at ${email}!`, "success");
                 setIsEmailInputVisible(false);
                 setEmail("");
             } else {
-                alert(result.error || "Something went wrong.");
+                showToast(result.error || "Something went wrong.", "error");
             }
         } catch (error) {
             console.error("Submission error:", error);
-            alert("Failed to join waitlist. Please try again.");
+            showToast("Failed to join waitlist. Please try again.", "error");
         } finally {
             setIsSubmitting(false);
         }
@@ -180,11 +190,17 @@ export function Hero() {
                     )}
                 </div>
 
-                {/* Fine print */}
                 <p className="mt-5 text-xs text-foreground/30 font-medium">
                     Free during early access · No credit card · Unsubscribe anytime
                 </p>
             </div>
+
+            <Toast
+                message={toast.message}
+                type={toast.type}
+                isVisible={toast.isVisible}
+                onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
+            />
         </section>
     );
 }
