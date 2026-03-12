@@ -168,7 +168,7 @@ export function Features() {
                                     <School size={16} className="text-foreground/50" />
                                 </div>
                                 <div className="flex flex-col min-w-0">
-                                    <span className="text-[12px] font-bold text-foreground tracking-tight truncate">Delhi Public School</span>
+                                    <span className="text-[12px] font-bold text-foreground tracking-tight truncate">Public School</span>
                                     <span className="text-[9px] font-mono text-foreground/40 tracking-widest uppercase">Class X · Mathematics · PA-1</span>
                                 </div>
                             </div>

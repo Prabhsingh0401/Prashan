@@ -67,8 +67,7 @@ export function Hero() {
 
                 {/* Urgency badge */}
                 <div className="mb-8 inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md">
-                    <span className="flex h-2 w-2 rounded-full bg-[#541325] mr-2 animate-pulse" />
-                    Early access · Limited spots
+                    Early access 
                     <ChevronRight className="ml-1 h-4 w-4 text-foreground/50" />
                 </div>
 
@@ -80,7 +79,7 @@ export function Hero() {
                 {/* Rotating pain point */}
                 <div className="h-28 sm:h-24 md:h-20 flex items-center justify-center mb-6 overflow-hidden px-4 w-full">
                     <p
-                        className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white transition-all duration-350"
+                        className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground/55 transition-all duration-350"
                         style={{
                             opacity: animating ? 0 : 1,
                             transform: animating ? "translateY(-12px)" : "translateY(0)",
