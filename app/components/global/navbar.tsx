@@ -5,29 +5,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "../theme/theme-toggle";
 import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
         <div className="fixed top-4 inset-x-4 max-w-5xl mx-auto z-50">
-            {/* SVG Filter for Liquid Glass Effect */}
-            <svg style={{ visibility: "hidden", position: "absolute" }} width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <defs>
-                    <filter id="liquid-glass">
-                        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G" />
-                        <feGaussianBlur stdDeviation="6" result="blur" />
-                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                </defs>
-            </svg>
 
-            <nav className="relative bg-white/10 dark:bg-black/10 border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-2xl ring-1 ring-inset ring-white/20 dark:ring-white/5">
-                {/* Liquid Glass Underlayer */}
-                <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none -z-10">
-                    <div className="absolute inset-x-0 -top-full -bottom-full [filter:url(#liquid-glass)] backdrop-blur-2xl bg-white/10 dark:bg-black/10 scale-110"></div>
-                </div>
+            <nav className={cn(
+                "relative rounded-2xl transition-all duration-300",
+                "bg-white/80 dark:bg-black/60",
+                "backdrop-blur-xl saturate-[1.8]",
+                "border border-white/40 dark:border-white/10",
+                "shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)]",
+                "dark:shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.1)]"
+            )}>
+                {/* Subtle top glare/glint */}
+                <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white/40 via-transparent to-transparent opacity-50 dark:opacity-20 z-0"></div>
 
                 {/* Main bar */}
                 <div className="flex items-center justify-between p-3 px-5 relative z-10">

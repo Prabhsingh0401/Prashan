@@ -1,3 +1,5 @@
+'use client';
+
 import {
     ArrowRight,
     Check,
@@ -13,6 +15,11 @@ import {
     ChevronRight,
     SquarePen,
 } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
     { label: "Class & Subject", done: true },
@@ -24,11 +31,60 @@ const steps = [
 ];
 
 export function Features() {
+    const sectionRef = useRef<HTMLElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const gridRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Header animation
+            gsap.fromTo(
+                headerRef.current,
+                { y: 50, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: headerRef.current,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+
+            // Grid cells animation with stagger
+            const gridCells = gridRef.current?.children;
+            if (gridCells) {
+                gsap.fromTo(
+                    gridCells,
+                    { y: 60, opacity: 0, scale: 0.95 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.8,
+                        stagger: 0.1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: gridRef.current,
+                            start: "top 75%",
+                            toggleActions: "play none none reverse",
+                        },
+                    }
+                );
+            }
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="features" className="w-full max-w-[1400px] mx-auto px-4 py-5 relative z-10 font-sans">
+        <section ref={sectionRef} id="features" className="w-full max-w-[1400px] mx-auto px-4 py-5 relative z-10 font-sans">
 
             {/* Section header */}
-            <div className="flex flex-col items-center text-center mb-16">
+            <div ref={headerRef} className="flex flex-col items-center text-center mb-16">
                 <div className="mb-6 inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md">
                     <Sparkles className="mr-2 h-4 w-4 text-foreground/50" />
                     <span>How it works</span>
@@ -44,7 +100,7 @@ export function Features() {
             </div>
 
             {/* Bento grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 rounded-[2rem] overflow-hidden
+            <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 rounded-[2rem] overflow-hidden
                 bg-white/30 dark:bg-white/[0.04]
                 backdrop-blur-2xl
                 border border-white/60 dark:border-white/10

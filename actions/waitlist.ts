@@ -130,7 +130,7 @@ export async function submitWaitlist(email: string) {
             }
             .btn-primary { 
                 background: #ffffff; 
-                color: #ff3b30; 
+                color: #3330ff; 
                 border: 1px solid rgba(0,0,0,0.1);
                 padding: 12px 24px; 
                 border-radius: 999px; 
@@ -172,7 +172,7 @@ export async function submitWaitlist(email: string) {
                 .box-text { color: #a1a1aa; }
                 .highlight { color: #fff; border-bottom-color: rgba(255,255,255,0.3); }
                 .mono-tag { color: rgba(255,255,255,0.4); }
-                .btn-primary { background: #ff3b30; color: #ffffff; border: none; }
+                .btn-primary { background: #ffffff; color: #0026ff; border: none; }
                 .step { color: #a1a1aa; }
                 .step-num { color: #fff; }
                 .footer { color: #666; border-top-color: rgba(255,255,255,0.05); }

@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Clock, Zap, Target, User } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Stat {
     number: string;
@@ -49,24 +53,71 @@ const stats: Stat[] = [
 
 export function Stats() {
     const sectionRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const statsGridRef = useRef<HTMLDivElement>(null);
+    const bottomStripRef = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        const el = sectionRef.current;
-        if (!el) return;
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setVisible(true);
-                    observer.disconnect();
+        const ctx = gsap.context(() => {
+            // Header animation
+            gsap.fromTo(
+                headerRef.current,
+                { y: 50, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: headerRef.current,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse",
+                    },
                 }
-            },
-            { threshold: 0.15 }
-        );
+            );
 
-        observer.observe(el);
-        return () => observer.disconnect();
+            // Stats grid animation with enhanced stagger
+            const statCards = statsGridRef.current?.children;
+            if (statCards) {
+                gsap.fromTo(
+                    statCards,
+                    { y: 80, opacity: 0, scale: 0.9 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.8,
+                        stagger: 0.15,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: statsGridRef.current,
+                            start: "top 75%",
+                            toggleActions: "play none none reverse",
+                        },
+                    }
+                );
+            }
+
+            // Bottom strip animation
+            gsap.fromTo(
+                bottomStripRef.current,
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: bottomStripRef.current,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
     }, []);
 
     return (
@@ -85,7 +136,7 @@ export function Stats() {
             ">
 
                 {/* Top label + headline */}
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
+                <div ref={headerRef} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
                     <div>
                         <div className="inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md mb-5">
                             <span className="flex h-2 w-2 rounded-full bg-[#541325] mr-2 animate-pulse" />
@@ -102,7 +153,7 @@ export function Stats() {
                 </div>
 
                 {/* Stats grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-black/5 dark:bg-white/5 rounded-2xl overflow-hidden">
+                <div ref={statsGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-black/5 dark:bg-white/5 rounded-2xl overflow-hidden">
                     {stats.map((stat) => (
                         <div
                             key={stat.label}
@@ -110,9 +161,7 @@ export function Stats() {
                                 bg-white/60 dark:bg-black/40
                                 hover:bg-white/80 dark:hover:bg-white/[0.06]
                                 transition-colors duration-300
-                                ${visible ? "stat-animate" : "opacity-0"}
                             `}
-                            style={{ animationDelay: visible ? stat.delay : "0ms" }}
                         >
                             {/* Icon */}
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center
@@ -149,7 +198,7 @@ export function Stats() {
                 </div>
 
                 {/* Bottom strip — independence statement */}
-                <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3
+                <div ref={bottomStripRef} className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3
                     px-5 py-4 rounded-2xl
                     bg-black/[0.03] dark:bg-white/[0.03]
                     border border-black/5 dark:border-white/5

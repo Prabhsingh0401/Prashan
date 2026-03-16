@@ -1,10 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Loader2, ChevronDown } from "lucide-react";
 import { submitWaitlist } from "@/actions/waitlist";
 import { Toast } from "../ui/toast";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const painPoints = [
     "copy-pasting from old papers.",
@@ -27,6 +31,14 @@ export function Hero() {
         type: "success",
     });
 
+    const heroRef = useRef<HTMLElement>(null);
+    const headlineRef = useRef<HTMLHeadingElement>(null);
+    const painPointRef = useRef<HTMLDivElement>(null);
+    const subheadlineRef = useRef<HTMLParagraphElement>(null);
+    const socialProofRef = useRef<HTMLDivElement>(null);
+    const ctaRef = useRef<HTMLDivElement>(null);
+    const watermarkRef = useRef<HTMLDivElement>(null);
+
     // Rotate pain points every 2.4s
     useEffect(() => {
         const interval = setInterval(() => {
@@ -37,6 +49,113 @@ export function Hero() {
             }, 350);
         }, 2400);
         return () => clearInterval(interval);
+    }, []);
+
+    // GSAP ScrollTrigger animations
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Watermark parallax effect
+            gsap.to(watermarkRef.current, {
+                yPercent: -50,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            });
+
+            // Headline animation
+            gsap.fromTo(
+                headlineRef.current,
+                { y: 60, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: headlineRef.current,
+                        start: "top 80%",
+                        end: "bottom 20%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+
+            // Pain point animation
+            gsap.fromTo(
+                painPointRef.current,
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: painPointRef.current,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+
+            // Subheadline animation
+            gsap.fromTo(
+                subheadlineRef.current,
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    delay: 0.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: subheadlineRef.current,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+
+            // Social proof animation with stagger
+            gsap.fromTo(
+                socialProofRef.current?.children || [],
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: socialProofRef.current,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+
+            // CTA animation
+            gsap.fromTo(
+                ctaRef.current,
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: ctaRef.current,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+        }, heroRef);
+
+        return () => ctx.revert();
     }, []);
 
     const showToast = (message: string, type: "success" | "error") => {
@@ -64,10 +183,10 @@ export function Hero() {
     };
 
     return (
-        <section className="relative w-full flex flex-col items-center justify-center min-h-[95vh] pt-32 pb-16 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+        <section ref={heroRef} className="relative w-full flex flex-col items-center justify-center min-h-[95vh] pt-32 pb-16 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
 
             {/* Background watermark */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none flex justify-center items-center w-full z-0 opacity-30 mix-blend-overlay">
+            <div ref={watermarkRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none flex justify-center items-center w-full z-0 opacity-30 mix-blend-overlay">
                 <span className="text-[12rem] sm:text-[16rem] md:text-[24rem] lg:text-[30rem] font-extrabold text-foreground/20 blur-sm sm:blur-md leading-none tracking-tighter whitespace-nowrap">
                     प्रशन
                 </span>
@@ -82,12 +201,12 @@ export function Hero() {
                 </div>
 
                 {/* Headline — pain-first */}
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter text-foreground mb-4 max-w-4xl leading-[1.08]">
+                <h1 ref={headlineRef} className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter text-foreground mb-4 max-w-4xl leading-[1.08]">
                     Stop wasting your<br className="hidden sm:block" /> time.
                 </h1>
 
                 {/* Rotating pain point */}
-                <div className="h-28 sm:h-24 md:h-20 flex items-center justify-center mb-6 overflow-hidden px-4 w-full">
+                <div ref={painPointRef} className="h-28 sm:h-24 md:h-20 flex items-center justify-center mb-6 overflow-hidden px-4 w-full">
                     <p
                         className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground/55 transition-all duration-350"
                         style={{
@@ -102,14 +221,14 @@ export function Hero() {
                 </div>
 
                 {/* Sub-headline */}
-                <p className="text-lg sm:text-xl text-foreground/55 max-w-3xl mb-4 font-medium tracking-tight leading-relaxed">
+                <p ref={subheadlineRef} className="text-lg sm:text-xl text-foreground/55 max-w-3xl mb-4 font-medium tracking-tight leading-relaxed">
                     प्रशन builds your question paper in under minutes <br className="hidden sm:block" />
                     formatted, board aligned, and print-ready. No prompting. No formatting. No stress.
                 </p>
 
                 {/* Social proof trust line */}
-                <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
-                    <div className="flex -space-x-2.5">
+                <div ref={socialProofRef} className="flex items-center justify-center gap-3 mb-10 flex-wrap">
+                    <div className="flex space-x-0.5">
                         {[
                             { letter: "R", bg: "rgba(124,58,237,0.15)", border: "rgba(124,58,237,0.3)", text: "rgb(124,58,237)" },
                             { letter: "P", bg: "rgba(5,150,105,0.15)", border: "rgba(5,150,105,0.3)", text: "rgb(5,150,105)" },
@@ -137,7 +256,7 @@ export function Hero() {
                 </div>
 
                 {/* CTA */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-lg">
+                <div ref={ctaRef} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-lg">
                     {isEmailInputVisible ? (
                         <form
                             onSubmit={handleJoinWaitlist}
