@@ -229,7 +229,7 @@ export async function submitWaitlist(email: string) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    from: "Prashan <no-reply@prashan.co.in>",
+                    from: "Prashan <onboarding@prashan.co.in>",
                     to: email,
                     subject: "Prashan waitlist confirmed - you're in",
                     html: htmlContent,
