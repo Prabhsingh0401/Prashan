@@ -168,7 +168,7 @@ export function Hero() {
         try {
             const result = await submitWaitlist(email);
             if (result.success) {
-                showToast(`Check your inbox at ${email}!`, "success");
+                showToast(`Check your inbox / spam at ${email}!`, "success");
                 setIsEmailInputVisible(false);
                 setEmail("");
             } else {

@@ -201,7 +201,7 @@ export async function submitWaitlist(email: string) {
                     <p class="box-text">Keep revolutionizing your curriculum. We will send your exclusive activation link the moment your access batch opens.</p>
                     
                     <div class="buttons">
-                        <a href="https://prashan.ai" class="btn-primary">Explore Features</a>
+                        <a href="https://prashan.co.in/" class="btn-primary">Explore Features</a>
                     </div>
                 </div>
                 
@@ -229,7 +229,7 @@ export async function submitWaitlist(email: string) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    from: "Prashan <onboarding@resend.dev>",
+                    from: "Prashan <onboarding@prashan.co.in>",
                     to: email,
                     subject: "Prashan waitlist confirmed - you're in",
                     html: htmlContent,

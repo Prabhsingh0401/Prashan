@@ -40,7 +40,7 @@ export default function Footer() {
                                     <Link href="https://github.com/PrashanAI" className="hover:text-foreground transition-colors">Github</Link>
                                 </li>
                                 <li>
-                                    <Link href="#" className="hover:text-foreground transition-colors">Twitter</Link>
+                                    <Link href="https://x.com/Prashan364660" className="hover:text-foreground transition-colors">Twitter</Link>
                                 </li>
                             </ul>
                         </div>
@@ -78,7 +78,7 @@ export default function Footer() {
                             <span className="sr-only">GitHub</span>
                         </Link>
                         <Link
-                            href="#"
+                            href="https://x.com/Prashan364660"
                             className="btn-glass btn-glass-icon"
                             aria-label="Twitter / X"
                         >

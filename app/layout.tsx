@@ -7,7 +7,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   // ── Core ──────────────────────────────────────────────────────────────
-  metadataBase: new URL("https://prashan.ai"),
+  metadataBase: new URL("https://prashan.co.in"),
   title: {
     default: "Prashan | AI Question Paper Generator for Teachers",
     template: "%s | Prashan",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     "prashan",
     "प्रशन",
   ],
-  authors: [{ name: "Prashan", url: "https://prashan.ai" }],
+  authors: [{ name: "Prashan", url: "https://prashan.co.in" }],
   creator: "Prashan",
   publisher: "Prashan",
 
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://prashan.ai",
+    url: "https://prashan.co.in",
     siteName: "Prashan",
     title: "Prashan | AI Question Paper Generator for Teachers",
     description:

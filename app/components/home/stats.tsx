@@ -153,7 +153,7 @@ export function Stats() {
                 </div>
 
                 {/* Stats grid */}
-                <div ref={statsGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-black/5 dark:bg-white/5 rounded-2xl overflow-hidden">
+                <div ref={statsGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden">
                     {stats.map((stat) => (
                         <div
                             key={stat.label}

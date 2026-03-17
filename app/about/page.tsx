@@ -36,7 +36,7 @@ export default function AboutPage() {
                     <div className="pt-6 sm:pt-8 flex flex-col items-start gap-8">
                         {/* Social proof trust line */}
                         <div className="flex items-center gap-3 flex-wrap">
-                            <div className="flex -space-x-2.5">
+                            <div className="flex space-x-0.5">
                                 {[
                                     { letter: "R", bg: "rgba(124,58,237,0.15)", border: "rgba(124,58,237,0.3)", text: "rgb(124,58,237)" },
                                     { letter: "P", bg: "rgba(5,150,105,0.15)", border: "rgba(5,150,105,0.3)", text: "rgb(5,150,105)" },
