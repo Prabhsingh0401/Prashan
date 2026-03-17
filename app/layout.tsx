@@ -3,6 +3,7 @@ import Navbar from "./components/global/navbar";
 import Footer from "./components/global/footer";
 import { ThemeProvider } from "./components/theme/theme-provider";
 import { Preloader } from "./components/global/preloader";
+import { Analytics } from '@vercel/analytics/react';
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -121,6 +122,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
