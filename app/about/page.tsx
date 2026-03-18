@@ -5,11 +5,11 @@ import Footer from "../components/global/footer";
 
 export default function AboutPage() {
     return (
+        <>
+        <Navbar />
         <main className="flex min-h-screen flex-col items-center justify-start">
-            <Navbar />
+            
             <div className="flex-1 flex min-h-[90vh] w-full items-center justify-center px-4 sm:px-8 lg:px-16 pt-45 sm:pt-40 pb-20 relative z-10 overflow-hidden">
-
-
 
             {/* Main Content Container (Unchanged Layout) */}
             <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 lg:gap-24 items-center relative z-10">
@@ -83,9 +83,10 @@ export default function AboutPage() {
                         </div>
                     </div>
                 </div>
-
+              </div>
             </div>
-            <Footer />
         </main>
+        <Footer />
+    </>
     );
 }

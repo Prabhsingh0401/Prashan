@@ -30,14 +30,16 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
+    <>
+    <Navbar />
     <main className="flex min-h-screen flex-col">
-      <Navbar />
       <div className="flex-1">
         <Hero />
         <Stats />
         <Features />
       </div>
-      <Footer />
     </main>
+    <Footer />
+  </>
   );
 }
