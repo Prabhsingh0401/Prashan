@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import Navbar from "./components/global/navbar";
-import Footer from "./components/global/footer";
 import { ThemeProvider } from "./components/theme/theme-provider";
 import { Preloader } from "./components/global/preloader";
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
@@ -51,9 +49,7 @@ export const metadata: Metadata = {
 
   // ── Icons ─────────────────────────────────────────────────────────────
   icons: {
-    icon: [
-      { url: "/prashan_logo.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/prashan_logo.svg", type: "image/svg+xml" }],
     apple: "/prashan_logo.svg",
     shortcut: "/prashan_logo.svg",
   },
@@ -116,11 +112,7 @@ export default function RootLayout({
         >
           <Preloader />
           <div className="relative flex min-h-screen w-full flex-col dark:bg-[url('/backgroundGradientDark.svg')] bg-cover bg-center bg-fixed dark:after:absolute dark:after:inset-0 dark:after:bg-black/60 after:pointer-events-none">
-            <Navbar />
-            <div className="min-h-screen z-10 w-full relative">
-              {children}
-            </div>
-            <Footer />
+            <div className="min-h-screen z-10 w-full relative">{children}</div>
           </div>
         </ThemeProvider>
         <Analytics />

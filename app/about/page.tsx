@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import Navbar from "../components/global/navbar";
+import Footer from "../components/global/footer";
 
 export default function AboutPage() {
     return (
-        <main className="flex min-h-[90vh] w-full items-center justify-center px-4 sm:px-8 lg:px-16 pt-45 sm:pt-40 pb-20 relative z-10 overflow-hidden">
+        <main className="flex min-h-screen flex-col items-center justify-start">
+            <Navbar />
+            <div className="flex-1 flex min-h-[90vh] w-full items-center justify-center px-4 sm:px-8 lg:px-16 pt-45 sm:pt-40 pb-20 relative z-10 overflow-hidden">
 
 
 
@@ -81,6 +85,7 @@ export default function AboutPage() {
                 </div>
 
             </div>
+            <Footer />
         </main>
     );
 }

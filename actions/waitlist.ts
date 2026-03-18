@@ -1,12 +1,12 @@
 "use server";
 
 export async function submitWaitlist(email: string) {
-    if (!email || !email.includes("@")) {
-        return { error: "Please enter a valid email address." };
-    }
+  if (!email || !email.includes("@")) {
+    return { error: "Please enter a valid email address." };
+  }
 
-    try {
-        const htmlContent = `
+  try {
+    const htmlContent = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -221,35 +221,44 @@ export async function submitWaitlist(email: string) {
         </html>
         `;
 
-        if (process.env.RESEND_API_KEY) {
-            const res = await fetch("https://api.resend.com/emails", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    from: "Prashan <no-reply@prashan.co.in>",
-                    to: email,
-                    subject: "Prashan waitlist confirmed - you're in",
-                    html: htmlContent,
-                }),
-            });
+    if (process.env.RESEND_API_KEY) {
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Prashan <no-reply@prashan.co.in>",
+          to: email,
+          subject: "Prashan waitlist confirmed - you're in",
+          html: htmlContent,
+        }),
+      });
 
-            if (!res.ok) {
-                const errorData = await res.json();
-                console.error("Resend API error:", errorData);
-                return { error: "Failed to send email. Please try again later." };
-            }
-        } else {
-            console.log("No RESEND_API_KEY found. Mocking email delivery in development mode.");
-            console.log("--- MOCK EMAIL DELIVERED TO ---", email);
-            await new Promise((resolve) => setTimeout(resolve, 800));
+      if (!res.ok) {
+        let errorData;
+        try {
+          errorData = await res.json();
+        } catch {
+          errorData = { message: "Unknown error" };
         }
-
-        return { success: true };
-    } catch (error) {
-        console.error("Waitlist error:", error);
-        return { error: "An unexpected error occurred." };
+        console.error("Resend API error:", errorData);
+        return { error: "Failed to send email. Please try again later." };
+      }
+    } else {
+      if (process.env.NODE_ENV !== "production") {
+        console.log(
+          "No RESEND_API_KEY found. Mocking email delivery in development mode.",
+        );
+        console.log("--- MOCK EMAIL DELIVERED TO ---", email);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 800));
     }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Waitlist error:", error);
+    return { error: "An unexpected error occurred." };
+  }
 }
