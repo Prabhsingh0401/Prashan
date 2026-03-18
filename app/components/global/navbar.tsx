@@ -107,15 +107,6 @@ export default function Navbar() {
           <ul className="flex flex-col font-medium px-5 pb-4 pt-1 space-y-1 border-t border-black/5 dark:border-white/5">
             <li>
               <Link
-                href="/auth"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block py-2.5 px-3 rounded-xl text-foreground font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              >
-                Get Started
-              </Link>
-            </li>
-            <li>
-              <Link
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block py-2.5 px-3 rounded-xl text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
