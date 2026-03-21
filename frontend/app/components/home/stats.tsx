@@ -1,11 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { Clock, Zap, Target, User } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface Stat {
   number: string;
@@ -13,7 +8,6 @@ interface Stat {
   label: string;
   sublabel: string;
   icon: React.ReactNode;
-  delay: string;
 }
 
 const stats: Stat[] = [
@@ -23,7 +17,6 @@ const stats: Stat[] = [
     label: "Faster creation",
     sublabel: "A full paper in under 3 minutes — not 3 hours.",
     icon: <Zap className="w-5 h-5" />,
-    delay: "0ms",
   },
   {
     number: "3",
@@ -31,7 +24,6 @@ const stats: Stat[] = [
     label: "Saved per paper",
     sublabel: "Time back in your day, every single time.",
     icon: <Clock className="w-5 h-5" />,
-    delay: "100ms",
   },
   {
     number: "100%",
@@ -39,7 +31,6 @@ const stats: Stat[] = [
     label: "Format accuracy",
     sublabel: "Formatting is handled automatically. You do nothing.",
     icon: <Target className="w-5 h-5" />,
-    delay: "200ms",
   },
   {
     number: "0",
@@ -47,84 +38,12 @@ const stats: Stat[] = [
     label: "Zero prompting",
     sublabel: "No ChatGPT back-and-forth. No searching. Just done.",
     icon: <User className="w-5 h-5" />,
-    delay: "300ms",
   },
 ];
 
 export function Stats() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const statsGridRef = useRef<HTMLDivElement>(null);
-  const bottomStripRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Header animation
-      gsap.fromTo(
-        headerRef.current,
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: headerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      // Stats grid animation with enhanced stagger
-      const statCards = statsGridRef.current?.children;
-      if (statCards) {
-        gsap.fromTo(
-          statCards,
-          { y: 80, opacity: 0, scale: 0.9 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: statsGridRef.current,
-              start: "top 75%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-      }
-
-      // Bottom strip animation
-      gsap.fromTo(
-        bottomStripRef.current,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: bottomStripRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className="w-full max-w-[1400px] mx-auto px-4 py-8 relative z-10 font-sans"
-    >
-      {/* Main glassy container */}
+    <section className="w-full max-w-[1400px] mx-auto px-4 py-8 relative z-10 font-sans">
       <div
         className="relative rounded-[2rem] overflow-hidden
                 bg-white/30 dark:bg-white/[0.04]
@@ -135,11 +54,7 @@ export function Stats() {
                 px-5 sm:px-10 lg:px-16 py-10 lg:py-14
             "
       >
-        {/* Top label + headline */}
-        <div
-          ref={headerRef}
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12"
-        >
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 scroll-animate">
           <div>
             <div className="inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md mb-5">
               <span className="flex h-2 w-2 rounded-full bg-[#541325] mr-2 animate-pulse" />
@@ -156,21 +71,16 @@ export function Stats() {
           </p>
         </div>
 
-        {/* Stats grid */}
-        <div
-          ref={statsGridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden"
-        >
-          {stats.map((stat) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden">
+          {stats.map((stat, i) => (
             <div
               key={stat.label}
-              className={`flex flex-col justify-between gap-5 p-6 sm:p-6 md:p-8
+              className={`flex flex-col justify-between gap-5 p-6 sm:p-6 md:p-8 scroll-animate stagger-${i}
                                 bg-white/60 dark:bg-black/40
                                 hover:bg-white/80 dark:hover:bg-white/[0.06]
                                 transition-colors duration-300
                             `}
             >
-              {/* Icon */}
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center
                                 bg-white dark:bg-white/10
@@ -182,7 +92,6 @@ export function Stats() {
                 {stat.icon}
               </div>
 
-              {/* Number */}
               <div>
                 <div className="flex items-baseline gap-1.5 mb-2">
                   <span className="text-4xl md:text-5xl font-bold tracking-tighter text-foreground leading-none tabular-nums">
@@ -206,10 +115,8 @@ export function Stats() {
           ))}
         </div>
 
-        {/* Bottom strip — independence statement */}
         <div
-          ref={bottomStripRef}
-          className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3
+          className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 scroll-animate
                     px-5 py-4 rounded-2xl
                     bg-black/[0.03] dark:bg-white/[0.03]
                     border border-black/5 dark:border-white/5

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface ToastProps {
+    title?: string;
     message: string;
     type?: "success" | "error";
     isVisible: boolean;
@@ -13,6 +14,7 @@ interface ToastProps {
 }
 
 export function Toast({
+    title,
     message,
     type = "success",
     isVisible,
@@ -71,7 +73,7 @@ export function Toast({
                 
                 <div className="flex-1 min-w-0">
                     <p className="text-[13px] font-bold text-foreground tracking-tight mb-0.5">
-                        {type === "success" ? "You're on the list!" : "Wait, something's wrong"}
+                        {title || (type === "success" ? "You're on the list!" : "Wait, something's wrong")}
                     </p>
                     <p className="text-[12px] text-foreground/50 font-medium leading-snug truncate">
                         {message}
