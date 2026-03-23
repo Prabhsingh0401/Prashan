@@ -5,10 +5,14 @@ import GlassSurface from "../ui/GlassSurface";
 export default function MobileNav() {
   return (
     <div className="md:hidden fixed bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[360px] z-50 h-[3.75rem]">
+      {/* Base blur layer so that text behind the nav doesn't mix with the transparent icons */}
+      <div className="absolute inset-0 rounded-[40px] backdrop-blur-[24px] bg-white/20 dark:bg-black/30 shadow-xl pointer-events-none" />
+      
       <GlassSurface 
         width="100%" 
         height="100%"
         borderRadius={40}
+        backgroundOpacity={0.15}
         className="shadow-2xl"
       >
         <nav className="w-full flex items-center justify-around px-1 py-0">
