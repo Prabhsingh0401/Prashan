@@ -44,17 +44,17 @@ export default function Footer() {
                                 </li>
                             </ul>
                         </div>
-                        {/* <div>
+                        <div>
                             <h2 className="mb-6 text-sm font-semibold text-foreground uppercase">Legal</h2>
                             <ul className="text-foreground/70 font-medium">
                                 <li className="mb-4">
-                                    <Link href="#" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+                                    <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
                                 </li>
                                 <li>
-                                    <Link href="#" className="hover:text-foreground transition-colors">Terms &amp; Conditions</Link>
+                                    <Link href="/terms" className="hover:text-foreground transition-colors">Terms &amp; Conditions</Link>
                                 </li>
                             </ul>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
                 <hr className="my-6 border-black/5 dark:border-white/5 sm:mx-auto lg:my-8" />
