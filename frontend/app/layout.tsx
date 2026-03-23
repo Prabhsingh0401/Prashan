@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "./components/theme/theme-provider";
 import { Preloader } from "./components/global/preloader";
+import { GoogleAnalytics } from "./components/global/GoogleAnalytics";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -53,6 +54,9 @@ export const metadata: Metadata = {
     apple: "/prashan_logo.svg",
     shortcut: "/prashan_logo.svg",
   },
+
+  // ── Web manifest ──────────────────────────────────────────────────────
+  manifest: "/manifest.webmanifest",
 
   // ── OpenGraph ─────────────────────────────────────────────────────────
   openGraph: {
@@ -115,6 +119,7 @@ export default function RootLayout({
             <div className="min-h-screen z-10 w-full relative">{children}</div>
           </div>
         </ThemeProvider>
+        <GoogleAnalytics />
         <Analytics />
         <SpeedInsights />
       </body>

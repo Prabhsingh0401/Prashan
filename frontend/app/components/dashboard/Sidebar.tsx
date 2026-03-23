@@ -50,7 +50,7 @@ export default function Sidebar() {
       <nav className="flex flex-col gap-2 flex-1 overflow-hidden">
         <Link 
           href="/dashboard"
-          className={`flex items-center transition-all group font-medium bg-white/50 dark:bg-white/10 text-foreground shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] ${isCollapsed ? 'w-11 h-11 justify-center rounded-2xl mx-auto' : 'w-full px-3 py-3 rounded-2xl justify-start'}`}
+          className={`flex items-center transition-all group font-medium bg-white shadow-sm ring-1 ring-black/5 dark:bg-white/10 text-foreground dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] dark:ring-0 ${isCollapsed ? 'w-11 h-11 justify-center rounded-2xl mx-auto' : 'w-full px-3 py-3 rounded-2xl justify-start'}`}
           title="Dashboard"
         >
           <LayoutDashboard className="w-5 h-5 shrink-0 text-foreground" />

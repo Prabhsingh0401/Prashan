@@ -1,7 +1,31 @@
+import { type Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import Navbar from "../components/global/navbar";
 import Footer from "../components/global/footer";
+
+export const metadata: Metadata = {
+  title: "About | Prashan",
+  description:
+    "Learn why Prashan was built — to give teachers their time back. No more hours lost to formatting and hunting questions. Board-aligned papers in minutes.",
+  alternates: {
+    canonical: "https://prashan.co.in/about",
+  },
+  openGraph: {
+    title: "About Prashan | AI Question Paper Generator",
+    description:
+      "Prashan was built out of frustration with how much teacher time is wasted on formatting. Our mission: give teachers their time back.",
+    url: "https://prashan.co.in/about",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "About Prashan — AI Question Paper Generator for Indian Teachers",
+      },
+    ],
+  },
+};
 
 export default function AboutPage() {
     return (
