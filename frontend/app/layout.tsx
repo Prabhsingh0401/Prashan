@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "./components/theme/theme-provider";
 import { Preloader } from "./components/global/preloader";
-import { GoogleAnalytics } from "./components/global/GoogleAnalytics";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
 
   // ── Canonical & robots ────────────────────────────────────────────────
   alternates: {
-    canonical: "/",
+    canonical: "https://prashan.co.in",
   },
   robots: {
     index: true,
@@ -119,7 +118,6 @@ export default function RootLayout({
             <div className="min-h-screen z-10 w-full relative">{children}</div>
           </div>
         </ThemeProvider>
-        <GoogleAnalytics />
         <Analytics />
         <SpeedInsights />
       </body>

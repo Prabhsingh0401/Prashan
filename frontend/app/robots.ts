@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/about"],
-        disallow: ["/dashboard", "/auth", "/api/"],
+        allow: ["/", "/about", "/terms", "/privacy"],
+        disallow: ["/dashboard", "/api/"],
       },
     ],
     sitemap: "https://prashan.co.in/sitemap.xml",

@@ -5,6 +5,22 @@ import Footer from "../components/global/footer";
 export const metadata: Metadata = {
   title: "Privacy Policy | Prashan",
   description: "Privacy Policy and data handling practices for Prashan.",
+  alternates: {
+    canonical: "https://prashan.co.in/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | Prashan",
+    description: "Privacy Policy and data handling practices for Prashan.",
+    url: "https://prashan.co.in/privacy",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Prashan — Privacy Policy",
+      },
+    ],
+  },
 };
 
 export default function PrivacyPolicyPage() {

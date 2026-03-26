@@ -5,6 +5,22 @@ import Footer from "../components/global/footer";
 export const metadata: Metadata = {
   title: "Terms and Conditions | Prashan",
   description: "Terms and Conditions of use for the Prashan platform.",
+  alternates: {
+    canonical: "https://prashan.co.in/terms",
+  },
+  openGraph: {
+    title: "Terms and Conditions | Prashan",
+    description: "Terms and Conditions of use for the Prashan platform.",
+    url: "https://prashan.co.in/terms",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Prashan — Terms and Conditions",
+      },
+    ],
+  },
 };
 
 export default function TermsPage() {

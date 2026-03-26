@@ -5,6 +5,10 @@ import QuickActions from '../components/dashboard/QuickActions';
 export const metadata: Metadata = {
   title: 'Dashboard | Prashan',
   description: 'Manage your question papers and settings.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function DashboardPage() {
