@@ -83,9 +83,7 @@ const organizationJsonLd = {
 export default function AboutPage() {
   return (
     <>
-      <head>
-        <JsonLd data={[breadcrumbJsonLd, organizationJsonLd]} />
-      </head>
+      <JsonLd data={[breadcrumbJsonLd, organizationJsonLd]} />
       <Navbar />
       <main className="flex min-h-screen flex-col items-center justify-start">
           

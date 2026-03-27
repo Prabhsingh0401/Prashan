@@ -6,6 +6,22 @@ import { useTheme } from "next-themes";
 
 export function ThemeToggle() {
     const { setTheme, theme } = useTheme();
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return (
+            <button
+                className="btn-glass btn-glass-icon relative !p-2 !rounded-xl"
+                aria-label="Toggle theme"
+            >
+                <Sun className="h-4 w-4" />
+            </button>
+        );
+    }
 
     return (
         <button

@@ -144,9 +144,7 @@ const howToJsonLd = {
 export default function Home() {
   return (
     <>
-      <head>
-        <JsonLd data={[faqJsonLd, howToJsonLd]} />
-      </head>
+      <JsonLd data={[faqJsonLd, howToJsonLd]} />
       <Navbar />
       <main className="flex min-h-screen flex-col">
         <div className="flex-1">

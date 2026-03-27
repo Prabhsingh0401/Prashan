@@ -1,7 +1,9 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import Navbar from "../components/global/navbar";
 import Footer from "../components/global/footer";
 import { JsonLd } from "../components/seo/json-ld";
+import { Shield, Lock, Eye, Database, Cookie, Globe, Users, Building2, Bell, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Prashan - How We Protect Your Data",
@@ -65,153 +67,135 @@ const legalServiceJsonLd = {
   },
 };
 
+const policies = [
+  {
+    icon: Database,
+    title: "1. Information We Collect",
+    content: "We collect account data from Google Sign-In, usage information, and your question paper configurations.",
+  },
+  {
+    icon: Shield,
+    title: "2. How We Use Your Information",
+    content: "Used solely for account management, question paper creation, security, and communication. We never sell your data.",
+  },
+  {
+    icon: Lock,
+    title: "3. Data Security",
+    content: "Google API compliant. Industry-standard encryption and regular security audits protect your data.",
+  },
+  {
+    icon: Eye,
+    title: "4. Your Rights",
+    content: "Access, correction, deletion, portability, and objection rights. Contact theprashanai@gmail.com to exercise.",
+  },
+  {
+    icon: Cookie,
+    title: "5. Cookies & Tracking",
+    content: "Essential cookies only for session and authentication. No advertising cookies or marketing tracking.",
+  },
+  {
+    icon: Globe,
+    title: "6. Third-Party Services",
+    content: "Firebase (Google), Vercel hosting, and secure AI services. Each has their own privacy policies.",
+  },
+  {
+    icon: Users,
+    title: "7. Children's Privacy",
+    content: "Service for teachers 18+. We don't knowingly collect data from children.",
+  },
+  {
+    icon: Building2,
+    title: "8. International Transfers",
+    content: "Data may transfer across countries with appropriate safeguards per applicable laws.",
+  },
+  {
+    icon: Bell,
+    title: "9. Policy Updates",
+    content: "We may update this policy periodically. Check the 'Last updated' date for changes.",
+  },
+  {
+    icon: Mail,
+    title: "10. Contact Us",
+    content: "Questions? Reach us at theprashanai@gmail.com or visit prashan.co.in",
+  },
+];
+
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <head>
-        <JsonLd data={[breadcrumbJsonLd, legalServiceJsonLd]} />
-      </head>
+      <JsonLd data={[breadcrumbJsonLd, legalServiceJsonLd]} />
       <Navbar />
       <main className="flex min-h-screen flex-col items-center justify-start">
-        <div className="flex-1 flex min-h-[90vh] w-full items-start justify-center px-4 sm:px-8 lg:px-16 pt-32 sm:pt-40 pb-20 relative z-10 overflow-hidden">
-          
-          <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 lg:gap-24 items-start relative z-10">
-            
-            {/* Left Column: Title (sticky on desktop) */}
-            <div className="md:col-span-5 flex flex-col justify-start md:sticky md:top-40">
-              <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] xl:text-[6rem] font-bold tracking-tighter text-foreground leading-[1.08] pr-4">
-                Privacy <span className="text-foreground/30 relative select-none">
-                  <span className="line-through decoration-[3px] decoration-red-500/60 dark:decoration-red-400/60">matters.</span>
+        <div className="flex-1 w-full min-h-[90vh] items-start justify-center px-4 sm:px-8 lg:px-16 pt-32 sm:pt-40 pb-20 relative z-10 overflow-hidden">
+          <div className="w-full max-w-[1400px] mx-auto">
+            <div className="mb-10">
+              <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-bold tracking-tighter text-foreground leading-[1.08]">
+                Privacy{" "}
+                <span className="text-foreground/30 relative select-none">
+                  <span className="line-through decoration-[3px] decoration-red-500/60 dark:decoration-red-400/60">
+                    matters.
+                  </span>
                 </span>
                 <br className="hidden md:block" />
                 <span className="block mt-2">Policy.</span>
               </h1>
-              <p className="mt-6 text-lg text-foreground/50 font-medium">
-                Last updated: {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
+              <p className="mt-4 text-lg text-foreground/50 font-medium">
+                Last updated:{" "}
+                {new Date().toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
               </p>
             </div>
 
-            {/* Right Column: Content */}
-            <div className="md:col-span-7 flex flex-col space-y-8 md:space-y-10 text-lg sm:text-xl text-foreground/75 font-medium leading-relaxed max-w-3xl">
-              
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">1. Information We Collect</strong>
-                <p className="mb-4">
-                  We collect personal information that you voluntarily provide to us when you register via Google Authentication, express an interest in obtaining information about us, or otherwise contact us. This includes:
-                </p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Account Information:</strong> Your name, email address, and authentication data from Google Sign-In</li>
-                  <li><strong>Usage Data:</strong> Information about how you access and use our platform</li>
-                  <li><strong>Generated Content:</strong> Question paper configurations and preferences you create</li>
-                </ul>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {policies.map((policy, index) => (
+                <div
+                  key={index}
+                  className="group relative rounded-2xl p-6 flex flex-col gap-4 
+                    bg-white/30 dark:bg-white/[0.04]
+                    backdrop-blur-xl
+                    border border-white/50 dark:border-white/10
+                    shadow-[0px_1px_0.5px_rgba(0,0,0,0),0px_4.4px_2.2px_rgba(0,0,0,0.01),0px_11.7px_5.9px_rgba(0,0,0,0.02)]
+                    dark:shadow-[0px_4.4px_2.2px_rgba(0,0,0,0.06),0px_11.7px_5.9px_rgba(0,0,0,0.10)]
+                    hover:bg-white/40 dark:hover:bg-white/[0.06]
+                    hover:border-white/60 dark:hover:border-white/15
+                    transition-all duration-300
+                    h-fit"
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center
+                      bg-white dark:bg-white/10
+                      border border-black/8 dark:border-white/10
+                      shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_1px_4px_rgba(0,0,0,0.06)]
+                      text-foreground/60
+                      group-hover:text-foreground/80 transition-colors"
+                  >
+                    <policy.icon size={18} strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-foreground tracking-tight mb-2">
+                      {policy.title}
+                    </h3>
+                    <p className="text-sm text-foreground/55 font-medium leading-relaxed">
+                      {policy.content}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">2. How We Use Your Information</strong>
-                <p className="mb-4">
-                  We use the information collected solely for the following purposes:
-                </p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Managing your account and providing platform access</li>
-                  <li>Facilitating the creation of high-quality question papers</li>
-                  <li>Ensuring the security and integrity of our platform</li>
-                  <li>Communicating updates, features, and support information</li>
-                </ul>
-                <p className="mt-4">
-                  <strong className="text-foreground">We strictly do not sell, rent, or lease your personal information to third parties.</strong>
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">3. Data Security & Google API Compliance</strong>
-                <p className="mb-4">
-                  Prashan's use and transfer to any other app of information received from Google APIs accurately adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" className="text-foreground border-b border-foreground/30 hover:border-foreground transition-colors" target="_blank" rel="noreferrer">Google API Services User Data Policy</a>, specifically including the Limited Use requirements.
-                </p>
-                <p>
-                  We implement industry-standard security measures including encryption, secure servers, and regular security audits to protect your data from unauthorized access, alteration, disclosure, or destruction.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">4. Data Retention</strong>
-                <p>
-                  We retain your personal information for as long as your account is active or as needed to provide services. You may request deletion of your account and associated data at any time through the settings panel or by contacting our support team.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">5. Your Rights</strong>
-                <p className="mb-4">
-                  Under applicable data protection laws, you have the right to:
-                </p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Access:</strong> Request a copy of the personal information we hold about you</li>
-                  <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data</li>
-                  <li><strong>Deletion:</strong> Request deletion of your personal data ("Right to be Forgotten")</li>
-                  <li><strong>Portability:</strong> Request transfer of your data to another service</li>
-                  <li><strong>Object:</strong> Object to certain processing of your personal information</li>
-                </ul>
-                <p className="mt-4">
-                  You can exercise these rights by deleting your account from the settings panel or by contacting our privacy team at <a href="mailto:privacy@prashan.co.in" className="text-foreground border-b border-foreground/30 hover:border-foreground transition-colors">privacy@prashan.co.in</a>.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">6. Cookies & Tracking</strong>
-                <p>
-                  We use essential cookies and similar technologies to maintain session state, authenticate users, and ensure platform functionality. We do not use advertising cookies or third-party tracking for marketing purposes.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">7. Third-Party Services</strong>
-                <p className="mb-4">
-                  Prashan uses the following third-party services:
-                </p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Firebase (Google):</strong> Authentication and cloud services</li>
-                  <li><strong>Vercel:</strong> Hosting and analytics</li>
-                  <li><strong>AI Services:</strong> Question paper generation (processed securely)</li>
-                </ul>
-                <p className="mt-4">
-                  These services have their own privacy policies, and we encourage you to review them.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">8. Children's Privacy</strong>
-                <p>
-                  Prashan is intended for use by teachers and educational professionals. Our services are not directed to individuals under 18 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">9. International Data Transfers</strong>
-                <p>
-                  Your information may be transferred to and processed in countries other than India. When we transfer data internationally, we ensure appropriate safeguards are in place in compliance with applicable data protection laws.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">10. Changes to This Policy</strong>
-                <p>
-                  We may update this privacy policy from time to time to reflect changes in our practices or legal requirements. We will notify you of any material changes by posting the updated policy on our website with a revised "Last updated" date.
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-foreground text-2xl block mb-4">11. Contact Us</strong>
-                <p className="mb-4">
-                  If you have questions, comments, or concerns about this privacy policy or our data practices, please contact us:
-                </p>
-                <p>
-                  <strong>Email:</strong> <a href="mailto:privacy@prashan.co.in" className="text-foreground border-b border-foreground/30 hover:border-foreground transition-colors">privacy@prashan.co.in</a>
-                </p>
-                <p className="mt-2">
-                  <strong>Website:</strong> <a href="https://prashan.co.in" className="text-foreground border-b border-foreground/30 hover:border-foreground transition-colors">https://prashan.co.in</a>
-                </p>
-              </div>
-
+            <div className="mt-8 text-center">
+              <p className="text-sm text-foreground/50">
+                For detailed information, contact{" "}
+                <Link
+                  href="mailto:theprashanai@gmail.com"
+                  className="text-foreground font-medium hover:underline"
+                >
+                  theprashanai@gmail.com
+                </Link>
+              </p>
             </div>
           </div>
         </div>

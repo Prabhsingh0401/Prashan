@@ -152,10 +152,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <JsonLd data={baseJsonLd} />
-      </head>
       <body className="antialiased font-sans scrollbar-thin">
+        <JsonLd data={baseJsonLd} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
