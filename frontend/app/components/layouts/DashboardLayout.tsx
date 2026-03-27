@@ -9,7 +9,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
+    <div className="relative flex h-screen w-full bg-background text-foreground overflow-hidden">
       {/* Desktop Sidebar */}
       <Sidebar />
       
@@ -18,7 +18,7 @@ export default function DashboardLayout({
         <Topbar />
         
         {/* Dashboard Content Container */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-28 md:pb-8">
+        <main className="relative z-10 flex-1 overflow-y-auto p-4 md:p-8 pb-28 md:pb-8">
           <div className="max-w-5xl mx-auto">
             {children}
           </div>

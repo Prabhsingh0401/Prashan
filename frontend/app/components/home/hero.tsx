@@ -67,26 +67,43 @@ export function Hero() {
   };
 
   return (
-    <section className="relative w-full flex flex-col items-center justify-center min-h-[95vh] pt-32 pb-16 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+    <section 
+      className="relative w-full flex flex-col items-center justify-center min-h-[95vh] pt-32 pb-16 px-4 sm:px-6 lg:px-8 text-center overflow-hidden"
+      aria-labelledby="hero-heading"
+    >
+      {/* Background brand text for visual depth */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none flex justify-center items-center w-full z-0 opacity-30 mix-blend-overlay">
-        <span className="text-[12rem] sm:text-[16rem] md:text-[24rem] lg:text-[30rem] font-extrabold text-foreground/20 blur-sm sm:blur-md leading-none tracking-tighter whitespace-nowrap">
+        <span 
+          className="text-[12rem] sm:text-[16rem] md:text-[24rem] lg:text-[30rem] font-extrabold text-foreground/20 blur-sm sm:blur-md leading-none tracking-tighter whitespace-nowrap"
+          aria-hidden="true"
+        >
           प्रशन
         </span>
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center animate-hero-in">
-        <div className="mb-8 inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md">
-          Early access
-          <ChevronRight className="ml-1 h-4 w-4 text-foreground/50" />
+        {/* Status badge */}
+        <div 
+          className="mb-8 inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md"
+          role="status"
+        >
+          <span className="flex h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse" />
+          Early access — Free for teachers
         </div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter text-foreground mb-4 max-w-4xl leading-[1.08]">
+        {/* Main headline - AI SEO: Contains descriptive keywords */}
+        <h1 
+          id="hero-heading"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter text-foreground mb-4 max-w-4xl leading-[1.08]"
+        >
           Stop wasting your
           <br className="hidden sm:block" /> time.
         </h1>
 
+        {/* Animated pain point - shows problem teachers face */}
         <div className="h-28 sm:h-24 md:h-20 flex items-center justify-center mb-6 overflow-hidden px-4 w-full">
           <p
+            aria-live="polite"
             className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground/55 transition-all duration-350"
             style={{
               opacity: animating ? 0 : 1,
@@ -99,11 +116,11 @@ export function Hero() {
           </p>
         </div>
 
+        {/* Value proposition - AI SEO: Contains key search terms */}
         <p className="text-lg sm:text-xl text-foreground/55 max-w-3xl mb-4 font-medium tracking-tight leading-relaxed">
-          प्रशन builds your question paper in under minutes{" "}
-          <br className="hidden sm:block" />
-          formatted, board aligned, and print-ready. No prompting. No
-          formatting. No stress.
+          Prashan builds your question paper in under 3 minutes — formatted, 
+          board-aligned for CBSE, ICSE & State Boards, and print-ready. 
+          No prompting. No formatting. No stress.
         </p>
 
         <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">

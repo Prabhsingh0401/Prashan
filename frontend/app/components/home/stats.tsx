@@ -43,7 +43,10 @@ const stats: Stat[] = [
 
 export function Stats() {
   return (
-    <section className="w-full max-w-[1400px] mx-auto px-4 py-8 relative z-10 font-sans">
+    <section 
+      className="w-full max-w-[1400px] mx-auto px-4 py-8 relative z-10 font-sans"
+      aria-labelledby="stats-heading"
+    >
       <div
         className="relative rounded-[2rem] overflow-hidden
                 bg-white/30 dark:bg-white/[0.04]
@@ -56,11 +59,17 @@ export function Stats() {
       >
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 scroll-animate">
           <div>
-            <div className="inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md mb-5">
+            <div 
+              className="inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md mb-5"
+              role="status"
+            >
               <span className="flex h-2 w-2 rounded-full bg-[#541325] mr-2 animate-pulse" />
               By the numbers
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground leading-[1.1] max-w-lg">
+            <h2 
+              id="stats-heading"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground leading-[1.1] max-w-lg"
+            >
               Teachers get their <br className="hidden sm:block" />
               time back.
             </h2>
@@ -71,7 +80,8 @@ export function Stats() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden">
+        {/* AI SEO: Statistics with descriptive labels for citation */}
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden">
           {stats.map((stat, i) => (
             <div
               key={stat.label}
@@ -88,15 +98,17 @@ export function Stats() {
                                 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_1px_4px_rgba(0,0,0,0.06)]
                                 text-foreground/60
                             "
+                aria-hidden="true"
               >
                 {stat.icon}
               </div>
 
               <div>
                 <div className="flex items-baseline gap-1.5 mb-2">
-                  <span className="text-4xl md:text-5xl font-bold tracking-tighter text-foreground leading-none tabular-nums">
+                  <dt className="sr-only">Value</dt>
+                  <dd className="text-4xl md:text-5xl font-bold tracking-tighter text-foreground leading-none tabular-nums">
                     {stat.number}
-                  </span>
+                  </dd>
                   {stat.unit && (
                     <span className="text-base md:text-lg font-semibold text-foreground/50 tracking-tight">
                       {stat.unit}
@@ -105,7 +117,7 @@ export function Stats() {
                 </div>
 
                 <p className="text-[13px] font-bold text-foreground tracking-tight mb-1">
-                  {stat.label}
+                  <span className="sr-only">Metric: </span>{stat.label}
                 </p>
                 <p className="text-[12px] text-foreground/50 font-medium leading-snug hidden sm:block">
                   {stat.sublabel}
@@ -113,7 +125,7 @@ export function Stats() {
               </div>
             </div>
           ))}
-        </div>
+        </dl>
 
         <div
           className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 scroll-animate
@@ -126,10 +138,11 @@ export function Stats() {
             Fully self-serve. No IT dependency. No design skills. No formatting
             needed.
           </p>
-          <div className="flex items-center gap-2 flex-wrap flex-shrink-0">
+          <div className="flex items-center gap-2 flex-wrap flex-shrink-0" role="list" aria-label="Key features">
             {["Independent", "Instant", "Accurate"].map((tag) => (
               <span
                 key={tag}
+                role="listitem"
                 className="text-[10px] font-mono font-bold tracking-widest uppercase px-2.5 py-1.5 rounded-lg
                                     border border-black/8 dark:border-white/10
                                     bg-white/70 dark:bg-white/5

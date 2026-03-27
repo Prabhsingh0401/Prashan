@@ -4,12 +4,21 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: "*",
-        allow: ["/", "/about", "/terms", "/privacy"],
+        // Allow AI search bots for citation indexing
+        userAgent: [
+          "GPTBot",           // ChatGPT
+          "ChatGPT-User",     // ChatGPT
+          "PerplexityBot",    // Perplexity
+          "ClaudeBot",        // Claude
+          "anthropic-ai",     // Claude
+          "Google-Extended",  // Google AI Overviews (Gemini)
+          "Googlebot",        // Google
+          "*",               // All others
+        ],
+        allow: "/",
         disallow: ["/dashboard", "/api/"],
       },
     ],
     sitemap: "https://prashan.co.in/sitemap.xml",
-    host: "https://prashan.co.in",
   };
 }

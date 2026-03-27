@@ -1,38 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Bell, User, Settings, FileText, LogOut } from "lucide-react";
+import { Bell, Settings, FileText } from "lucide-react";
 import { ThemeToggle } from "../theme/theme-toggle";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../../../services/firebase";
-import { useRouter } from "next/navigation";
+import { ProfileMenu } from "../shared/ProfileMenu";
 
 export default function Topbar() {
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      router.push("/auth");
-    } catch (error) {
-      console.error("Logout Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user?.photoURL) {
-        setPhotoUrl(user.photoURL);
-      } else {
-        setPhotoUrl(null);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex items-start justify-end p-4 md:p-6 pointer-events-none">
       
@@ -68,46 +40,7 @@ export default function Topbar() {
         </button>
 
         <ThemeToggle />
-
-        {/* Improved User Profile Icon with Dropdown logic */}
-        <div className="relative">
-          <button 
-            onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="flex items-center justify-center w-10 h-10 ml-1 rounded-full overflow-hidden bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10 text-foreground shadow-sm ring-2 ring-transparent transition-all hover:ring-foreground/20 hover:scale-105 active:scale-95 shrink-0"
-          >
-            {photoUrl ? (
-              <img 
-                src={photoUrl} 
-                alt="User" 
-                className="w-full h-full object-cover" 
-                referrerPolicy="no-referrer"
-              />
-            ) : (
-              <User className="w-4 h-4 text-foreground/70" />
-            )}
-          </button>
-
-          {/* Floating Glass Dropdown Menu */}
-          {isProfileOpen && (
-            <>
-              {/* Invisible full-screen overlay to catch outside clicks */}
-              <div 
-                className="fixed inset-0 z-40" 
-                onClick={() => setIsProfileOpen(false)}
-              ></div>
-              
-              <div className="absolute right-0 top-14 z-50 w-48 p-1.5 rounded-2xl bg-white/60 dark:bg-black/40 backdrop-blur-3xl border border-black/10 dark:border-white/10 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
-                <button 
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-500/10 hover:text-red-500 dark:text-red-400 dark:hover:bg-red-500/20 font-medium transition-all"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Log out</span>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        <ProfileMenu />
       </div>
     </header>
   );

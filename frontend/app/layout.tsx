@@ -3,6 +3,7 @@ import { ThemeProvider } from "./components/theme/theme-provider";
 import { Preloader } from "./components/global/preloader";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { JsonLd } from "./components/seo/json-ld";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -97,7 +98,52 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+
+  // ── AI Search Optimization ─────────────────────────────────────────────
+  other: {
+    "ai-content-type": "educational-content",
+    "ai-target-audience": "teachers, educators, schools, india",
+  },
 };
+
+const baseJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Prashan",
+    url: "https://prashan.co.in",
+    logo: "https://prashan.co.in/prashan_logo.svg",
+    description:
+      "Prashan is an AI-powered question paper generator designed for Indian teachers. It creates board-aligned, print-ready exam papers in under 3 minutes, supporting CBSE, ICSE, and State Boards.",
+    sameAs: ["https://github.com/PrashanAI", "https://x.com/Prashan364660"],
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "support@prashan.co.in",
+      contactType: "customer support",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Prashan",
+    applicationCategory: "EducationApplication",
+    operatingSystem: "Web Browser",
+    url: "https://prashan.co.in",
+    description:
+      "AI-powered question paper generator for Indian teachers. Creates board-aligned exam papers in under 3 minutes for CBSE, ICSE, and State Boards.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "INR",
+      description: "Free during early access",
+    },
+    provider: {
+      "@type": "Organization",
+      name: "Prashan",
+      url: "https://prashan.co.in",
+    },
+  },
+];
 
 export default function RootLayout({
   children,
@@ -106,7 +152,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased font-sans">
+      <head>
+        <JsonLd data={baseJsonLd} />
+      </head>
+      <body className="antialiased font-sans scrollbar-thin">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
