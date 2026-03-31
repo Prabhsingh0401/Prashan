@@ -50,9 +50,9 @@ export const metadata: Metadata = {
 
   // ── Icons ─────────────────────────────────────────────────────────────
   icons: {
-    icon: [{ url: "/prashan_logo.svg", type: "image/svg+xml" }],
-    apple: "/prashan_logo.svg",
-    shortcut: "/prashan_logo.svg",
+    icon: [{ url: "/tab_logo_prashan.png", type: "image/png" }],
+    apple: "/tab_logo_prashan.png",
+    shortcut: "/tab_logo_prashan.png",
   },
 
   // ── Web manifest ──────────────────────────────────────────────────────
@@ -161,7 +161,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Preloader />
-          <div className="relative flex min-h-screen w-full flex-col dark:bg-[url('/backgroundGradientDark.svg')] bg-cover bg-center bg-fixed dark:after:absolute dark:after:inset-0 dark:after:bg-black/60 after:pointer-events-none">
+          <div className="relative flex min-h-screen w-full flex-col dark:bg-black bg-cover bg-center bg-fixed">
             <div className="min-h-screen z-10 w-full relative">{children}</div>
           </div>
         </ThemeProvider>

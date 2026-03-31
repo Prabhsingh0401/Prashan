@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 
 interface ModalProps {
@@ -11,6 +12,12 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, children, className }: ModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleEscape = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -29,18 +36,18 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
     };
   }, [isOpen, handleEscape]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+  return createPortal(
+    <div className="fixed inset-0 flex items-center justify-center p-4 z-[100]">
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
       <div
         className={cn(
           "relative w-full max-w-lg rounded-2xl",
-          "bg-white/90 dark:bg-white/5 backdrop-blur-3xl",
+          "bg-white/60 dark:bg-white/10 backdrop-blur-xl",
           "border border-black/10 dark:border-white/10",
           "shadow-2xl",
           "animate-in fade-in-0 zoom-in-95 duration-200",
@@ -49,6 +56,7 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
       >
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

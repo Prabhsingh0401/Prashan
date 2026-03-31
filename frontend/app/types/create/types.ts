@@ -16,6 +16,7 @@ export interface BoardPaperForm {
   board: string;
   class: string;
   subject: string;
+  chapters: string[];
   date: string;
   duration: string;
   maxMarks: string;
@@ -59,6 +60,7 @@ export const initialBoardForm: BoardPaperForm = {
   board: "CBSE",
   class: "10",
   subject: "",
+  chapters: [],
   date: "",
   duration: "",
   maxMarks: "80",

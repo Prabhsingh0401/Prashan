@@ -6,21 +6,23 @@ interface AssignmentPreviewProps {
 
 export function AssignmentPreview({ form }: AssignmentPreviewProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-black/10 p-5 aspect-[8.5/11] text-black dark:text-black">
-      <div className="text-center pb-4 mb-6">
-        <h1 className="text-lg font-bold">Class Assignment</h1>
-        <p className="text-sm mt-1">{form.subject || "Subject"}</p>
+    <div className="bg-white rounded-lg shadow-sm border border-black/10 p-6 aspect-[8.5/11] text-black dark:text-black font-serif">
+      <div className="text-center mb-4">
+        <h1 className="text-base font-bold uppercase tracking-wide leading-snug">
+          SCHOOL NAME
+        </h1>
+        <p className="text-sm font-bold mt-1 uppercase">CLASS ASSIGNMENT</p>
+        <p className="text-sm font-bold mt-0.5 uppercase">
+          SUBJECT: {form.subject || "____________"}
+        </p>
+        <p className="text-sm font-bold mt-0.5 uppercase">
+          CLASS-{form.class || "___"}
+        </p>
       </div>
 
-      <div className="flex justify-between text-sm mb-4">
-        <div>
-          <span className="font-medium">Class: </span>
-          {form.class}
-        </div>
-        <div>
-          <span className="font-medium">Total Marks: </span>
-          {form.totalMarks}
-        </div>
+      <div className="flex justify-between text-sm font-bold mb-1 mt-3">
+        <span>TIME ALLOWED: ___</span>
+        <span>M.M: {form.totalMarks || "___"}</span>
       </div>
 
       {form.chapters.length > 0 && (
