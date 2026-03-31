@@ -111,6 +111,7 @@ export default function AuthPage() {
           loop
           muted
           playsInline
+          preload="metadata"
         >
           <source src="/LoginScreenVideo.mp4" type="video/mp4" />
         </video>

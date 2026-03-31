@@ -55,6 +55,14 @@ export default function Navbar() {
             </li>
             <li>
               <Link
+                href="/blog"
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Blog
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/about"
                 className="text-foreground/80 hover:text-foreground transition-colors"
               >
@@ -67,7 +75,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <Link
               href="/auth"
-              className="btn-glass btn-glass-icon !rounded-xl !py-2 !px-4 text-sm font-medium"
+              className="btn-glass btn-glass-icon !rounded-xl !py-2 !px-4 text-sm font-bold"
             >
               Get Started
             </Link>
@@ -113,6 +121,15 @@ export default function Navbar() {
                 aria-current="page"
               >
                 Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/blog"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block py-2.5 px-3 rounded-xl text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              >
+                Blog
               </Link>
             </li>
             <li>

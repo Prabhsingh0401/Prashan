@@ -11,35 +11,41 @@ const Features = dynamic(() => import("./components/home/features").then((m) => 
 const FAQ = dynamic(() => import("./components/home/faq").then((m) => m.FAQ));
 
 export const metadata: Metadata = {
-  title: "Prashan | AI Question Paper Generator for Indian Teachers",
+  title: "Prashan | Free AI Question Paper Generator for Teachers in India",
   description:
-    "Prashan is an AI-powered question paper generator that helps Indian teachers create board-aligned, professionally formatted exam papers in under 3 minutes. Supports CBSE, ICSE, and State Boards. Free early access.",
+    "Prashan is a FREE AI-powered question paper generator for Indian teachers. Create board-aligned, professionally formatted exam papers in under 3 minutes. Supports CBSE, ICSE, and State Boards. No signup required.",
   keywords: [
+    "free question paper generator",
     "AI question paper generator",
     "automatic exam paper maker",
     "CBSE question paper generator",
     "ICSE exam paper creator",
+    "free exam paper maker",
     "teacher exam tool India",
     "school paper generator",
     "board exam paper maker",
     "question paper software",
-    "automated test paper",
+    "test paper generator",
+    "worksheet maker",
+    "exam generator free",
+    "online question paper maker",
     "Prashan exam generator",
+    "free AI paper generator India",
   ],
   alternates: {
     canonical: "https://prashan.co.in",
   },
   openGraph: {
-    title: "Prashan | AI Question Paper Generator for Teachers",
+    title: "Prashan - Free AI Question Paper Generator for Indian Teachers",
     description:
-      "Build perfectly formatted question papers in under 3 minutes. Board-aligned, print-ready, no formatting needed. Free for Indian teachers.",
+      "Create perfectly formatted question papers in under 3 minutes. Board-aligned, print-ready, no formatting needed. FREE for Indian teachers.",
     url: "https://prashan.co.in",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Prashan — AI Question Paper Generator for Indian Teachers",
+        alt: "Prashan - Free AI Question Paper Generator for Indian Teachers",
       },
     ],
     type: "website",

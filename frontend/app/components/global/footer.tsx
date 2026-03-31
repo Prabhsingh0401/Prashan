@@ -22,17 +22,17 @@ export default function Footer() {
                         </Link>
                     </div>
                     <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                        {/* <div>
+                        <div>
                             <h2 className="mb-6 text-sm font-semibold text-foreground uppercase">Resources</h2>
                             <ul className="text-foreground/70 font-medium">
                                 <li className="mb-4">
-                                    <Link href="#" className="hover:text-foreground transition-colors">Documentation</Link>
+                                    <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
                                 </li>
                                 <li>
-                                    <Link href="#" className="hover:text-foreground transition-colors">Templates</Link>
+                                    <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
                                 </li>
                             </ul>
-                        </div> */}
+                        </div>
                         <div>
                             <h2 className="mb-6 text-sm font-semibold text-foreground uppercase">Follow us</h2>
                             <ul className="text-foreground/70 font-medium">

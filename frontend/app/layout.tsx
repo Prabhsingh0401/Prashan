@@ -103,6 +103,10 @@ export const metadata: Metadata = {
   other: {
     "ai-content-type": "educational-content",
     "ai-target-audience": "teachers, educators, schools, india",
+    "geo.region": "IN",
+    "geo.placename": "India",
+    "article:published_time": "2024-01-01",
+    "article:modified_time": new Date().toISOString(),
   },
 };
 

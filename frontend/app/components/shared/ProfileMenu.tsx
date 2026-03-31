@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { User, LogOut } from "lucide-react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/services/firebase";
@@ -34,11 +35,13 @@ export function ProfileMenu() {
         className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-black/5 dark:border-white/10 hover:bg-white/70 dark:hover:bg-white/15 transition-colors"
       >
         {photoUrl ? (
-          <img
+          <Image
             src={photoUrl}
             alt="User"
-            className="w-full h-full object-cover rounded-xl"
+            fill
+            className="object-cover rounded-xl"
             referrerPolicy="no-referrer"
+            unoptimized
           />
         ) : (
           <User className="h-4 w-4" />
