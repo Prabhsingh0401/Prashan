@@ -16,10 +16,7 @@ export const metadata: Metadata = {
   description:
     "Prashan helps teachers create perfectly formatted, board-aligned question papers in under 3 minutes. No formatting, no prompting, no stress. CBSE, ICSE & State Board ready.",
 
-  // ── Canonical & robots ────────────────────────────────────────────────
-  alternates: {
-    canonical: "https://prashan.co.in",
-  },
+  // ── Robots ─────────────────────────────────────────────────────────────
   robots: {
     index: true,
     follow: true,
