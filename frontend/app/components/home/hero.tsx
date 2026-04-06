@@ -193,11 +193,11 @@ export function Hero() {
                 className="btn-glass btn-glass-primary !py-2.5 !px-5 !text-sm flex-shrink-0"
               >
                 {isSubmitting ? (
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-1.5 font-bold">
                     Joining... <Loader2 className="h-4 w-4 animate-spin" />
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-1.5 font-bold">
                     Claim my spot <ArrowRight className="h-4 w-4" />
                   </span>
                 )}
@@ -210,14 +210,14 @@ export function Hero() {
                 onClick={() => setIsEmailInputVisible(true)}
                 className="btn-glass btn-glass-primary w-full sm:w-auto !px-8 !py-4 !text-base sm:!text-lg"
               >
-                <span>Claim my free spot</span>
+                <span className="font-bold">Claim my free spot</span>
               </button>
               <Link
                 id="hero-learn-more"
                 href="#features"
                 className="btn-glass btn-glass-secondary w-full sm:w-auto !px-8 !py-4 !text-base sm:!text-lg group"
               >
-                See how it works
+                <span className="font-bold">See how it works</span>
                 <ChevronRight className="h-5 w-5 text-foreground/50 group-hover:text-foreground transition-all group-hover:translate-x-1" />
               </Link>
             </>

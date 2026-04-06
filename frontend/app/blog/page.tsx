@@ -161,10 +161,10 @@ export default function BlogPage() {
               {/* Text panel */}
               <div className="flex-1 p-7 md:p-8 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-3 mb-5">
-                    <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
-                      {featured.category}
-                    </span>
+                    <div className="flex items-center gap-3 mb-5">
+                      <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-md bg-white/30 dark:bg-violet-500/20 border border-black/10 dark:border-violet-500/30 shadow-sm text-foreground/80 dark:text-violet-300">
+                        {featured.category}
+                      </span>
                     <span className="text-[11px] font-medium uppercase tracking-wider text-foreground/50">
                       {featured.readTime} read
                     </span>
@@ -213,7 +213,7 @@ export default function BlogPage() {
                 {/* Content */}
                 <div className="flex flex-col flex-1 px-5 pb-5 pt-3">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full backdrop-blur-md bg-white/30 dark:bg-violet-500/20 border border-black/10 dark:border-violet-500/30 shadow-sm text-foreground/80 dark:text-violet-300">
                       {post.category}
                     </span>
                     <span className="text-[10px] font-medium uppercase tracking-wider text-foreground/50">
