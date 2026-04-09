@@ -2,7 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { Stepper } from "./Stepper";
-import { AssignmentForm, CHAPTERS, SUBJECTS_10, SUBJECTS_12 } from "../../types/create/types";
+import { FormattingStep } from "./FormattingStep";
+import { AssignmentForm, CHAPTERS, SUBJECTS_10, SUBJECTS_12, SOCIAL_SCIENCE_SUBJECTS, SCIENCE_SUBJECTS } from "../../types/create/types";
 
 interface AssignmentWizardProps {
   step: number;
@@ -13,11 +14,17 @@ interface AssignmentWizardProps {
 
 export function AssignmentWizard({ step, setStep, form, setForm }: AssignmentWizardProps) {
   const subjects = form.class === "10" ? SUBJECTS_10 : SUBJECTS_12;
-  const availableChapters = CHAPTERS[form.subject] || [];
+  const isSocialScience = form.subject === "Social Science";
+  const isScience = form.subject === "Science";
+  const isSplitSubject = isSocialScience || isScience;
+  const subSubjectList = isSocialScience ? SOCIAL_SCIENCE_SUBJECTS : isScience ? SCIENCE_SUBJECTS : [];
+  const availableChapters = isSplitSubject 
+    ? form.subSubjects.flatMap(sub => CHAPTERS[sub] || [])
+    : CHAPTERS[form.subject] || [];
 
   return (
     <div className="space-y-2">
-      <Stepper currentStep={step} totalSteps={2} />
+      <Stepper currentStep={step} totalSteps={3} />
 
       {step === 1 && (
         <div className="bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl p-4 shadow-lg shadow-black/5 dark:shadow-black/20 animate-in fade-in slide-in-from-right-4 duration-300">
@@ -34,7 +41,7 @@ export function AssignmentWizard({ step, setStep, form, setForm }: AssignmentWiz
                   {["10", "12"].map((cls) => (
                     <button
                       key={cls}
-                      onClick={() => setForm({ ...form, class: cls, subject: "", chapters: [] })}
+                      onClick={() => setForm({ ...form, class: cls, subject: "", subSubjects: [], chapters: [] })}
                       className={cn(
                         "flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-all cursor-pointer",
                         form.class === cls
@@ -52,7 +59,7 @@ export function AssignmentWizard({ step, setStep, form, setForm }: AssignmentWiz
                 <label className="block text-xs font-medium text-foreground/70 mb-1">Subject</label>
                 <select
                   value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value, chapters: [] })}
+                  onChange={(e) => setForm({ ...form, subject: e.target.value, subSubjects: [], chapters: [] })}
                   className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-neutral-100/80 dark:bg-neutral-800 text-foreground text-sm cursor-pointer appearance-none pr-8"
                 >
                   <option value="">Select</option>
@@ -63,32 +70,94 @@ export function AssignmentWizard({ step, setStep, form, setForm }: AssignmentWiz
               </div>
             </div>
 
-            {form.subject && availableChapters.length > 0 && (
+            {isSplitSubject && (
               <div>
                 <label className="block text-xs font-medium text-foreground/70 mb-1">
-                  Chapters ({form.chapters.length})
+                  Sub-Subjects ({form.subSubjects.length} selected)
                 </label>
-                <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto scrollbar-thin">
-                  {availableChapters.map((chapter) => (
+                <div className="flex flex-wrap gap-1">
+                  {subSubjectList.map((sub) => (
                     <button
-                      key={chapter}
+                      key={sub}
                       onClick={() => {
-                        if (form.chapters.includes(chapter)) {
-                          setForm({ ...form, chapters: form.chapters.filter((c) => c !== chapter) });
+                        if (form.subSubjects.includes(sub)) {
+                          setForm({ ...form, subSubjects: form.subSubjects.filter((s) => s !== sub), chapters: [] });
                         } else {
-                          setForm({ ...form, chapters: [...form.chapters, chapter] });
+                          setForm({ ...form, subSubjects: [...form.subSubjects, sub], chapters: [] });
                         }
                       }}
                       className={cn(
                         "px-2 py-1 rounded-md border text-xs cursor-pointer transition-all",
-                        form.chapters.includes(chapter)
+                        form.subSubjects.includes(sub)
                           ? "border-black/20 dark:border-white/30 bg-black/5 dark:bg-white/10"
-                          : "border-black/5 dark:border-white/10"
+                          : "border-black/10 dark:border-white/10"
                       )}
                     >
-                      {chapter}
+                      {sub}
                     </button>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {(form.subject && !isSplitSubject || form.subSubjects.length > 0) && availableChapters.length > 0 && (
+              <div>
+                <label className="block text-xs font-medium text-foreground/70 mb-1">
+                  Chapters ({form.chapters.length} selected)
+                </label>
+                <div className="max-h-40 overflow-y-auto scrollbar-thin scrollbar-thin-enhanced rounded-lg border border-black/10 dark:border-white/10 bg-white/40 dark:bg-white/5 p-2">
+                  {isSplitSubject ? (
+                    form.subSubjects.map((sub) => (
+                      <div key={sub} className="mb-2 last:mb-0">
+                        <h4 className="text-xs font-semibold text-foreground/70 mb-1 px-1">{sub}</h4>
+                        <div className="flex flex-wrap gap-1">
+                          {(CHAPTERS[sub] || []).map((chapter) => (
+                            <button
+                              key={chapter}
+                              onClick={() => {
+                                if (form.chapters.includes(chapter)) {
+                                  setForm({ ...form, chapters: form.chapters.filter((c) => c !== chapter) });
+                                } else {
+                                  setForm({ ...form, chapters: [...form.chapters, chapter] });
+                                }
+                              }}
+                              className={cn(
+                                "px-2 py-1 rounded-md border text-xs cursor-pointer transition-all",
+                                form.chapters.includes(chapter)
+                                  ? "border-black/20 dark:border-white/30 bg-black/5 dark:bg-white/10"
+                                  : "border-black/5 dark:border-white/10"
+                              )}
+                            >
+                              {chapter.replace(/^Chapter \d+: /, "")}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex flex-wrap gap-1">
+                      {availableChapters.map((chapter) => (
+                        <button
+                          key={chapter}
+                          onClick={() => {
+                            if (form.chapters.includes(chapter)) {
+                              setForm({ ...form, chapters: form.chapters.filter((c) => c !== chapter) });
+                            } else {
+                              setForm({ ...form, chapters: [...form.chapters, chapter] });
+                            }
+                          }}
+                          className={cn(
+                            "px-2 py-1 rounded-md border text-xs cursor-pointer transition-all",
+                            form.chapters.includes(chapter)
+                              ? "border-black/20 dark:border-white/30 bg-black/5 dark:bg-white/10"
+                              : "border-black/5 dark:border-white/10"
+                          )}
+                        >
+                          {chapter.replace(/^Chapter \d+: /, "")}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -107,10 +176,10 @@ export function AssignmentWizard({ step, setStep, form, setForm }: AssignmentWiz
             <div className="flex justify-end pt-1">
               <button
                 onClick={() => setStep(2)}
-                disabled={!form.subject || form.chapters.length === 0}
+                disabled={!form.subject || (isSplitSubject && form.subSubjects.length === 0) || form.chapters.length === 0}
                 className={cn(
                   "btn-glass btn-glass-primary !px-4 !py-2 text-sm",
-                  (!form.subject || form.chapters.length === 0) && "opacity-50 cursor-not-allowed"
+                  (!form.subject || (isSplitSubject && form.subSubjects.length === 0) || form.chapters.length === 0) && "opacity-50 cursor-not-allowed"
                 )}
               >
                 Next
@@ -206,13 +275,25 @@ export function AssignmentWizard({ step, setStep, form, setForm }: AssignmentWiz
                 Back
               </button>
               <button
-                onClick={() => {}}
-                className="btn-glass btn-glass-primary !px-4 !py-2 text-sm"
+                onClick={() => setStep(3)}
+                className="btn-glass btn-glass-primary !px-4 !py-2 text-sm font-bold"
               >
-                Generate
+                Next
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="h-[420px]">
+          <FormattingStep
+            formatting={form.formatting}
+            onChange={(updated) => setForm({ ...form, formatting: updated })}
+            onBack={() => setStep(2)}
+            onNext={() => {}}
+            nextLabel="Generate"
+          />
         </div>
       )}
     </div>

@@ -13,7 +13,7 @@ export default function QuickActions() {
         <div className="flex flex-col gap-2">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-full btn-glass text-white btn-glass-primary !shadow-sm !py-2.5 !text-sm"
+            className="w-full font-bold btn-glass text-white btn-glass-primary !shadow-sm !py-2.5 !text-sm"
           >
             <span>+ Create New Paper</span>
           </button>

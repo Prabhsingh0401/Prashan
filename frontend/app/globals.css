@@ -407,3 +407,39 @@ body {
 .scrollbar-thin::-webkit-scrollbar-corner {
   display: none;
 }
+
+/* ── Enhanced Custom Scrollbar ── */
+.scrollbar-thin-enhanced {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.dark .scrollbar-thin-enhanced {
+  scrollbar-color: #475569 transparent;
+}
+.scrollbar-thin-enhanced::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin-enhanced::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+.scrollbar-thin-enhanced::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.dark .scrollbar-thin-enhanced::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+.scrollbar-thin-enhanced::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+.dark .scrollbar-thin-enhanced::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+.scrollbar-thin-enhanced::-webkit-scrollbar-button,
+.scrollbar-thin-enhanced::-webkit-scrollbar-corner {
+  display: none;
+}

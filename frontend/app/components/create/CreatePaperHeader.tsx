@@ -82,7 +82,7 @@ export function CreatePaperHeader({
           <button
             onClick={onGenerate}
             disabled={isGenerating}
-            className="btn-glass btn-glass-primary !px-4 !py-1.5 !text-xs"
+            className="btn-glass btn-glass-primary !px-4 !py-1.5 !text-xs font-bold"
           >
             {isGenerating ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />

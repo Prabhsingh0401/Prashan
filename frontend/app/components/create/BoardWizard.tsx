@@ -2,7 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { Stepper } from "./Stepper";
-import { BoardPaperForm, CHAPTERS, SUBJECTS_10, SUBJECTS_12 } from "../../types/create/types";
+import { FormattingStep } from "./FormattingStep";
+import { BoardPaperForm, CHAPTERS, SUBJECTS_10, SUBJECTS_12, SOCIAL_SCIENCE_SUBJECTS, SCIENCE_SUBJECTS } from "../../types/create/types";
 
 interface BoardWizardProps {
   step: number;
@@ -13,11 +14,17 @@ interface BoardWizardProps {
 
 export function BoardWizard({ step, setStep, form, setForm }: BoardWizardProps) {
   const subjects = form.class === "10" ? SUBJECTS_10 : SUBJECTS_12;
-  const availableChapters = CHAPTERS[form.subject] || [];
+  const isSocialScience = form.subject === "Social Science";
+  const isScience = form.subject === "Science";
+  const isSplitSubject = isSocialScience || isScience;
+  const subSubjectList = isSocialScience ? SOCIAL_SCIENCE_SUBJECTS : isScience ? SCIENCE_SUBJECTS : [];
+  const availableChapters = isSplitSubject 
+    ? form.subSubjects.flatMap(sub => CHAPTERS[sub] || [])
+    : CHAPTERS[form.subject] || [];
 
   return (
     <div className="h-[500px] flex flex-col overflow-hidden">
-      <Stepper currentStep={step} totalSteps={3} />
+      <Stepper currentStep={step} totalSteps={4} />
 
       <div className="flex-1 overflow-hidden">
         {step === 1 && (
@@ -47,7 +54,7 @@ export function BoardWizard({ step, setStep, form, setForm }: BoardWizardProps) 
                     {["10", "12"].map((cls) => (
                       <button
                         key={cls}
-                        onClick={() => setForm({ ...form, class: cls, subject: "", chapters: [] })}
+                        onClick={() => setForm({ ...form, class: cls, subject: "", subSubjects: [], chapters: [] })}
                         className={cn(
                           "flex-1 py-1.5 px-3 rounded-lg border text-sm font-medium transition-all cursor-pointer",
                           form.class === cls
@@ -122,7 +129,7 @@ export function BoardWizard({ step, setStep, form, setForm }: BoardWizardProps) 
                 onClick={() => setStep(2)}
                 disabled={!form.schoolName || !form.examName}
                 className={cn(
-                  "btn-glass btn-glass-primary !px-4 !py-2 text-sm",
+                  "btn-glass btn-glass-primary !px-4 !py-2 text-sm font-bold",
                   (!form.schoolName || !form.examName) && "opacity-50 cursor-not-allowed"
                 )}
               >
@@ -144,7 +151,7 @@ export function BoardWizard({ step, setStep, form, setForm }: BoardWizardProps) 
                 <label className="block text-xs font-medium text-foreground/70 mb-1">Subject</label>
                 <select
                   value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value, chapters: [] })}
+                  onChange={(e) => setForm({ ...form, subject: e.target.value, subSubjects: [], chapters: [] })}
                   className="w-full px-3 py-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-neutral-100/80 dark:bg-neutral-800 text-foreground text-sm cursor-pointer appearance-none pr-8"
                 >
                   <option value="">Select Subject</option>
@@ -154,34 +161,94 @@ export function BoardWizard({ step, setStep, form, setForm }: BoardWizardProps) 
                 </select>
               </div>
 
-              {form.subject && availableChapters.length > 0 && (
+              {isSplitSubject && (
+                <div>
+                  <label className="block text-xs font-medium text-foreground/70 mb-1">
+                    Sub-Subjects ({form.subSubjects.length} selected)
+                  </label>
+                  <div className="flex flex-wrap gap-1">
+                    {subSubjectList.map((sub) => (
+                      <button
+                        key={sub}
+                        onClick={() => {
+                          if (form.subSubjects.includes(sub)) {
+                            setForm({ ...form, subSubjects: form.subSubjects.filter((s) => s !== sub), chapters: [] });
+                          } else {
+                            setForm({ ...form, subSubjects: [...form.subSubjects, sub], chapters: [] });
+                          }
+                        }}
+                        className={cn(
+                          "px-2 py-1 rounded-md border text-xs cursor-pointer transition-all",
+                          form.subSubjects.includes(sub)
+                            ? "border-black/20 dark:border-white/30 bg-black/5 dark:bg-white/10"
+                            : "border-black/10 dark:border-white/10"
+                        )}
+                      >
+                        {sub}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {(form.subject && !isSplitSubject || form.subSubjects.length > 0) && availableChapters.length > 0 && (
                 <div className="flex-1 overflow-hidden flex flex-col">
                   <label className="block text-xs font-medium text-foreground/70 mb-1">
                     Chapters ({form.chapters.length} selected)
                   </label>
-                  <div className="flex-1 overflow-y-auto scrollbar-thin p-2 rounded-lg border border-black/10 dark:border-white/10 bg-white/40 dark:bg-white/5">
-                    <div className="flex flex-wrap gap-1">
-                      {availableChapters.map((chapter) => (
-                        <button
-                          key={chapter}
-                          onClick={() => {
-                            if (form.chapters.includes(chapter)) {
-                              setForm({ ...form, chapters: form.chapters.filter((c) => c !== chapter) });
-                            } else {
-                              setForm({ ...form, chapters: [...form.chapters, chapter] });
-                            }
-                          }}
-                          className={cn(
-                            "px-2 py-1 rounded-md border text-xs cursor-pointer transition-all",
-                            form.chapters.includes(chapter)
-                              ? "border-black/20 dark:border-white/30 bg-black/5 dark:bg-white/10"
-                              : "border-black/5 dark:border-white/10"
-                          )}
-                        >
-                          {chapter.replace(/^Chapter \d+: /, "")}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="max-h-[140px] overflow-y-auto scrollbar-thin scrollbar-thin-enhanced p-2 rounded-lg border border-black/10 dark:border-white/10 bg-white/40 dark:bg-white/5">
+                    {isSplitSubject ? (
+                      form.subSubjects.map((sub) => (
+                        <div key={sub} className="mb-3 last:mb-0">
+                          <h4 className="text-xs font-semibold text-foreground/70 mb-1.5 px-1">{sub}</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {(CHAPTERS[sub] || []).map((chapter) => (
+                              <button
+                                key={chapter}
+                                onClick={() => {
+                                  if (form.chapters.includes(chapter)) {
+                                    setForm({ ...form, chapters: form.chapters.filter((c) => c !== chapter) });
+                                  } else {
+                                    setForm({ ...form, chapters: [...form.chapters, chapter] });
+                                  }
+                                }}
+                                className={cn(
+                                  "px-2 py-1 rounded-md border text-xs cursor-pointer transition-all",
+                                  form.chapters.includes(chapter)
+                                    ? "border-black/20 dark:border-white/30 bg-black/5 dark:bg-white/10"
+                                    : "border-black/5 dark:border-white/10"
+                                )}
+                              >
+                                {chapter.replace(/^Chapter \d+: /, "")}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex flex-wrap gap-1">
+                        {availableChapters.map((chapter) => (
+                          <button
+                            key={chapter}
+                            onClick={() => {
+                              if (form.chapters.includes(chapter)) {
+                                setForm({ ...form, chapters: form.chapters.filter((c) => c !== chapter) });
+                              } else {
+                                setForm({ ...form, chapters: [...form.chapters, chapter] });
+                              }
+                            }}
+                            className={cn(
+                              "px-2 py-1 rounded-md border text-xs cursor-pointer transition-all",
+                              form.chapters.includes(chapter)
+                                ? "border-black/20 dark:border-white/30 bg-black/5 dark:bg-white/10"
+                                : "border-black/5 dark:border-white/10"
+                            )}
+                          >
+                            {chapter.replace(/^Chapter \d+: /, "")}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -196,10 +263,10 @@ export function BoardWizard({ step, setStep, form, setForm }: BoardWizardProps) 
               </button>
               <button
                 onClick={() => setStep(3)}
-                disabled={!form.subject || form.chapters.length === 0}
+                disabled={!form.subject || (isSplitSubject && form.subSubjects.length === 0) || form.chapters.length === 0}
                 className={cn(
-                  "btn-glass btn-glass-primary !px-4 !py-2 text-sm",
-                  (!form.subject || form.chapters.length === 0) && "opacity-50 cursor-not-allowed"
+                  "btn-glass btn-glass-primary !px-4 !py-2 text-sm font-bold",
+                  (!form.subject || (isSplitSubject && form.subSubjects.length === 0) || form.chapters.length === 0) && "opacity-50 cursor-not-allowed"
                 )}
               >
                 Next
@@ -286,13 +353,23 @@ export function BoardWizard({ step, setStep, form, setForm }: BoardWizardProps) 
                 Back
               </button>
               <button
-                onClick={() => {}}
-                className="btn-glass btn-glass-primary !px-4 !py-2 text-sm"
+                onClick={() => setStep(4)}
+                className="btn-glass btn-glass-primary !px-4 !py-2 text-sm font-bold"
               >
-                Generate
+                Next
               </button>
             </div>
           </div>
+        )}
+
+        {step === 4 && (
+          <FormattingStep
+            formatting={form.formatting}
+            onChange={(updated) => setForm({ ...form, formatting: updated })}
+            onBack={() => setStep(3)}
+            onNext={() => {}}
+            nextLabel="Generate"
+          />
         )}
       </div>
     </div>

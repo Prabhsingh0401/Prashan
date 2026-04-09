@@ -68,7 +68,7 @@ export function NewPaperModal({ isOpen, onClose }: NewPaperModalProps) {
             disabled={!selectedType}
             className={cn(
               "btn-glass btn-glass-primary !px-5 !py-2.5",
-              "flex items-center gap-2",
+              "flex items-center gap-2 font-bold",
               !selectedType && "opacity-50 cursor-not-allowed"
             )}
           >

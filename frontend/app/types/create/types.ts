@@ -1,5 +1,35 @@
 export type PaperType = "label" | "board";
 
+export type FontFamily = "Times New Roman" | "Arial" | "serif" | "sans-serif" | "monospace";
+export type FontWeight = "normal" | "bold";
+export type FontStyle = "normal" | "italic";
+
+export interface FormattingOptions {
+  headerFontFamily: FontFamily;
+  headerFontSize: number;
+  headerFontWeight: FontWeight;
+  headerFontStyle: FontStyle;
+  headingFontFamily: FontFamily;
+  headingFontSize: number;
+  headingFontWeight: FontWeight;
+  headingFontStyle: FontStyle;
+  bodyFontFamily: FontFamily;
+  bodyFontSize: number;
+}
+
+export const defaultFormatting: FormattingOptions = {
+  headerFontFamily: "Times New Roman",
+  headerFontSize: 14,
+  headerFontWeight: "bold",
+  headerFontStyle: "normal",
+  headingFontFamily: "Times New Roman",
+  headingFontSize: 12,
+  headingFontWeight: "bold",
+  headingFontStyle: "normal",
+  bodyFontFamily: "Times New Roman",
+  bodyFontSize: 11,
+};
+
 export type QuestionType = "mcq" | "short" | "long";
 
 export interface Question {
@@ -16,6 +46,7 @@ export interface BoardPaperForm {
   board: string;
   class: string;
   subject: string;
+  subSubjects: string[];
   chapters: string[];
   date: string;
   duration: string;
@@ -26,11 +57,13 @@ export interface BoardPaperForm {
     short: { count: number; marks: number };
     long: { count: number; marks: number };
   };
+  formatting: FormattingOptions;
 }
 
 export interface AssignmentForm {
   class: string;
   subject: string;
+  subSubjects: string[];
   chapters: string[];
   instructions: string;
   totalMarks: number;
@@ -39,6 +72,7 @@ export interface AssignmentForm {
     short: { count: number; marks: number };
     long: { count: number; marks: number };
   };
+  formatting: FormattingOptions;
 }
 
 export const CHAPTERS: Record<string, string[]> = {
@@ -49,10 +83,17 @@ export const CHAPTERS: Record<string, string[]> = {
   "Biology": ["Chapter 1: Life Processes", "Chapter 2: Nutrition", "Chapter 3: Respiration", "Chapter 4: Transportation", "Chapter 5: Excretion", "Chapter 6: Control and Coordination", "Chapter 7: Reproduction", "Chapter 8: Heredity", "Chapter 9: Our Environment"],
   "English": ["Reading Comprehension", "Writing Skills", "Grammar", "Literature (Prose)", "Literature (Poetry)", "Vocabulary"],
   "Hindi": ["अपठित गद्यांश", "लेखन कौशल", "व्याकरण", "साहित्य (गद्य)", "साहित्य (पद्य)", "शब्द-भंडार"],
+  "History": ["The Rise of Nationalism in Europe", "Nationalism in India", "The Making of a Global World", "The Age of Industrialization", "Print Culture and the Modern World"],
+  "Geography": ["Resources and Development", "Forest and Wildlife Resources", "Water Resources", "Agriculture", "Minerals and Energy Resources", "Manufacturing Industries", "Lifelines of National Economy"],
+  "Civics": ["Power Sharing", "Federalism", "Gender, Religion and Caste", "Political Parties", "Outcomes of Democracy"],
+  "Economics": ["Development", "Sectors of Indian Economy", "Money and Credit", "Globalisation and the Indian Economy", "Consumer Rights"],
 };
 
 export const SUBJECTS_10 = ["Mathematics", "Science", "English", "Hindi", "Social Science"];
 export const SUBJECTS_12 = ["Physics", "Chemistry", "Biology", "Mathematics", "English", "Hindi"];
+
+export const SOCIAL_SCIENCE_SUBJECTS = ["History", "Geography", "Civics", "Economics"];
+export const SCIENCE_SUBJECTS = ["Physics", "Chemistry", "Biology"];
 
 export const initialBoardForm: BoardPaperForm = {
   schoolName: "",
@@ -60,6 +101,7 @@ export const initialBoardForm: BoardPaperForm = {
   board: "CBSE",
   class: "10",
   subject: "",
+  subSubjects: [],
   chapters: [],
   date: "",
   duration: "",
@@ -70,11 +112,13 @@ export const initialBoardForm: BoardPaperForm = {
     short: { count: 0, marks: 2 },
     long: { count: 0, marks: 5 },
   },
+  formatting: { ...defaultFormatting },
 };
 
 export const initialAssignmentForm: AssignmentForm = {
   class: "10",
   subject: "",
+  subSubjects: [],
   chapters: [],
   instructions: "",
   totalMarks: 80,
@@ -83,4 +127,5 @@ export const initialAssignmentForm: AssignmentForm = {
     short: { count: 0, marks: 2 },
     long: { count: 0, marks: 5 },
   },
+  formatting: { ...defaultFormatting },
 };

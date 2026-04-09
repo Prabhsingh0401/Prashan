@@ -7,6 +7,7 @@ import { ChevronLeft, Mail, Lock, Loader2, KeyRound, Check, X } from "lucide-rea
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../services/firebase";
 import { signup, login, verifyOtp } from "../../services/authService";
+import { checkUserAllowed } from "../../services/allowedUsers";
 import { Toast } from "../components/ui/toast";
 
 export default function AuthPage() {
@@ -47,6 +48,14 @@ export default function AuthPage() {
 
     try {
       if (isOtpMode) {
+        const isAllowed = await checkUserAllowed(email);
+        if (!isAllowed) {
+          setToastType("error");
+          setToastMessage("Access denied. You need permission to use Prashan.");
+          setShowToast(true);
+          setIsSubmitting(false);
+          return;
+        }
         const res = await verifyOtp({ email, otp });
         if (res.token) localStorage.setItem("token", res.token);
         setToastType("success");
@@ -54,6 +63,14 @@ export default function AuthPage() {
         setShowToast(true);
         setTimeout(() => router.push("/dashboard"), 1500);
       } else if (isLogin) {
+        const isAllowed = await checkUserAllowed(email);
+        if (!isAllowed) {
+          setToastType("error");
+          setToastMessage("Access denied. You need permission to use Prashan.");
+          setShowToast(true);
+          setIsSubmitting(false);
+          return;
+        }
         const res = await login({ email, password });
         if (res.token) localStorage.setItem("token", res.token);
         setToastType("success");
@@ -81,7 +98,21 @@ export default function AuthPage() {
       setIsSubmitting(true);
       const result = await signInWithPopup(auth, googleProvider);
       
-      // Get the firebase JWT token and store it like normal sign in
+      const userEmail = result.user.email;
+      if (!userEmail) {
+        throw new Error("No email found");
+      }
+
+      const isAllowed = await checkUserAllowed(userEmail);
+      if (!isAllowed) {
+        await auth.signOut();
+        setToastType("error");
+        setToastMessage("Access denied. You need permission to use Prashan.");
+        setShowToast(true);
+        setIsSubmitting(false);
+        return;
+      }
+      
       const token = await result.user.getIdToken();
       if (token) localStorage.setItem("token", token);
       
@@ -302,7 +333,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full btn-glass btn-glass-primary !py-2.5 !text-sm"
+              className="w-full btn-glass btn-glass-primary !py-2.5 !text-sm font-bold"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
@@ -357,7 +388,7 @@ export default function AuthPage() {
                 {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                 <button
                   onClick={() => setIsLogin(!isLogin)}
-                  className="text-foreground font-medium hover:underline transition-all"
+                  className="text-foreground font-medium hover:underline transition-all font-bold"
                 >
                   {isLogin ? "Sign up" : "Sign in"}
                 </button>
