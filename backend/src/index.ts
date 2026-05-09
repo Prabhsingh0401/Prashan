@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
+import webhookRoutes from './routes/webhookRoutes.js';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/webhooks', webhookRoutes);
 
 // Start the server
 app.listen(PORT, () => {

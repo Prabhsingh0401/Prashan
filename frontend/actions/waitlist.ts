@@ -1,5 +1,8 @@
 "use server";
 
+import { adminDb } from "@/services/firebase-admin";
+import * as admin from "firebase-admin";
+
 export async function submitWaitlist(email: string) {
   if (!email || !email.includes("@")) {
     return { error: "Please enter a valid email address." };
@@ -233,6 +236,10 @@ export async function submitWaitlist(email: string) {
           to: email,
           subject: "Prashan waitlist confirmed - you're in",
           html: htmlContent,
+          tags: [
+            { name: "category", value: "waitlist_signup" },
+            { name: "source", value: "hero_section" }
+          ],
         }),
       });
 
@@ -248,10 +255,6 @@ export async function submitWaitlist(email: string) {
       }
     } else {
       if (process.env.NODE_ENV !== "production") {
-        console.log(
-          "No RESEND_API_KEY found. Mocking email delivery in development mode.",
-        );
-        console.log("--- MOCK EMAIL DELIVERED TO ---", email);
       }
       await new Promise((resolve) => setTimeout(resolve, 800));
     }

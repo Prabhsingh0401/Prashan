@@ -82,14 +82,6 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center animate-hero-in">
-        {/* Status badge */}
-        <div 
-          className="mb-8 inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md"
-          role="status"
-        >
-          <span className="flex h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse" />
-          Early access — Free for teachers
-        </div>
 
         {/* Main headline - AI SEO: Contains descriptive keywords */}
         <h1 
