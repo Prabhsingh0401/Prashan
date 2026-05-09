@@ -4,12 +4,25 @@ import { adminDb } from "@/services/firebase-admin";
 import * as admin from "firebase-admin";
 
 export async function submitWaitlist(email: string) {
-  if (!email || !email.includes("@")) {
-    return { error: "Please enter a valid email address." };
-  }
+    if (!email || !email.includes("@")) {
+        return { error: "Please enter a valid email address." };
+    }
 
-  try {
-    const htmlContent = `
+    try {
+        // 1. Store in Firebase Waitlist Collection immediately using Admin SDK
+        try {
+            await adminDb.collection("waitlist").doc(email.toLowerCase()).set({
+                email: email.toLowerCase(),
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                source: "hero_section",
+                status: "signed_up"
+            }, { merge: true });
+            console.log("✅ Successfully stored in Firebase:", email);
+        } catch (firebaseError: any) {
+            console.error("❌ Firebase Admin Storage Error:", firebaseError.message);
+        }
+
+        const htmlContent = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -224,44 +237,40 @@ export async function submitWaitlist(email: string) {
         </html>
         `;
 
-    if (process.env.RESEND_API_KEY) {
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: "Prashan <no-reply@prashan.co.in>",
-          to: email,
-          subject: "Prashan waitlist confirmed - you're in",
-          html: htmlContent,
-          tags: [
-            { name: "category", value: "waitlist_signup" },
-            { name: "source", value: "hero_section" }
-          ],
-        }),
-      });
+        if (process.env.RESEND_API_KEY) {
+            const res = await fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    from: "Prashan <no-reply@prashan.co.in>",
+                    to: email,
+                    subject: "Prashan waitlist confirmed - you're in",
+                    html: htmlContent,
+                }),
+            });
 
-      if (!res.ok) {
-        let errorData;
-        try {
-          errorData = await res.json();
-        } catch {
-          errorData = { message: "Unknown error" };
+            if (!res.ok) {
+                let errorData;
+                try {
+                    errorData = await res.json();
+                } catch {
+                    errorData = { message: "Unknown error" };
+                }
+                console.error("Resend API error:", errorData);
+                return { error: "Failed to send email. Please try again later." };
+            }
+        } else {
+            if (process.env.NODE_ENV !== "production") {
+            }
+            await new Promise((resolve) => setTimeout(resolve, 800));
         }
-        console.error("Resend API error:", errorData);
-        return { error: "Failed to send email. Please try again later." };
-      }
-    } else {
-      if (process.env.NODE_ENV !== "production") {
-      }
-      await new Promise((resolve) => setTimeout(resolve, 800));
-    }
 
-    return { success: true };
-  } catch (error) {
-    console.error("Waitlist error:", error);
-    return { error: "An unexpected error occurred." };
-  }
+        return { success: true };
+    } catch (error) {
+        console.error("Waitlist error:", error);
+        return { error: "An unexpected error occurred." };
+    }
 }
