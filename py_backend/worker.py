@@ -12,7 +12,7 @@ from paper_generator.graph import build_graph
 from lib.session_store import save_session
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://127.0.0.1:6379/1")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://127.0.0.1:6379/0")
 
 celery_app = Celery(
     "prashan",
@@ -20,12 +20,21 @@ celery_app = Celery(
     backend=CELERY_RESULT_BACKEND
 )
 
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
-r_pub = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=2)
+# Upstash: use REDIS_URL (rediss://) for TLS; fall back to host/port for local dev.
+# Pub/sub uses key prefix "prashan:progress:" instead of db=2 (Upstash free tier: db=0 only)
+_REDIS_URL = os.getenv("REDIS_URL")
+if _REDIS_URL:
+    r_pub = redis.from_url(_REDIS_URL)
+else:
+    REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+    REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+    REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", None)
+    r_pub = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
+
+PROGRESS_PREFIX = "prashan:progress:"
 
 def publish_progress(session_id: str, phase: str, message: str = ""):
-    r_pub.publish(f"progress:{session_id}", json.dumps({
+    r_pub.publish(f"{PROGRESS_PREFIX}{session_id}", json.dumps({
         "phase": phase,
         "message": message
     }))

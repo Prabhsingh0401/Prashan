@@ -1,0 +1,36 @@
+# ── Web Framework ─────────────────────────────────────────────────────────────
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+
+# ── Task Queue (Celery + Upstash Redis broker) ────────────────────────────────
+celery>=5.4.0
+redis>=5.0.0           # includes TLS/rediss:// support via from_url()
+
+# ── LangGraph Multi-Agent Pipeline ───────────────────────────────────────────
+langgraph>=0.2.0
+langchain-core>=0.2.0
+
+# ── LLM / HTTP Client ────────────────────────────────────────────────────────
+httpx>=0.27.0
+requests>=2.32.0
+tenacity>=8.3.0        # retry logic in lib/llm_client.py
+
+# ── Vector DB (Qdrant) ───────────────────────────────────────────────────────
+qdrant-client>=1.10.0
+
+# ── Embeddings (local multilingual-e5-large) ─────────────────────────────────
+# NOTE: On Render/Koyeb free (512 MB), offload this to Hugging Face Spaces.
+# Uncomment only on instances with ≥4 GB RAM.
+# sentence-transformers>=3.0.0
+# torch --extra-index-url https://download.pytorch.org/whl/cpu
+
+# ── Templating (LaTeX paper assembly) ────────────────────────────────────────
+jinja2>=3.1.0
+
+# ── Utilities ────────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0
+numpy>=1.26.0
+
+# ── Dev / Optional ───────────────────────────────────────────────────────────
+# python-multipart>=0.0.9   # if adding file upload endpoints
