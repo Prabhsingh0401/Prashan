@@ -1,14 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "../theme/theme-toggle";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/services/firebase";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="fixed top-4 inset-x-4 max-w-5xl mx-auto z-50">
@@ -74,10 +84,10 @@ export default function Navbar() {
           {/* Right controls */}
           <div className="flex items-center gap-2">
             <Link
-              href="/auth"
+              href={isLoggedIn ? "/dashboard" : "/auth"}
               className="btn-glass btn-glass-icon !rounded-xl !py-2 !px-4 text-sm font-bold"
             >
-              Get Started
+              {isLoggedIn ? "Dashboard" : "Get Started"}
             </Link>
             <ThemeToggle />
 

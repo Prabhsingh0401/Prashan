@@ -10,7 +10,7 @@ const organizationSchema = {
   url: BASE_URL,
   logo: `${BASE_URL}/prashan_logo.svg`,
   description:
-    "Prashan is an AI-powered question paper generator designed for Indian teachers. It creates board-aligned, print-ready exam papers in under 3 minutes, supporting CBSE, ICSE, and State Boards.",
+    "Prashan is an AI-powered question paper generator designed for Indian teachers. It creates board-aligned, print-ready exam papers in under minutes, supporting CBSE (ICSE & State Boards coming soon).",
   sameAs: [
     "https://github.com/PrashanAI",
     "https://x.com/Prashan364660",
@@ -31,7 +31,7 @@ const softwareSchema = {
   operatingSystem: "Web Browser",
   url: BASE_URL,
   description:
-    "AI-powered question paper generator for Indian teachers. Creates board-aligned exam papers in under 3 minutes for CBSE, ICSE, and State Boards.",
+    "AI-powered question paper generator for Indian teachers. Creates board-aligned exam papers in under minutes for CBSE (ICSE & State Boards coming soon).",
   offers: {
     "@type": "Offer",
     price: "0",
@@ -62,7 +62,7 @@ const faqSchema = {
       name: "What is Prashan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Prashan is an AI-powered question paper generator designed specifically for Indian teachers. It creates board-aligned, professionally formatted exam papers in under 3 minutes, supporting CBSE, ICSE, and State Boards.",
+        text: "Prashan is an AI-powered question paper generator designed specifically for Indian teachers. It creates board-aligned, professionally formatted exam papers in under minutes, supporting CBSE (ICSE & State Boards coming soon).",
       },
     },
     {
@@ -78,7 +78,7 @@ const faqSchema = {
       name: "Which educational boards does Prashan support?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Prashan supports all major Indian educational boards including CBSE (Central Board of Secondary Education), ICSE (Indian Certificate of Secondary Education), and all State Boards. Questions are automatically mapped to specific board curricula and difficulty levels.",
+        text: "Prashan currently supports CBSE. ICSE (Indian Certificate of Secondary Education) and all State Boards are coming soon. Questions are automatically mapped to specific board curricula and difficulty levels.",
       },
     },
     {
@@ -86,7 +86,7 @@ const faqSchema = {
       name: "How long does it take to create a question paper with Prashan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Prashan generates a complete, formatted question paper in under 3 minutes. This includes selecting class/subject/chapters, configuring question types and marks, setting up the paper header, and AI generation with automatic LaTeX formatting.",
+        text: "Prashan generates a complete, formatted question paper in under 15 minutes. This includes selecting class/subject/chapters, configuring question types and marks, setting up the paper header, and AI generation with automatic LaTeX formatting.",
       },
     },
     {
@@ -150,7 +150,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "How to Create a Question Paper with Prashan",
   description:
-    "Create a board-aligned, professionally formatted question paper in under 3 minutes using Prashan's AI-powered generator.",
+    "Create a board-aligned, professionally formatted question paper in under minutes using Prashan's AI-powered generator.",
   step: [
     {
       "@type": "HowToStep",
@@ -198,7 +198,7 @@ const serviceSchema = {
   "@type": "Service",
   name: "AI Question Paper Generation",
   description:
-    "Automated question paper generation service for Indian schools. Creates CBSE, ICSE, and State Board aligned exam papers with professional formatting.",
+    "Automated question paper generation service for Indian schools. Creates CBSE (ICSE & State Board coming soon) aligned exam papers with professional formatting.",
   provider: {
     "@type": "Organization",
     name: "Prashan",

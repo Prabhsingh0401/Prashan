@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s | Prashan",
   },
   description:
-    "Prashan helps teachers create perfectly formatted, board-aligned question papers in under 3 minutes. No formatting, no prompting, no stress. CBSE, ICSE & State Board ready.",
+    "Prashan helps teachers create perfectly formatted, board-aligned question papers in under minutes. No formatting, no prompting, no stress. CBSE (ICSE & State Board coming soon).",
 
   // ── Robots ─────────────────────────────────────────────────────────────
   robots: {
@@ -45,15 +45,8 @@ export const metadata: Metadata = {
   creator: "Prashan",
   publisher: "Prashan",
 
-  // ── Icons ─────────────────────────────────────────────────────────────
-  icons: {
-    icon: [{ url: "/tab_logo_prashan.png", type: "image/png" }],
-    apple: "/tab_logo_prashan.png",
-    shortcut: "/tab_logo_prashan.png",
-  },
-
   // ── Web manifest ──────────────────────────────────────────────────────
-  manifest: "/manifest.webmanifest",
+  manifest: "/manifest",
 
   // ── OpenGraph ─────────────────────────────────────────────────────────
   openGraph: {
@@ -63,7 +56,7 @@ export const metadata: Metadata = {
     siteName: "Prashan",
     title: "Prashan | AI Question Paper Generator for Teachers",
     description:
-      "Create perfectly formatted question papers in under 3 minutes. Board-aligned, print-ready, zero effort.",
+      "Create perfectly formatted question papers in under minutes. CBSE ready (ICSE & State Boards coming soon).",
     images: [
       {
         url: "/og-image.png",
@@ -81,7 +74,7 @@ export const metadata: Metadata = {
     creator: "@prashan_ai",
     title: "Prashan | AI Question Paper Generator for Teachers",
     description:
-      "Create perfectly formatted question papers in under 3 minutes. Board-aligned, print-ready, zero effort.",
+      "Create perfectly formatted question papers in under minutes. CBSE ready (ICSE & State Boards coming soon).",
     images: ["/og-image.png"],
   },
 
@@ -115,7 +108,7 @@ const baseJsonLd = [
     url: "https://prashan.co.in",
     logo: "https://prashan.co.in/prashan_logo.svg",
     description:
-      "Prashan is an AI-powered question paper generator designed for Indian teachers. It creates board-aligned, print-ready exam papers in under 3 minutes, supporting CBSE, ICSE, and State Boards.",
+      "Prashan is an AI-powered question paper generator designed for Indian teachers. It creates board-aligned, print-ready exam papers in under minutes, supporting CBSE (ICSE & State Boards coming soon).",
     sameAs: ["https://github.com/PrashanAI", "https://x.com/Prashan364660"],
     contactPoint: {
       "@type": "ContactPoint",
@@ -131,7 +124,7 @@ const baseJsonLd = [
     operatingSystem: "Web Browser",
     url: "https://prashan.co.in",
     description:
-      "AI-powered question paper generator for Indian teachers. Creates board-aligned exam papers in under 3 minutes for CBSE, ICSE, and State Boards.",
+      "AI-powered question paper generator for Indian teachers. Creates board-aligned exam papers in under minutes for CBSE (ICSE & State Boards coming soon).",
     offers: {
       "@type": "Offer",
       price: "0",

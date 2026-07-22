@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Prashan – AI Question Paper Generator",
     short_name: "Prashan",
     description:
-      "Create board-aligned question papers in under 3 minutes. CBSE, ICSE & State Board ready.",
+      "Create board-aligned question papers in under minutes. CBSE ready (ICSE & State Board coming soon).",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

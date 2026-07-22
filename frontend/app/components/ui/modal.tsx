@@ -41,7 +41,7 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
   return createPortal(
     <div className="fixed inset-0 flex items-center justify-center p-4 z-[100]">
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-[2px]"
         onClick={onClose}
       />
       <div

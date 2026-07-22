@@ -3,17 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, Mail, Lock, Loader2, KeyRound, Check, X } from "lucide-react";
-import { signInWithPopup } from "firebase/auth";
+import { ChevronLeft, Mail, Lock, Loader2, KeyRound, Check, X, User } from "lucide-react";
+import { signInWithPopup, signInWithCustomToken, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth, googleProvider } from "../../services/firebase";
-import { signup, login, verifyOtp } from "../../services/authService";
-import { checkUserAllowed } from "../../services/allowedUsers";
+import { signup, verifyOtp } from "../../services/authService";
 import { Toast } from "../components/ui/toast";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [isOtpMode, setIsOtpMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -33,6 +33,29 @@ export default function AuthPage() {
   const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
   const isPasswordValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setToastType("error");
+      setToastMessage("Please enter your email address first");
+      setShowToast(true);
+      return;
+    }
+
+    setIsResetting(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setToastType("success");
+      setToastMessage("Password reset link sent to your email!");
+      setShowToast(true);
+    } catch (error: any) {
+      setToastType("error");
+      setToastMessage(error.message || "Failed to send reset email");
+      setShowToast(true);
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -48,31 +71,27 @@ export default function AuthPage() {
 
     try {
       if (isOtpMode) {
-        const isAllowed = await checkUserAllowed(email);
-        if (!isAllowed) {
-          setToastType("error");
-          setToastMessage("Access denied. You need permission to use Prashan.");
-          setShowToast(true);
-          setIsSubmitting(false);
-          return;
-        }
         const res = await verifyOtp({ email, otp });
-        if (res.token) localStorage.setItem("token", res.token);
-        setToastType("success");
-        setToastMessage("Account verified and signed in!");
-        setShowToast(true);
-        setTimeout(() => router.push("/dashboard"), 1500);
-      } else if (isLogin) {
-        const isAllowed = await checkUserAllowed(email);
-        if (!isAllowed) {
-          setToastType("error");
-          setToastMessage("Access denied. You need permission to use Prashan.");
+        
+        if (res.token) {
+          // Sign in using the Firebase Custom Token returned from backend
+          const userCredential = await signInWithCustomToken(auth, res.token);
+          const idToken = await userCredential.user.getIdToken();
+          localStorage.setItem("token", idToken);
+          
+          setToastType("success");
+          setToastMessage("Account verified and signed in!");
           setShowToast(true);
-          setIsSubmitting(false);
-          return;
+          setTimeout(() => router.push("/dashboard"), 1500);
+        } else {
+          throw new Error("Verification failed: No token received");
         }
-        const res = await login({ email, password });
-        if (res.token) localStorage.setItem("token", res.token);
+      } else if (isLogin) {
+        // Login directly via Firebase Client SDK
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const idToken = await userCredential.user.getIdToken();
+        localStorage.setItem("token", idToken);
+        
         setToastType("success");
         setToastMessage("Welcome back!");
         setShowToast(true);
@@ -103,18 +122,8 @@ export default function AuthPage() {
         throw new Error("No email found");
       }
 
-      const isAllowed = await checkUserAllowed(userEmail);
-      if (!isAllowed) {
-        await auth.signOut();
-        setToastType("error");
-        setToastMessage("Access denied. You need permission to use Prashan.");
-        setShowToast(true);
-        setIsSubmitting(false);
-        return;
-      }
-      
-      const token = await result.user.getIdToken();
-      if (token) localStorage.setItem("token", token);
+      const idToken = await result.user.getIdToken();
+      localStorage.setItem("token", idToken);
       
       setToastType("success");
       setToastMessage("User logged in successfully");
@@ -217,6 +226,7 @@ export default function AuthPage() {
                       Full Name
                     </label>
                     <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/30" />
                       <input
                         id="name"
                         type="text"
@@ -267,7 +277,7 @@ export default function AuthPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       onFocus={() => setIsPasswordFocused(true)}
                       onBlur={() => setIsPasswordFocused(false)}
-                      placeholder="••••••••"
+                      placeholder="•••••••••••"
                       className={`w-full bg-white/50 dark:bg-white/5 border ${!isLogin && password && !isPasswordValid ? 'border-red-500/50' : 'border-black/10 dark:border-white/10'} rounded-xl px-4 py-2.5 pl-10 text-foreground placeholder:text-foreground/30 outline-none focus:border-foreground/20 focus:ring-2 focus:ring-foreground/10 transition-all text-sm`}
                       required
                     />
@@ -321,12 +331,14 @@ export default function AuthPage() {
 
             {isLogin && !isOtpMode && (
               <div className="text-right">
-                <Link
-                  href="/auth"
-                  className="text-xs text-foreground/50 hover:text-foreground transition-colors"
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={isResetting}
+                  className="text-xs text-foreground/50 hover:text-foreground transition-colors cursor-pointer disabled:opacity-50"
                 >
-                  Forgot password?
-                </Link>
+                  {isResetting ? "Sending..." : "Forgot password?"}
+                </button>
               </div>
             )}
 
@@ -396,28 +408,17 @@ export default function AuthPage() {
             </div>
           )}
 
-          {isOtpMode && (
-            <div className="mt-4 text-center">
-              <button
-                onClick={() => setIsOtpMode(false)}
-                className="text-xs text-foreground/50 hover:text-foreground transition-all"
-              >
-                ← Back to sign up
-              </button>
-            </div>
-          )}
-
           <p className="mt-4 text-center text-xs text-foreground/30">
             By continuing, you agree to Prashan's{" "}
             <Link
-              href="/auth"
+              href="/terms"
               className="hover:text-foreground/50 transition-colors"
             >
               Terms
             </Link>{" "}
             and{" "}
             <Link
-              href="/auth"
+              href="/privacy"
               className="hover:text-foreground/50 transition-colors"
             >
               Privacy Policy

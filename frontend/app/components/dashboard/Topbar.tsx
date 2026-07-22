@@ -3,6 +3,7 @@
 import { Bell, Settings, FileText } from "lucide-react";
 import { ThemeToggle } from "../theme/theme-toggle";
 import { ProfileMenu } from "../shared/ProfileMenu";
+import Link from "next/link";
 
 export default function Topbar() {
   return (
@@ -21,14 +22,12 @@ export default function Topbar() {
         </div>
         {/* Quick links styled as modern glass pills */}
         <div className="hidden sm:flex items-center gap-2 mr-1 sm:pr-3 sm:border-r border-black/10 dark:border-white/10">
-          <button className="btn-glass flex items-center gap-2 !px-4 !py-2 !rounded-xl !text-sm hover:-translate-y-0.5 transition-all !bg-transparent hover:!bg-white/40 dark:hover:!bg-white/10 border-transparent hover:border-black/5 dark:hover:border-white/10">
+          <Link href="/papers" className="btn-glass btn-glass-icon relative !p-2 !rounded-xl hover:-translate-y-0.5 transition-all" aria-label="Papers">
             <FileText className="w-4 h-4 text-foreground/60" />
-            <span className="font-medium">Papers</span>
-          </button>
+          </Link>
           
-          <button className="btn-glass flex items-center gap-2 !px-4 !py-2 !rounded-xl !text-sm hover:-translate-y-0.5 transition-all">
+          <button className="btn-glass btn-glass-icon relative !p-2 !rounded-xl hover:-translate-y-0.5 transition-all" aria-label="Settings">
             <Settings className="w-4 h-4 text-foreground/60" />
-            <span className="font-medium">Settings</span>
           </button>
         </div>
 

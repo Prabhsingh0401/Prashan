@@ -1,0 +1,118 @@
+\documentclass[{{ body_font_size | default(12) }}pt,a4paper]{article}
+\usepackage[margin=0.8cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{booktabs}
+\usepackage{helvet}
+\usepackage{mathptmx}
+
+{% if body_font == 'phv' %}
+\renewcommand{\familydefault}{\sfdefault}
+{% elif body_font == 'pcr' %}
+\renewcommand{\familydefault}{\ttdefault}
+{% else %}
+\renewcommand{\familydefault}{\rmdefault}
+{% endif %}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt}
+
+\titleformat{\section}[hang]{\normalfont\normalsize\bfseries}{}{0em}{}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+
+\begin{document}
+
+\begin{center}
+    {\fontsize{ {{ header_font_size | default(14) }} }{ {{ (header_font_size | default(14) + 2) }} }\selectfont {{ header_weight | default('\\bfseries') }} {{ school_name }} }\\[2pt]
+    {\fontsize{ {{ heading_font_size | default(12) }} }{ {{ (heading_font_size | default(12) + 2) }} }\selectfont\bfseries {{ exam_title }} }\\[1pt]
+    {\normalsize\bfseries SUBJECT -- {{ subject }}}\\[1pt]
+    {\normalsize\bfseries CLASS -- {{ class_num }} (CBSE) ({{ year }})}
+\end{center}
+
+\vspace{1pt}
+\noindent\textbf{Time Allowed: {{ time_allowed }}} \hfill \textbf{M.M: {{ total_marks }}}
+\vspace{1pt}
+\vspace{2pt}
+
+\noindent\textbf{General Instructions:}
+\begin{enumerate}[leftmargin=*, label=\roman*., itemsep=0pt, parsep=0pt]
+  \item All questions are compulsory unless stated otherwise.
+  \item This question paper is divided into {{ paper_sections | length }} section(s).
+  {% for letter, sec in paper_sections.items() %}
+  \item Section {{ letter }} -- {{ sec.label }} ({{ sec.count }} question{% if sec.count > 1 %}s{% endif %}, {{ sec.marks_per_q }} mark{% if sec.marks_per_q > 1 %}s{% endif %} each, {{ sec.total }} marks total).
+  {% endfor %}
+  \item There is no overall choice. However, internal choices may be provided in some questions.
+\end{enumerate}
+
+\vspace{3pt}
+
+{% set ns = namespace(q_start=1) %}
+{% for letter, sec in paper_sections.items() %}
+
+\section*{Section {{ letter }} -- {{ sec.label }} \hfill {{ sec.marks_per_q }} \texttimes\ {{ sec.count }} = {{ sec.total }} Marks}
+
+{% if sec.directions %}
+\noindent {{ sec.directions }}
+\vspace{3pt}
+{% endif %}
+
+{% if sec.type == 'case_based' or sec.type == 'cs' %}
+{# ── Case-based / passage questions ── #}
+{% for cs in case_sets if cs.set_id and cs.set_id.startswith('cs_' ~ letter ~ '_') %}
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}, start={{ ns.q_start }}]
+  \item \textbf{ {{- cs.instruction | default('Read the following passage and answer the questions that follow:') -}} \hfill [{{ cs.total_marks | default(sec.marks_per_q) }}]}\\[4pt]
+  \textit{ {{- cs.passage -}} }\\[6pt]
+  \begin{enumerate}[label=(\alph*), itemsep=4pt, parsep=0pt]
+    {% for sq in cs.sub_questions %}
+    \item \textbf{ {{- sq.question_text -}} \hfill [{{ sq.marks }}]}
+      {%- if sq.options -%}
+      \\
+      {{ format_options(sq.options) }}
+      {%- endif -%}
+    {% endfor %}
+  \end{enumerate}
+\end{enumerate}
+\vspace{6pt}
+{% set ns.q_start = ns.q_start + 1 %}
+{% endfor %}
+
+{% elif sec.type == 'mcq' or sec.type == 'ar' or sec.type.endswith('_mcq') or sec.type.endswith('_ar') %}
+{# ── MCQ / Assertion-Reason ── #}
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}, start={{ ns.q_start }}, itemsep=1.5pt, parsep=0pt]
+{% for q in by_section[letter] %}
+  \item \textbf{ {{- q.question_text -}} }
+    {%- if sec.type != 'ar' and q.options -%}
+    \\
+    {{ format_options(q.options) }}
+    {%- endif -%}
+{% endfor %}
+\end{enumerate}
+{% set ns.q_start = ns.q_start + by_section[letter] | length %}
+
+{% else %}
+{# ── SA / LA / VSA and all other types ── #}
+{% set item_sep = '4pt' if sec.marks_per_q >= 5 else '3pt' %}
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}, start={{ ns.q_start }}, itemsep={{ item_sep }}, parsep=0pt]
+{% for q in by_section[letter] %}
+  \item \textbf{ {{- q.question_text -}} \hfill [{{ q.marks }}]}
+{% endfor %}
+\end{enumerate}
+{% set ns.q_start = ns.q_start + by_section[letter] | length %}
+{% endif %}
+
+{% endfor %}
+
+\end{document}

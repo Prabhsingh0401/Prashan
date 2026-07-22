@@ -14,10 +14,9 @@ import {
 } from "lucide-react";
 
 const steps = [
-  { label: "Class & Subject", done: true },
-  { label: "Chapters", done: true },
-  { label: "Question Config", done: true },
   { label: "Header Setup", done: true },
+  { label: "Paper Setup", done: true },
+  { label: "Question Config", done: true },
   { label: "AI Generate", done: true },
   { label: "Export", done: false, active: true },
 ];
@@ -29,10 +28,6 @@ export function Features() {
       className="w-full max-w-[1400px] mx-auto px-4 py-5 relative z-10 font-sans"
     >
       <div className="flex flex-col items-center text-center mb-16 scroll-animate">
-        <div className="mb-6 inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md">
-          <Sparkles className="mr-2 h-4 w-4 text-foreground/50" />
-          <span>How it works</span>
-        </div>
 
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-foreground mb-6 max-w-3xl leading-[1.1]">
           Paper ready in <br className="hidden sm:block" /> six steps.
@@ -63,8 +58,58 @@ export function Features() {
         >
           <div>
             <div className="flex items-center gap-2 mb-6 text-[10px] font-mono font-bold tracking-widest text-foreground/50 uppercase">
+              <School size={13} strokeWidth={2.5} />
+              <span>Step 1 — Paper Header</span>
+            </div>
+
+            <h3 className="text-xl font-bold text-foreground tracking-tight mb-5 leading-[1.2]">
+              Brand your paper <br />
+              your way.
+            </h3>
+
+            <div
+              className="w-full rounded-2xl bg-white dark:bg-white/5 border border-black/8 dark:border-white/10
+                            shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_2px_8px_rgba(0,0,0,0.05)]
+                            overflow-hidden"
+            >
+              <div className="p-4 border-b border-black/5 dark:border-white/5 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-black/5 dark:bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <School size={16} className="text-foreground/50" />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[12px] font-bold text-foreground tracking-tight truncate">
+                    Public School
+                  </span>
+                  <span className="text-[9px] font-mono text-foreground/40 tracking-widest uppercase">
+                    Class X · Mathematics · PA-1
+                  </span>
+                </div>
+              </div>
+              <div className="px-4 py-3 flex items-center justify-between">
+                <span className="text-[10px] font-mono text-foreground/40">
+                  Time: 2 hrs &nbsp;|&nbsp; MM: 40
+                </span>
+                <span className="flex items-center gap-1 text-[10px] font-mono text-foreground/60">
+                  <SquarePen size={10} />
+                  Editable
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="p-8 lg:p-10 border-b md:border-r border-white/50 dark:border-white/5
+                    flex flex-col justify-between min-h-[320px] group scroll-animate stagger-1
+                    bg-white/20 dark:bg-white/[0.03]
+                    hover:bg-white/30 dark:hover:bg-white/[0.05]
+                    transition-colors duration-300
+                "
+        >
+          <div>
+            <div className="flex items-center gap-2 mb-6 text-[10px] font-mono font-bold tracking-widest text-foreground/50 uppercase">
               <BookOpen size={13} strokeWidth={2.5} />
-              <span>Step 1 — Paper Setup</span>
+              <span>Step 2 — Paper Setup</span>
             </div>
 
             <h3 className="text-xl font-bold text-foreground tracking-tight mb-5 leading-[1.2]">
@@ -101,8 +146,8 @@ export function Features() {
         </div>
 
         <div
-          className="p-8 lg:p-10 border-b md:border-r border-white/50 dark:border-white/5
-                    flex flex-col justify-between min-h-[320px] group scroll-animate stagger-1
+          className="p-8 lg:p-10 border-b border-white/50 dark:border-white/5
+                    flex flex-col justify-between min-h-[320px] group scroll-animate stagger-2
                     bg-white/20 dark:bg-white/[0.03]
                     hover:bg-white/30 dark:hover:bg-white/[0.05]
                     transition-colors duration-300
@@ -111,7 +156,7 @@ export function Features() {
           <div>
             <div className="flex items-center gap-2 mb-6 text-[10px] font-mono font-bold tracking-widest text-foreground/50 uppercase">
               <SlidersHorizontal size={13} strokeWidth={2.5} />
-              <span>Step 2 — Question Config</span>
+              <span>Step 3 — Question Config</span>
             </div>
 
             <h3 className="text-xl font-bold text-foreground tracking-tight mb-5 leading-[1.2]">
@@ -154,56 +199,6 @@ export function Features() {
         </div>
 
         <div
-          className="p-8 lg:p-10 border-b border-white/50 dark:border-white/5
-                    flex flex-col justify-between min-h-[320px] group scroll-animate stagger-2
-                    bg-white/20 dark:bg-white/[0.03]
-                    hover:bg-white/30 dark:hover:bg-white/[0.05]
-                    transition-colors duration-300
-                "
-        >
-          <div>
-            <div className="flex items-center gap-2 mb-6 text-[10px] font-mono font-bold tracking-widest text-foreground/50 uppercase">
-              <School size={13} strokeWidth={2.5} />
-              <span>Step 3 — Paper Header</span>
-            </div>
-
-            <h3 className="text-xl font-bold text-foreground tracking-tight mb-5 leading-[1.2]">
-              Brand your paper <br />
-              your way.
-            </h3>
-
-            <div
-              className="w-full rounded-2xl bg-white dark:bg-white/5 border border-black/8 dark:border-white/10
-                            shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_2px_8px_rgba(0,0,0,0.05)]
-                            overflow-hidden"
-            >
-              <div className="p-4 border-b border-black/5 dark:border-white/5 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-black/5 dark:bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <School size={16} className="text-foreground/50" />
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="text-[12px] font-bold text-foreground tracking-tight truncate">
-                    Public School
-                  </span>
-                  <span className="text-[9px] font-mono text-foreground/40 tracking-widest uppercase">
-                    Class X · Mathematics · PA-1
-                  </span>
-                </div>
-              </div>
-              <div className="px-4 py-3 flex items-center justify-between">
-                <span className="text-[10px] font-mono text-foreground/40">
-                  Time: 2 hrs &nbsp;|&nbsp; MM: 40
-                </span>
-                <span className="flex items-center gap-1 text-[10px] font-mono text-foreground/60">
-                  <SquarePen size={10} />
-                  Editable
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
           className="p-8 lg:p-12 border-b md:border-b-0 md:border-r border-white/50 dark:border-white/5
                     flex flex-col justify-between group cursor-pointer scroll-animate stagger-3
                     bg-white/25 dark:bg-white/[0.02]
@@ -225,13 +220,13 @@ export function Features() {
               Mapped to <br className="hidden lg:block" /> every board.
             </h3>
             <p className="text-foreground/60 text-[15px] leading-relaxed font-medium">
-              CBSE, ICSE, and all State Boards. Questions are automatically
+              Currently supporting CBSE. ICSE and all State Boards are coming soon. Questions are automatically
               scoped to the exact chapters and difficulty levels you selected —
               no extra setup.
             </p>
           </div>
           <div className="flex gap-2 mt-8 flex-wrap">
-            {["CBSE", "ICSE", "State Board"].map((b) => (
+            {["CBSE", "ICSE (Soon)", "State Board (Soon)"].map((b) => (
               <span
                 key={b}
                 className="text-[10px] font-mono font-bold tracking-widest uppercase px-2.5 py-1 rounded-lg border border-black/8 dark:border-white/10 text-foreground/60 bg-white/60 dark:bg-white/5"

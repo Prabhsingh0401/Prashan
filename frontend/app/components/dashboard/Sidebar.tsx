@@ -5,8 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { 
   LayoutDashboard, 
-  FileText, 
-  Settings, 
   HelpCircle
 } from "lucide-react";
 
@@ -17,7 +15,7 @@ export default function Sidebar() {
     <aside 
       onMouseEnter={() => setIsCollapsed(false)}
       onMouseLeave={() => setIsCollapsed(true)}
-      className={`relative z-20 hidden md:flex flex-col border border-black/10 dark:border-white/10 bg-white/30 dark:bg-white/5 backdrop-blur-3xl m-4 h-[calc(100vh-2rem)] rounded-[2rem] p-3 transition-all duration-300 ease-in-out shadow-2xl ${
+      className={`relative z-20 hidden md:flex flex-col border border-black/10 dark:border-white/10 bg-white/30 dark:bg-white/5 backdrop-blur-3xl m-4 h-[calc(100vh-2rem)] rounded-[1rem] p-3 transition-all duration-300 ease-in-out shadow-2xl ${
         isCollapsed ? "w-[4.5rem]" : "w-64"
       }`}
     >
@@ -58,28 +56,7 @@ export default function Sidebar() {
             Dashboard
           </span>
         </Link>
-        
-        <Link 
-          href="/dashboard"
-          className={`flex items-center transition-all group font-medium text-foreground/60 hover:text-foreground hover:bg-white/40 dark:hover:bg-white/5 hover:backdrop-blur-md hover:shadow-sm ${isCollapsed ? 'w-11 h-11 justify-center rounded-2xl mx-auto' : 'w-full px-3 py-3 rounded-2xl justify-start'}`}
-          title="My Papers"
-        >
-          <FileText className="w-5 h-5 shrink-0 text-foreground/50 group-hover:text-foreground" />
-          <span className={`whitespace-nowrap overflow-hidden inline-block transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0 ml-0' : 'opacity-100 max-w-[120px] ml-3'}`}>
-            My Papers
-          </span>
-        </Link>
 
-        <Link 
-          href="/dashboard"
-          className={`flex items-center transition-all group font-medium text-foreground/60 hover:text-foreground hover:bg-white/40 dark:hover:bg-white/5 hover:backdrop-blur-md hover:shadow-sm ${isCollapsed ? 'w-11 h-11 justify-center rounded-2xl mx-auto' : 'w-full px-3 py-3 rounded-2xl justify-start'}`}
-          title="Settings"
-        >
-          <Settings className="w-5 h-5 shrink-0 text-foreground/50 group-hover:text-foreground" />
-          <span className={`whitespace-nowrap overflow-hidden inline-block transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0 ml-0' : 'opacity-100 max-w-[120px] ml-3'}`}>
-            Settings
-          </span>
-        </Link>
       </nav>
 
       <div className="mt-auto pt-4 border-t border-black/10 dark:border-white/10 overflow-hidden">

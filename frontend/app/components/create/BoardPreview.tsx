@@ -1,72 +1,86 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { BoardPaperForm } from "../../types/create/types";
+
+const BACKEND = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 interface BoardPreviewProps {
   form: BoardPaperForm;
+  latex?: string;        // set after generation
+  sessionId?: string;    // set after generation
+  generating?: boolean; // true while the API call is in flight
 }
 
-export function BoardPreview({ form }: BoardPreviewProps) {
-  const { formatting: fmt } = form;
+export function BoardPreview({ form, latex, sessionId, generating }: BoardPreviewProps) {
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  const headerStyle: React.CSSProperties = {
-    fontFamily: fmt.headerFontFamily,
-    fontSize: fmt.headerFontSize,
-    fontWeight: fmt.headerFontWeight,
-    fontStyle: fmt.headerFontStyle,
-  };
+  useEffect(() => {
+    let objectUrl: string | null = null;
 
-  const headingStyle: React.CSSProperties = {
-    fontFamily: fmt.headingFontFamily,
-    fontSize: fmt.headingFontSize,
-    fontWeight: fmt.headingFontWeight,
-    fontStyle: fmt.headingFontStyle,
-  };
+    if (sessionId) {
+      const fetchPdf = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          const url = `${BACKEND}/paper/${encodeURIComponent(sessionId)}/download?format=pdf`;
+          const res = await fetch(url, {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
+          if (res.ok) {
+            const blob = await res.blob();
+            objectUrl = URL.createObjectURL(blob);
+            setPdfUrl(objectUrl);
+          }
+        } catch (err) {
+          console.error("Failed to fetch preview PDF:", err);
+        }
+      };
+      fetchPdf();
+    } else {
+      setPdfUrl(null);
+    }
 
-  const bodyStyle: React.CSSProperties = {
-    fontFamily: fmt.bodyFontFamily,
-    fontSize: fmt.bodyFontSize,
-  };
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [sessionId]);
+
+  const isNew = !sessionId && !latex;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-black/10 p-6 aspect-[8.5/11] text-black dark:text-black overflow-hidden">
-      <div className="text-center mb-4">
-        <h1 style={headerStyle} className="uppercase tracking-wide leading-snug">
-          {form.schoolName || "SCHOOL NAME"}
-        </h1>
-        <p style={headerStyle} className="mt-1 uppercase">
-          {form.examName || "EXAMINATION NAME"}
-        </p>
-        <p style={headerStyle} className="mt-0.5 uppercase">
-          SUBJECT: {form.subject || "____________"}
-        </p>
-        <p style={headerStyle} className="mt-0.5 uppercase">
-          CLASS-{form.class || "___"} ({form.board || "BOARD"})
-        </p>
-      </div>
-
-      <div style={bodyStyle} className="flex justify-between font-bold mb-1 mt-3">
-        <span>TIME ALLOWED: {form.duration || "3 HRS"}</span>
-        <span>M.M: {form.maxMarks || "80"}</span>
-      </div>
-
-      {form.date && (
-        <p style={bodyStyle} className="text-black/60 mb-3">Date: {form.date}</p>
-      )}
-
-      <div className="space-y-4 mt-4">
-        {form.questions.length === 0 ? (
-          <p style={bodyStyle} className="text-black/40 text-center py-8">
-            Add questions in Step 2...
-          </p>
+    <div className="flex flex-col gap-3 h-full w-full">
+      <div className="flex-1 overflow-hidden h-full w-full">
+        {pdfUrl ? (
+          <iframe
+            src={pdfUrl}
+            className="w-full h-full border-0 rounded-2xl bg-white"
+            title="Question Paper Preview"
+          />
         ) : (
-          form.questions.map((q, index) => (
-            <div key={q.id}>
-              <p style={headingStyle}>
-                <span>Q{index + 1}.</span>{" "}
-                {q.question || "Question text..."}
-                <span style={bodyStyle} className="ml-2 text-black/50">({q.marks} marks)</span>
+          <div className="flex flex-col h-full bg-white dark:bg-black/90 p-10 font-mono overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 shadow-2xl justify-between">
+            <div className="text-muted-foreground/40 text-[10px] uppercase tracking-widest flex justify-between items-center">
+              <span>{isNew ? "// preview" : "// generation complete"}</span>
+              {isNew ? (
+                <span className="text-violet-500 font-bold">● IDLE</span>
+              ) : (
+                <span className="text-emerald-500 font-bold">● READY</span>
+              )}
+            </div>
+            <div className="flex-1 flex flex-col justify-center items-center text-center py-20">
+              <p className="text-[clamp(14px,2.2vw,18px)] leading-[1.8] text-foreground font-mono">
+                {isNew ? "Start generating your paper." : "Your paper is ready to download."}
               </p>
             </div>
-          ))
+            <div className="pt-6 border-t border-black/5 dark:border-white/5 flex justify-between items-end opacity-40">
+              <div className="text-right">
+                <p className="text-[9px] uppercase tracking-tighter">© 2026 PRASHAN</p>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

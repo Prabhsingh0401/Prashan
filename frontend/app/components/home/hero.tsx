@@ -67,13 +67,14 @@ export function Hero() {
   };
 
   return (
-    <section 
+    <section
+      id="hero"
       className="relative w-full flex flex-col items-center justify-center min-h-[95vh] pt-32 pb-16 px-4 sm:px-6 lg:px-8 text-center overflow-hidden"
       aria-labelledby="hero-heading"
     >
       {/* Background brand text for visual depth */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none flex justify-center items-center w-full z-0 opacity-30 mix-blend-overlay">
-        <span 
+        <span
           className="text-[12rem] sm:text-[16rem] md:text-[24rem] lg:text-[30rem] font-extrabold text-foreground/20 blur-sm sm:blur-md leading-none tracking-tighter whitespace-nowrap"
           aria-hidden="true"
         >
@@ -84,7 +85,7 @@ export function Hero() {
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center animate-hero-in">
 
         {/* Main headline - AI SEO: Contains descriptive keywords */}
-        <h1 
+        <h1
           id="hero-heading"
           className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter text-foreground mb-4 max-w-4xl leading-[1.08]"
         >
@@ -110,8 +111,8 @@ export function Hero() {
 
         {/* Value proposition - AI SEO: Contains key search terms */}
         <p className="text-lg sm:text-xl text-foreground/55 max-w-3xl mb-4 font-medium tracking-tight leading-relaxed">
-          Prashan builds your question paper in under 3 minutes — formatted, 
-          board-aligned for CBSE, ICSE & State Boards, and print-ready. 
+          Prashan builds your question paper in under minutes formatted,
+          board-aligned for CBSE (ICSE & State Boards coming soon), and print-ready.
           No prompting. No formatting. No stress.
         </p>
 
@@ -159,7 +160,7 @@ export function Hero() {
             ))}
           </div>
           <p className="text-sm text-foreground/50 font-medium">
-            <span className="text-foreground font-semibold">100+ teachers</span>{" "}
+            <span className="text-foreground font-semibold">70+ teachers</span>{" "}
             already on the waitlist
           </p>
         </div>

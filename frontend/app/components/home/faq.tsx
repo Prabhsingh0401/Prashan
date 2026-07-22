@@ -8,17 +8,16 @@ const faqs = [
   {
     question: "What is Prashan?",
     answer:
-      "Prashan is an AI-powered question paper generator for Indian teachers. Create board-aligned, professionally formatted exam papers in under 3 minutes for CBSE, ICSE, and State Boards.",
-  },
-  {
+      "Prashan is an AI-powered question paper generator for Indian teachers. Create board-aligned, professionally formatted exam papers in under minutes for CBSE (ICSE & State Boards coming soon).",
+    },
+    {
     question: "Which boards are supported?",
     answer:
-      "Prashan supports CBSE, ICSE, and all major State Boards. Questions are automatically mapped to specific board curricula for classes 1-12.",
-  },
-  {
+      "Prashan currently supports CBSE. ICSE and all major State Boards are coming soon. Questions are automatically mapped to specific board curricula for classes 1-12.",
+    },  {
     question: "How long does it take?",
     answer:
-      "Generate a complete, formatted question paper in under 3 minutes — from selecting chapters to final export.",
+      "Generate a complete, formatted question paper in under 15 minutes from selecting chapters to final export.",
   },
   {
     question: "Is it free?",
@@ -42,10 +41,6 @@ export function FAQ() {
     >
       <div className="max-w-3xl mx-auto">
         <div className="flex flex-col items-center text-center mb-12 scroll-animate">
-          <div className="mb-6 inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md">
-            <HelpCircle className="mr-2 h-4 w-4 text-foreground/50" />
-            <span>Frequently Asked Questions</span>
-          </div>
 
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-foreground mb-6 max-w-3xl leading-[1.1]">
             Common questions

@@ -4,5 +4,5 @@ export { AssignmentWizard } from "./AssignmentWizard";
 export { AssignmentPreview } from "./AssignmentPreview";
 export { BoardWizard } from "./BoardWizard";
 export { BoardPreview } from "./BoardPreview";
-export { DraggablePreview } from "./DraggablePreview";
+export { PaperPreview } from "./DraggablePreview";
 export { CreatePaperHeader } from "./CreatePaperHeader";

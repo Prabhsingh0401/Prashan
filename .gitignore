@@ -4,3 +4,4 @@ opencode.json
 .opencode
 .claude
 CLAUDE.md
+__pycache__

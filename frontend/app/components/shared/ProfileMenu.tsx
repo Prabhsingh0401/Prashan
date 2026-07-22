@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { User, LogOut } from "lucide-react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useRouter } from "next/navigation";
+import { logout } from "@/services/authService";
 
 export function ProfileMenu() {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
@@ -20,12 +21,7 @@ export function ProfileMenu() {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      router.push("/auth");
-    } catch (error) {
-      console.error("Logout Error:", error);
-    }
+    await logout();
   };
 
   return (

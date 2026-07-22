@@ -14,6 +14,7 @@ interface FormattingStepProps {
   onBack: () => void;
   onNext: () => void;
   nextLabel?: string;
+  nextDisabled?: boolean;
 }
 
 const FONT_FAMILIES: { label: string; value: FontFamily; style: React.CSSProperties }[] = [
@@ -113,6 +114,7 @@ export function FormattingStep({
   onBack,
   onNext,
   nextLabel = "Next",
+  nextDisabled = false,
 }: FormattingStepProps) {
   const set = <K extends keyof FormattingOptions>(key: K, val: FormattingOptions[K]) =>
     onChange({ ...formatting, [key]: val });
@@ -223,9 +225,11 @@ export function FormattingStep({
         </button>
         <button
           onClick={onNext}
+          disabled={nextDisabled}
           className={cn(
             "btn-glass btn-glass-primary !px-4 !py-2 text-sm",
-            nextLabel === "Generate" && "font-bold"
+            nextLabel?.includes("Generate") && "font-bold",
+            nextDisabled && "opacity-50 cursor-not-allowed",
           )}
         >
           {nextLabel}

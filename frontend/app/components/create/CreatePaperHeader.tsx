@@ -1,31 +1,63 @@
-"use client";
-
-import { ArrowLeft, Eye, EyeOff, Download, Loader2, ZoomIn, ZoomOut } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ArrowLeft, Eye, EyeOff, Download, Loader2, FileText, FileCode } from "lucide-react";
 import { ThemeToggle } from "../theme/theme-toggle";
 import { ProfileMenu } from "../shared/ProfileMenu";
-import { PaperType } from "../../types/create/types";
+import { PaperType, BoardPaperForm, AssignmentForm } from "../../types/create/types";
+import { downloadPaper } from "../../../services/paperApi";
+import { cn } from "@/lib/utils";
 
 interface CreatePaperHeaderProps {
   paperType: PaperType | null;
+  form: BoardPaperForm | AssignmentForm;
   showPreview: boolean;
   setShowPreview: (show: boolean) => void;
-  previewZoom: number;
-  setPreviewZoom: (zoom: number) => void;
   isGenerating: boolean;
+  sessionId?: string;
   onGenerate: () => void;
   onBack: () => void;
 }
 
 export function CreatePaperHeader({
   paperType,
+  form,
   showPreview,
   setShowPreview,
-  previewZoom,
-  setPreviewZoom,
   isGenerating,
+  sessionId,
   onGenerate,
   onBack,
 }: CreatePaperHeaderProps) {
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const chaptersSelected = ("chapters" in form) ? (form.chapters?.length > 0) : true;
+  const canGenerate = chaptersSelected && !isGenerating && !isDownloading;
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowDownloadMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleDownload = async (format: "pdf" | "docx" | "tex") => {
+    if (!sessionId || isDownloading) return;
+    setIsDownloading(true);
+    try {
+      await downloadPaper(sessionId, format);
+      setShowDownloadMenu(false);
+    } catch (err) {
+      console.error("Download failed:", err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <header className="flex-shrink-0 z-40 border-b border-black/5 dark:border-white/10 bg-white/80 dark:bg-black/40 backdrop-blur-xl">
       <div className="flex items-center justify-between px-4 py-2.5 max-w-full">
@@ -50,27 +82,7 @@ export function CreatePaperHeader({
         </div>
 
         <div className="flex items-center gap-2">
-          {showPreview && (
-            <div className="hidden md:flex items-center gap-1 mr-2">
-              <button
-                onClick={() => setPreviewZoom(Math.max(0.3, previewZoom - 0.1))}
-                className="p-1.5 rounded-xl bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-black/5 dark:border-white/10 hover:bg-white/70 dark:hover:bg-white/15 transition-colors"
-                title="Zoom out"
-              >
-                <ZoomOut className="h-3.5 w-3.5" />
-              </button>
-              <span className="text-xs text-foreground/50 w-12 text-center">
-                {Math.round(previewZoom * 100)}%
-              </span>
-              <button
-                onClick={() => setPreviewZoom(Math.min(1.5, previewZoom + 0.1))}
-                className="p-1.5 rounded-xl bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-black/5 dark:border-white/10 hover:bg-white/70 dark:hover:bg-white/15 transition-colors"
-                title="Zoom in"
-              >
-                <ZoomIn className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          )}
+
           <button
             onClick={() => setShowPreview(!showPreview)}
             className="px-3 py-1.5 rounded-xl bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-black/5 dark:border-white/10 text-xs hidden md:flex items-center gap-1.5 hover:bg-white/70 dark:hover:bg-white/15 transition-colors"
@@ -79,18 +91,89 @@ export function CreatePaperHeader({
             {showPreview ? "Hide" : "Preview"}
           </button>
           <ThemeToggle />
-          <button
-            onClick={onGenerate}
-            disabled={isGenerating}
-            className="btn-glass btn-glass-primary !px-4 !py-1.5 !text-xs font-bold"
-          >
-            {isGenerating ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : (
-              <Download className="h-3.5 w-3.5" />
+
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => {
+                if (sessionId) {
+                  setShowDownloadMenu(!showDownloadMenu);
+                } else {
+                  onGenerate();
+                }
+              }}
+              disabled={(!canGenerate && !sessionId) || isDownloading}
+              className={cn(
+                "btn-glass btn-glass-primary !px-4 !py-1.5 !text-xs font-bold transition-all",
+                (!canGenerate && !sessionId) && "opacity-50 cursor-not-allowed"
+              )}
+            >
+              {isGenerating || isDownloading ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : sessionId ? (
+                <Download className="h-3.5 w-3.5" />
+              ) : (
+                <FileCode className="h-3.5 w-3.5" />
+              )}
+              {isGenerating ? "Generating..." : isDownloading ? "Exporting..." : sessionId ? "Download" : "Generate"}
+            </button>
+
+            {showDownloadMenu && sessionId && (
+              <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-white dark:bg-neutral-900 border border-black/10 dark:border-white/10 shadow-2xl shadow-black/20 p-2 animate-in fade-in zoom-in-95 duration-200">
+                <p className="px-3 py-2 text-[10px] font-bold text-foreground/40 uppercase tracking-widest">
+                  Export Format
+                </p>
+                <button
+                  onClick={() => handleDownload("pdf")}
+                  disabled={isDownloading}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors group text-left",
+                    isDownloading && "opacity-50 cursor-not-allowed"
+                  )}
+                >
+                  <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform">
+                    {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="w-4 h-4" />}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">Adobe PDF</p>
+                    <p className="text-[10px] text-foreground/50">Print ready</p>
+                  </div>
+                </button>
+                <button
+                  onClick={() => handleDownload("docx")}
+                  disabled={isDownloading}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors group text-left",
+                    isDownloading && "opacity-50 cursor-not-allowed"
+                  )}
+                >
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                    {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="w-4 h-4" />}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">Word DOCX</p>
+                    <p className="text-[10px] text-foreground/50">Editable doc</p>
+                  </div>
+                </button>
+                <div className="h-px bg-black/5 dark:bg-white/5 my-1 mx-2" />
+                <button
+                  onClick={() => handleDownload("tex")}
+                  disabled={isDownloading}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors group text-left",
+                    isDownloading && "opacity-50 cursor-not-allowed"
+                  )}
+                >
+                  <div className="w-8 h-8 rounded-lg bg-neutral-500/10 flex items-center justify-center text-neutral-500 group-hover:scale-110 transition-transform">
+                    {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileCode className="h-4 w-4" />}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">LaTeX Source</p>
+                    <p className="text-[10px] text-foreground/50">Raw code</p>
+                  </div>
+                </button>
+              </div>
             )}
-            Generate
-          </button>
+          </div>
           <ProfileMenu />
         </div>
       </div>

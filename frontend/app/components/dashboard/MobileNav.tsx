@@ -20,7 +20,7 @@ export default function MobileNav() {
         </Link>
 
         <Link
-          href="/dashboard"
+          href="/papers"
           className="flex items-center justify-center p-3 rounded-full text-foreground/60 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-all group"
           aria-label="Papers"
         >

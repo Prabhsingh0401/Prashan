@@ -1,9 +1,15 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { connectDB } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import paperRoutes from './routes/paperRoutes.js';
+import './lib/queue.js';
 
 dotenv.config();
+
+// Connect to Database
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -18,6 +24,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/paper', paperRoutes);
 
 // Start the server
 app.listen(PORT, () => {

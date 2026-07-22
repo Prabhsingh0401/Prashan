@@ -13,7 +13,7 @@ const FAQ = dynamic(() => import("./components/home/faq").then((m) => m.FAQ));
 export const metadata: Metadata = {
   title: "Prashan | Free AI Question Paper Generator for Teachers in India",
   description:
-    "Prashan is a FREE AI-powered question paper generator for Indian teachers. Create board-aligned, professionally formatted exam papers in under 3 minutes. Supports CBSE, ICSE, and State Boards. No signup required.",
+    "Prashan is a FREE AI-powered question paper generator for Indian teachers. Create board-aligned, professionally formatted exam papers in under minutes. Supports CBSE (ICSE & State Boards coming soon). No signup required.",
   keywords: [
     "free question paper generator",
     "AI question paper generator",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Prashan - Free AI Question Paper Generator for Indian Teachers",
     description:
-      "Create perfectly formatted question papers in under 3 minutes. Board-aligned, print-ready, no formatting needed. FREE for Indian teachers.",
+      "Create perfectly formatted question papers in under minutes. Board-aligned, print-ready, no formatting needed. FREE for Indian teachers.",
     url: "https://prashan.co.in",
     images: [
       {
@@ -61,7 +61,7 @@ const faqJsonLd = {
       name: "What is Prashan?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Prashan is an AI-powered question paper generator for Indian teachers. Create board-aligned, professionally formatted exam papers in under 3 minutes for CBSE, ICSE, and State Boards.",
+        text: "Prashan is an AI-powered question paper generator for Indian teachers. Create board-aligned, professionally formatted exam papers in under minutes for CBSE (ICSE & State Boards coming soon).",
       },
     },
     {
@@ -69,7 +69,7 @@ const faqJsonLd = {
       name: "Which boards are supported?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Prashan supports CBSE, ICSE, and all major State Boards. Questions are automatically mapped to specific board curricula for classes 1-12.",
+        text: "Prashan currently supports CBSE. ICSE and all major State Boards are coming soon. Questions are automatically mapped to specific board curricula for classes 1-12.",
       },
     },
     {
@@ -77,7 +77,7 @@ const faqJsonLd = {
       name: "How long does it take?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Generate a complete, formatted question paper in under 3 minutes — from selecting chapters to final export.",
+        text: "Generate a complete, formatted question paper in under 15 minutes from selecting chapters to final export.",
       },
     },
     {
@@ -105,7 +105,7 @@ const howToJsonLd = {
   "@type": "HowTo",
   name: "How to Create a Question Paper with Prashan",
   description:
-    "Create a board-aligned, professionally formatted question paper in under 3 minutes using Prashan's AI-powered generator.",
+    "Create a board-aligned, professionally formatted question paper in under minutes using Prashan's AI-powered generator.",
   step: [
     {
       "@type": "HowToStep",

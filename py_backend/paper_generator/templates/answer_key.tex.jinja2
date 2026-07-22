@@ -1,0 +1,70 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xcolor}
+\usepackage{parskip}
+\definecolor{answercolor}{RGB}{0,100,0}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\begin{document}
+
+\begin{center}
+    {\large\textbf{ {{- school_name -}} }}\\[4pt]
+    {\normalsize\textbf{ {{- exam_title -}} -- ANSWER KEY \& MARKING SCHEME}}\\[2pt]
+    {\normalsize\textbf{{ subject }} | Class {{ class_num }} | {{ year }}}}\\[2pt]
+    {\normalsize\textbf{M.M: {{ total_marks }} \quad [TEACHER COPY -- DO NOT DISTRIBUTE]}}
+\end{center}
+\hrule
+\vspace{8pt}
+
+\section*{Section A -- MCQ Answers}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+{% for q in by_section['A'] %}
+  \item {\color{answercolor}\textbf{ {{- q.correct_answer -}} }} \quad \textit{({{ q.bloom_level }})}
+{% endfor %}
+\end{enumerate}
+
+\section*{Section B -- VSA Model Answers}
+\begin{enumerate}[label=\textbf{\arabic*.}, start={{ by_section['A']|length + 1 }}]
+{% for q in by_section['B'] %}
+  \item \textbf{Q:} {{ q.question_text }}\\
+    {\color{answercolor}\textbf{A:} {{ q.correct_answer }}} \hfill \textit{[2 marks]}
+    \vspace{6pt}
+{% endfor %}
+\end{enumerate}
+
+\section*{Section C -- SA Model Answers}
+\begin{enumerate}[label=\textbf{\arabic*.}, start={{ by_section['A']|length + by_section['B']|length + 1 }}]
+{% for q in by_section['C'] %}
+  \item \textbf{Q:} {{ q.question_text }}\\
+    {\color{answercolor}\textbf{A:} {{ q.correct_answer }}} \hfill \textit{[3 marks]}
+    \vspace{8pt}
+{% endfor %}
+\end{enumerate}
+
+\section*{Section D -- LA Model Answers}
+\begin{enumerate}[label=\textbf{\arabic*.}, start={{ by_section['A']|length + by_section['B']|length + by_section['C']|length + 1 }}]
+{% for q in by_section['D'] %}
+  \item \textbf{Q:} {{ q.question_text }}\\
+    {\color{answercolor}\textbf{A:} {{ q.correct_answer }}} \hfill \textit{[5 marks]}
+    \vspace{12pt}
+{% endfor %}
+\end{enumerate}
+
+\section*{Section E -- Case Based Answers}
+{% for cs in case_sets %}
+  \textbf{Case Set {{ loop.index }}} (Chapter: {{ cs.chapter }})\\
+  {% for sq in cs.sub_questions %}
+    \textbf{({{ loop.index | replace(1,'a') | replace(2,'b') | replace(3,'c') }})}\
+    {\color{answercolor} {{ sq.correct_answer }}} \hfill \textit{[{{ sq.marks }} mark{% if sq.marks > 1 %}s{% endif %}]}\\[4pt]
+  {% endfor %}
+  \vspace{8pt}
+{% endfor %}
+
+\end{document}

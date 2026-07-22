@@ -17,13 +17,13 @@ const blogContent: Record<string, {
   content: string;
 }> = {
   "how-to-create-question-paper-in-minutes": {
-    title: "How to Create a Professional Question Paper in Under 3 Minutes",
+    title: "How to Create a Professional Question Paper in under minutes",
     excerpt: "Step-by-step guide for Indian teachers to create board-aligned, professionally formatted exam papers using AI.",
     category: "Tutorial",
     readTime: "5 min",
     date: "2026-03-15",
     content: `
-Creating a professional question paper doesn't have to take hours. With the right tools and approach, Indian teachers can generate board-aligned, well-formatted exam papers in under 3 minutes.
+Creating a professional question paper doesn't have to take hours. With the right tools and approach, Indian teachers can generate board-aligned, well-formatted exam papers in under minutes.
 
 ## Why This Matters for Indian Teachers
 
@@ -319,10 +319,10 @@ export default async function BlogPostPage({ params }: PageProps) {
     <>
       <Navbar />
       <main className="flex min-h-screen flex-col items-center pt-24">
-        <article className="w-full max-w-[800px] mx-auto px-4 pb-16">
+        <article className="w-full max-w-5xl mx-auto px-5 md:px-10 pb-16">
           <Link
             href="/blog"
-            className="btn-glass btn-glass-secondary !rounded-xl !py-2 !px-4 text-sm font-medium mb-8"
+            className="btn-glass btn-glass-secondary !rounded-xl !py-2 !px-4 text-sm font-medium mb-8 inline-block"
           >
             ← Back to Blog
           </Link>
@@ -334,13 +334,13 @@ export default async function BlogPostPage({ params }: PageProps) {
               </span>
               <span className="text-xs text-foreground/40">{post.readTime} read</span>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-4 leading-tight">
               {post.title}
             </h1>
-            <p className="text-lg text-foreground/60">
+            <p className="text-xl text-foreground/60 leading-relaxed max-w-3xl">
               {post.excerpt}
             </p>
-            <time className="text-sm text-foreground/40 mt-4 block">
+            <time className="text-sm text-foreground/40 mt-6 block">
               {new Date(post.date).toLocaleDateString("en-IN", {
                 day: "numeric",
                 month: "long",
@@ -353,14 +353,14 @@ export default async function BlogPostPage({ params }: PageProps) {
             {contentSections.map((section, index) => {
               if (section.startsWith("## ")) {
                 return (
-                  <h2 key={index} className="text-xl font-bold text-foreground mt-8 mb-4">
+                  <h2 key={index} className="text-2xl font-bold text-foreground mt-12 mb-6">
                     {section.replace("## ", "")}
                   </h2>
                 );
               }
               if (section.startsWith("### ")) {
                 return (
-                  <h3 key={index} className="text-lg font-semibold text-foreground mt-6 mb-3">
+                  <h3 key={index} className="text-xl font-semibold text-foreground mt-8 mb-4">
                     {section.replace("### ", "")}
                   </h3>
                 );
@@ -368,7 +368,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               if (section.startsWith("- ")) {
                 const items = section.split("\n").filter((line) => line.startsWith("- "));
                 return (
-                  <ul key={index} className="list-disc pl-6 space-y-2 text-foreground/70 mb-4">
+                  <ul key={index} className="list-disc pl-6 space-y-3 text-foreground/70 mb-6 text-base md:text-lg">
                     {items.map((item, i) => (
                       <li key={i}>{item.replace("- ", "")}</li>
                     ))}
@@ -378,7 +378,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               if (section.match(/^\d+\./)) {
                 const items = section.split("\n").filter((line) => line.match(/^\d+\./));
                 return (
-                  <ol key={index} className="list-decimal pl-6 space-y-2 text-foreground/70 mb-4">
+                  <ol key={index} className="list-decimal pl-6 space-y-3 text-foreground/70 mb-6 text-base md:text-lg">
                     {items.map((item, i) => (
                       <li key={i}>{item.replace(/^\d+\.\s*/, "")}</li>
                     ))}
@@ -386,21 +386,21 @@ export default async function BlogPostPage({ params }: PageProps) {
                 );
               }
               return (
-                <p key={index} className="text-foreground/70 leading-relaxed mb-4">
+                <p key={index} className="text-base md:text-lg text-foreground/70 leading-relaxed mb-6">
                   {section}
                 </p>
               );
             })}
           </div>
 
-          <div className="mt-16 p-6 rounded-2xl bg-white/40 dark:bg-white/5 border border-black/10 dark:border-white/10">
-            <h3 className="text-lg font-bold text-foreground mb-2">Ready to save time?</h3>
-            <p className="text-sm text-foreground/60 mb-4">
-              Create professional question papers in under 3 minutes with Prashan.
+          <div className="mt-16 p-8 md:p-10 rounded-2xl bg-white/40 dark:bg-white/5 border border-black/10 dark:border-white/10">
+            <h3 className="text-xl font-bold text-foreground mb-3">Ready to save time?</h3>
+            <p className="text-base text-foreground/60 mb-6">
+              Create professional question papers in under minutes with Prashan.
             </p>
             <Link
               href="/auth"
-              className="btn-glass btn-glass-primary !px-6 !py-2 text-sm font-bold"
+              className="btn-glass btn-glass-primary !px-8 !py-3 text-base font-bold"
             >
               Get Started Free →
             </Link>

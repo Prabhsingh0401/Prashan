@@ -1,12 +1,6 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import { auth, db } from '../config/firebase.js';
 import { sendOTP } from '../services/emailService.js';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key';
-
-// In-memory mock database
-const users: any[] = [];
-const pendingVerification: Record<string, any> = {};
 
 export const signup = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -17,31 +11,37 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const existingUser = users.find(u => u.email === email);
-        if (existingUser) {
+        // 1. Check if user already exists in Firebase Auth
+        try {
+            await auth.getUserByEmail(email);
             res.status(400).json({ error: 'User already exists' });
             return;
+        } catch (error: any) {
+            if (error.code !== 'auth/user-not-found') {
+                throw error;
+            }
         }
 
-        // Generate 6-digit OTP
+        // 2. Generate 6-digit OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-        // Store pending user
-        pendingVerification[email] = {
+        // 3. Store pending user in Firestore
+        await db.collection('temp_users').doc(email).set({
             name,
             email,
-            password, // Password should be hashed in production
+            password, // Stored temporarily until verification. In production, consider hashing if not using Firebase Admin for user creation immediately.
             otp,
+            createdAt: new Date(),
             expiresAt: Date.now() + 10 * 60 * 1000 // 10 minutes
-        };
+        });
 
-        // Send OTP
+        // 4. Send OTP
         await sendOTP(email, otp);
 
         res.status(200).json({ message: 'OTP sent successfully to email' });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Signup error:', error);
-        res.status(500).json({ error: 'Internal server error while processing signup' });
+        res.status(500).json({ error: error.message || 'Internal server error while processing signup' });
     }
 };
 
@@ -54,91 +54,64 @@ export const verifyOtp = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const pendingUser = pendingVerification[email];
-
-        if (!pendingUser) {
+        // 1. Fetch doc from temp_users
+        const tempUserDoc = await db.collection('temp_users').doc(email).get();
+        
+        if (!tempUserDoc.exists) {
             res.status(400).json({ error: 'No pending signup found for this email' });
             return;
         }
 
-        if (pendingUser.expiresAt < Date.now()) {
-            delete pendingVerification[email];
+        const tempUser = tempUserDoc.data();
+
+        if (!tempUser || tempUser.expiresAt < Date.now()) {
+            await db.collection('temp_users').doc(email).delete();
             res.status(400).json({ error: 'OTP has expired' });
             return;
         }
 
-        if (pendingUser.otp !== otp) {
+        if (tempUser.otp !== otp) {
             res.status(400).json({ error: 'Invalid OTP' });
             return;
         }
 
-        // Create actual user
-        const newUser = {
-            id: Date.now().toString(),
-            name: pendingUser.name,
-            email: pendingUser.email,
-            password: pendingUser.password, // Remember to hash in production
-            isVerified: true
-        };
-
-        users.push(newUser);
-        delete pendingVerification[email];
-
-        const token = jwt.sign(
-            { id: newUser.id, email: newUser.email },
-            JWT_SECRET,
-            { expiresIn: '7d' }
-        );
-
-        res.status(200).json({ 
-            message: 'Email verified successfully',
-            user: {
-                id: newUser.id,
-                name: newUser.name,
-                email: newUser.email
-            },
-            token
+        // 2. Create user in Firebase Auth
+        const userRecord = await auth.createUser({
+            email: tempUser.email,
+            password: tempUser.password,
+            displayName: tempUser.name,
+            emailVerified: true,
         });
 
-    } catch (error) {
+        // 3. Create profile in Firestore users collection
+        await db.collection('users').doc(userRecord.uid).set({
+            uid: userRecord.uid,
+            name: tempUser.name,
+            email: tempUser.email,
+            provider: 'password',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+
+        // 4. Cleanup temp store
+        await db.collection('temp_users').doc(email).delete();
+
+        // 5. Generate Custom Token for client login
+        const customToken = await auth.createCustomToken(userRecord.uid);
+
+        res.status(200).json({ 
+            message: 'Email verified and account created successfully',
+            user: {
+                uid: userRecord.uid,
+                name: userRecord.displayName,
+                email: userRecord.email
+            },
+            token: customToken // Use custom token to sign in on frontend
+        });
+
+    } catch (error: any) {
         console.error('OTP Verification error:', error);
-        res.status(500).json({ error: 'Internal server error while verifying OTP' });
+        res.status(500).json({ error: error.message || 'Internal server error while verifying OTP' });
     }
 };
 
-export const login = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            res.status(400).json({ error: 'Email and password are required' });
-            return;
-        }
-
-        const user = users.find(u => u.email === email && u.password === password);
-
-        if (!user) {
-            res.status(400).json({ error: 'Invalid credentials' });
-            return;
-        }
-
-        const token = jwt.sign(
-            { id: user.id, email: user.email },
-            JWT_SECRET,
-            { expiresIn: '7d' }
-        );
-
-        res.status(200).json({ 
-            message: 'Logged in successfully',
-            user: {
-                id: user.id,
-                name: user.name,
-                email: user.email
-            },
-            token
-        });
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ error: 'Internal server error during login' });
-    }
-};

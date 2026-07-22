@@ -34,7 +34,7 @@ interface BlogPost {
 const blogPosts: BlogPost[] = [
   {
     slug: "how-to-create-question-paper-in-minutes",
-    title: "How to Create a Professional Question Paper in Under 3 Minutes",
+    title: "How to Create a Professional Question Paper in under minutes",
     excerpt:
       "Discover the power of Prashan AI to transform your syllabus into comprehensive, balanced examination papers with board-aligned formatting — with just a few clicks.",
     category: "Tutorial",
@@ -97,28 +97,6 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const PlaceholderIcon = ({ size = 48 }: { size?: number }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 48 48"
-    fill="none"
-    aria-hidden="true"
-  >
-    <rect
-      width="48"
-      height="48"
-      rx="12"
-      className="fill-amber-100 dark:fill-amber-900/30"
-    />
-    <path
-      d="M14 34l8-10 6 7 4-5 8 8H14z"
-      className="fill-amber-300 dark:fill-amber-700/50"
-    />
-    <circle cx="32" cy="18" r="4" className="fill-amber-200 dark:fill-amber-600/50" />
-  </svg>
-);
-
 export default function BlogPage() {
   const [featured, ...rest] = blogPosts;
 
@@ -152,42 +130,34 @@ export default function BlogPage() {
                        shadow-[0_2px_12px_rgba(26,28,28,0.06)]
                        dark:shadow-black/20"
           >
-            <div className="flex flex-col md:flex-row">
-              {/* Image panel */}
-              <div className="md:w-[45%] h-56 md:h-auto shrink-0 flex items-center justify-center rounded-2xl m-2 overflow-hidden bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-900">
-                <PlaceholderIcon />
-              </div>
-
-              {/* Text panel */}
-              <div className="flex-1 p-7 md:p-8 flex flex-col justify-between">
-                <div>
-                    <div className="flex items-center gap-3 mb-5">
-                      <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-md bg-white/30 dark:bg-violet-500/20 border border-black/10 dark:border-violet-500/30 shadow-sm text-foreground/80 dark:text-violet-300">
-                        {featured.category}
-                      </span>
-                    <span className="text-[11px] font-medium uppercase tracking-wider text-foreground/50">
-                      {featured.readTime} read
-                    </span>
-                    <span className="text-[11px] text-foreground/50">
-                      {formatDate(featured.date)}
-                    </span>
-                  </div>
-
-                  <h2 className="text-2xl md:text-[26px] font-bold leading-snug mb-4 group-hover:opacity-75 transition-opacity duration-200 text-foreground tracking-tight">
-                    {featured.title}
-                  </h2>
-
-                  <p className="text-sm leading-relaxed text-foreground/70">
-                    {featured.excerpt}
-                  </p>
-                </div>
-
-                <div className="mt-6">
-                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-3 transition-all duration-200 text-amber-700 dark:text-amber-500">
-                    Read article
-                    <ArrowIcon />
+            <div className="p-7 md:p-10 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-md bg-white/30 dark:bg-violet-500/20 border border-black/10 dark:border-violet-500/30 shadow-sm text-foreground/80 dark:text-violet-300">
+                    {featured.category}
+                  </span>
+                  <span className="text-[11px] font-medium uppercase tracking-wider text-foreground/50">
+                    {featured.readTime} read
+                  </span>
+                  <span className="text-[11px] text-foreground/50">
+                    {formatDate(featured.date)}
                   </span>
                 </div>
+
+                <h2 className="text-2xl md:text-3xl font-bold leading-snug mb-4 group-hover:opacity-75 transition-opacity duration-200 text-foreground tracking-tight max-w-2xl">
+                  {featured.title}
+                </h2>
+
+                <p className="text-base leading-relaxed text-foreground/70 max-w-3xl">
+                  {featured.excerpt}
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-3 transition-all duration-200 text-amber-700 dark:text-amber-500">
+                  Read article
+                  <ArrowIcon />
+                </span>
               </div>
             </div>
           </Link>
@@ -205,14 +175,9 @@ export default function BlogPage() {
                            shadow-[0_2px_10px_rgba(26,28,28,0.05)]
                            dark:shadow-black/10"
               >
-                {/* Mini image panel */}
-                <div className="h-36 shrink-0 flex items-center justify-center m-2 rounded-xl overflow-hidden bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-900">
-                  <PlaceholderIcon size={36} />
-                </div>
-
                 {/* Content */}
-                <div className="flex flex-col flex-1 px-5 pb-5 pt-3">
-                  <div className="flex items-center gap-2 mb-3">
+                <div className="flex flex-col flex-1 p-6">
+                  <div className="flex items-center gap-2 mb-4">
                     <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full backdrop-blur-md bg-white/30 dark:bg-violet-500/20 border border-black/10 dark:border-violet-500/30 shadow-sm text-foreground/80 dark:text-violet-300">
                       {post.category}
                     </span>
@@ -221,19 +186,19 @@ export default function BlogPage() {
                     </span>
                   </div>
 
-                  <h2 className="text-[14px] font-bold leading-snug mb-2.5 flex-1 group-hover:opacity-70 transition-opacity duration-200 text-foreground tracking-tight">
+                  <h2 className="text-[16px] font-bold leading-snug mb-3 flex-1 group-hover:opacity-70 transition-opacity duration-200 text-foreground tracking-tight">
                     {post.title}
                   </h2>
 
-                  <p className="text-xs leading-relaxed line-clamp-3 mb-4 text-foreground/70">
+                  <p className="text-sm leading-relaxed line-clamp-3 mb-6 text-foreground/70">
                     {post.excerpt}
                   </p>
 
-                  <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-black/5 dark:border-white/5">
                     <time className="text-[10px] text-foreground/50">
                       {formatDate(post.date)}
                     </time>
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold opacity-0 group-hover:opacity-100 group-hover:gap-2 transition-all duration-200 text-amber-700 dark:text-amber-500">
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold group-hover:gap-2 transition-all duration-200 text-amber-700 dark:text-amber-500">
                       Read
                       <ArrowIcon />
                     </span>

@@ -15,7 +15,7 @@ const stats: Stat[] = [
     number: "10×",
     unit: "",
     label: "Faster creation",
-    sublabel: "A full paper in under 3 minutes — not 3 hours.",
+    sublabel: "A full paper in under minutes — not 3 hours.",
     icon: <Zap className="w-5 h-5" />,
   },
   {
@@ -43,7 +43,7 @@ const stats: Stat[] = [
 
 export function Stats() {
   return (
-    <section 
+    <section
       className="w-full max-w-[1400px] mx-auto px-4 py-8 relative z-10 font-sans"
       aria-labelledby="stats-heading"
     >
@@ -59,14 +59,7 @@ export function Stats() {
       >
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12 scroll-animate">
           <div>
-            <div 
-              className="inline-flex items-center rounded-full border border-black/10 dark:border-white/10 bg-white/50 dark:bg-black/50 px-3 py-1 text-sm font-medium backdrop-blur-md mb-5"
-              role="status"
-            >
-              <span className="flex h-2 w-2 rounded-full bg-[#541325] mr-2 animate-pulse" />
-              By the numbers
-            </div>
-            <h2 
+            <h2
               id="stats-heading"
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-foreground leading-[1.1] max-w-lg"
             >
