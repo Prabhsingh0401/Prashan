@@ -4,20 +4,24 @@ import { Paper } from '../models/Paper.js';
 import { triggerPythonGeneration } from '../services/paperService.js';
 import { performUploads } from '../controllers/paperController.js';
 
+// Upstash requires TLS (rediss://) and only supports db=0.
+// Use REDIS_URL if set (production), fall back to host/port for local dev.
+const REDIS_URL = process.env.REDIS_URL;
 const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
 const REDIS_PORT = parseInt(process.env.REDIS_PORT || '6379', 10);
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
 
-export const connection = new Redis({
-  host: REDIS_HOST,
-  port: REDIS_PORT,
-  maxRetriesPerRequest: null,
-});
+const redisOptions = REDIS_URL
+  ? { maxRetriesPerRequest: null as null }
+  : { host: REDIS_HOST, port: REDIS_PORT, password: REDIS_PASSWORD, maxRetriesPerRequest: null as null };
 
-export const sessionStoreRedis = new Redis({
-  host: REDIS_HOST,
-  port: REDIS_PORT,
-  db: 3,
-});
+export const connection = REDIS_URL
+  ? new Redis(REDIS_URL, redisOptions)
+  : new Redis(redisOptions);
+
+// sessionStoreRedis shares the same db=0 connection — Upstash free tier only supports db=0.
+// Session keys use 'prashan:session:' prefix (matches py_backend/lib/session_store.py)
+export const sessionStoreRedis = connection;
 
 export const paperQueue = new Queue('paper-generation', { connection: connection as any });
 export const queueEvents = new QueueEvents('paper-generation', { connection: connection as any });
@@ -27,7 +31,8 @@ export const queueEvents = new QueueEvents('paper-generation', { connection: con
  */
 export async function checkCompletedSession(sessionId: string): Promise<string | null> {
   try {
-    const data = await sessionStoreRedis.get(`session:${sessionId}`);
+    // Key prefix must match py_backend/lib/session_store.py → prashan:session:
+    const data = await sessionStoreRedis.get(`prashan:session:${sessionId}`);
     if (data) {
       const parsed = JSON.parse(data);
       if (parsed && parsed.latex) {
@@ -67,7 +72,8 @@ export const paperWorker = new Worker(
 
     // 3. Setup Redis subscriber to wait for completion
     const subscriber = connection.duplicate();
-    await subscriber.subscribe(`progress:${sessionId}`);
+    // Channel prefix matches py_backend/worker.py → prashan:progress:
+    await subscriber.subscribe(`prashan:progress:${sessionId}`);
 
     const waitPromise = new Promise<void>((resolve, reject) => {
       // Set a safety timeout of 60 minutes (supports slow CPU generation)
@@ -135,7 +141,7 @@ export const paperWorker = new Worker(
     try {
       await triggerPythonGeneration({ ...specs, sessionId });
     } catch (err) {
-      await subscriber.unsubscribe(`progress:${sessionId}`);
+      await subscriber.unsubscribe(`prashan:progress:${sessionId}`);
       await subscriber.disconnect();
       throw err;
     }
@@ -143,7 +149,7 @@ export const paperWorker = new Worker(
     try {
       await waitPromise;
     } finally {
-      await subscriber.unsubscribe(`progress:${sessionId}`);
+      await subscriber.unsubscribe(`prashan:progress:${sessionId}`);
       await subscriber.disconnect();
     }
   },
