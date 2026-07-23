@@ -9,6 +9,11 @@ import { auth, googleProvider } from "../../services/firebase";
 import { signup, verifyOtp } from "../../services/authService";
 import { Toast } from "../components/ui/toast";
 
+// ─── Maintenance gate ──────────────────────────────────────────────────────
+// Remove this constant (and the two guard blocks below) to re-open sign-ins.
+const ALLOWED_EMAILS = ["prableensingh0401@gmail.com"];
+// ───────────────────────────────────────────────────────────────────────────
+
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [isOtpMode, setIsOtpMode] = useState(false);
@@ -58,6 +63,15 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Maintenance gate — block everyone except allowed emails
+    if (!ALLOWED_EMAILS.includes(email.trim().toLowerCase())) {
+      setToastType("error");
+      setToastMessage("We'll be back soon! Sign-ins are temporarily disabled while we run maintenance.");
+      setShowToast(true);
+      return;
+    }
+
     setIsSubmitting(true);
     
     // Validate password for sign-up
@@ -116,6 +130,17 @@ export default function AuthPage() {
     try {
       setIsSubmitting(true);
       const result = await signInWithPopup(auth, googleProvider);
+
+      // Maintenance gate — block everyone except allowed emails
+      const googleEmail = result.user.email?.trim().toLowerCase() ?? "";
+      if (!ALLOWED_EMAILS.includes(googleEmail)) {
+        await result.user.delete().catch(() => {});
+        setToastType("error");
+        setToastMessage("We'll be back soon! Sign-ins are temporarily disabled while we run maintenance.");
+        setShowToast(true);
+        setIsSubmitting(false);
+        return;
+      }
       
       const userEmail = result.user.email;
       if (!userEmail) {
@@ -428,7 +453,7 @@ export default function AuthPage() {
       </div>
       
       <Toast 
-        title={toastType === "success" ? "Welcome back!" : "Authentication Failed"}
+        title={toastType === "success" ? "Welcome back!" : toastMessage.includes("maintenance") ? "🔧 Under Maintenance" : "Authentication Failed"}
         message={toastMessage} 
         type={toastType} 
         isVisible={showToast} 
