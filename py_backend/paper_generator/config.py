@@ -13,13 +13,13 @@ OPENROUTER_HEADERS = {
 }
 
 MODEL_FETCHER          = "nvidia/nemotron-3-ultra-550b-a55b:free"
-MODEL_FETCHER_FALLBACK = "poolside/laguna-m.1:free"
+MODEL_FETCHER_FALLBACK = "nvidia/nemotron-3-super-120b-a12b:free"
 
 MODEL_VERIFIER         = "nvidia/nemotron-3-ultra-550b-a55b:free"
-MODEL_VERIFIER_FALLBACK = "poolside/laguna-xs-2.1:free"
+MODEL_VERIFIER_FALLBACK = "google/gemma-4-26b-a4b-it:free"
 
-MODEL_LAYOUT           = "openai/gpt-oss-20b:free"
-MODEL_FALLBACK         = "poolside/laguna-m.1:free"
+MODEL_LAYOUT           = "nvidia/nemotron-3-nano-30b-a3b:free"
+MODEL_FALLBACK         = "google/gemma-4-26b-a4b-it:free"
 
 
 MAX_RETRIES = 3

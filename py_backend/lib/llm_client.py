@@ -1,5 +1,5 @@
 import asyncio
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, RetryError
 import httpx
 import os
 
@@ -9,9 +9,13 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
 # Global cap — tune based on your OpenRouter tier
 LLM_SEMAPHORE = asyncio.Semaphore(5)
 
+# Timeout config — connect bumped to 60 s and read/total to 180 s to reduce
+# ConnectTimeout noise from cold OpenRouter endpoints.
+OPENROUTER_TIMEOUT = httpx.Timeout(180.0, connect=60.0)
+
 @retry(
-    stop=stop_after_attempt(3),
-    wait=wait_exponential(multiplier=1, min=2, max=15),
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=2, min=4, max=60),
     retry=retry_if_exception_type((httpx.HTTPStatusError, httpx.TimeoutException, httpx.ConnectTimeout, httpx.ConnectError))
 )
 async def call_llm(system_prompt: str, user_message: str, model: str, fallback_model: str = None, temperature: float = 0.3) -> str:
@@ -28,6 +32,14 @@ async def call_llm(system_prompt: str, user_message: str, model: str, fallback_m
                 print(f"  [LLM CLIENT] Connection timeout to OpenRouter on {model}. Retrying with fallback: {fallback_model}")
                 return await _call_openrouter(system_prompt, user_message, fallback_model, temperature)
             raise
+        except RetryError as exc:
+            # tenacity.RetryError wraps the underlying cause but is not picklable by Celery.
+            # Re-raise as a plain RuntimeError so the failure is diagnosable in worker logs
+            # and doesn't surface as an UnpickleableExceptionWrapper.
+            last = exc.last_attempt.exception()
+            raise RuntimeError(
+                f"[LLM CLIENT] All retries exhausted for model={model}: {type(last).__name__}: {last}"
+            ) from last
 
 async def _call_openrouter(system_prompt: str, user_message: str, model: str, temperature: float) -> str:
     headers = {
@@ -48,8 +60,7 @@ async def _call_openrouter(system_prompt: str, user_message: str, model: str, te
         "temperature": temperature
     }
 
-    timeout_config = httpx.Timeout(120.0, connect=30.0)
-    async with httpx.AsyncClient(timeout=timeout_config) as client:
+    async with httpx.AsyncClient(timeout=OPENROUTER_TIMEOUT) as client:
         response = await client.post(
             OPENROUTER_BASE_URL,
             headers=headers,

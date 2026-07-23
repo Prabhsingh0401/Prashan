@@ -64,7 +64,17 @@ def publish_progress(session_id: str, phase: str, message: str = ""):
         "message": message
     }))
 
-@celery_app.task(bind=True)
+@celery_app.task(
+    bind=True,
+    # Celery-level retry for transient OpenRouter / network blips.
+    # RuntimeError is what llm_client raises after all tenacity retries are exhausted.
+    autoretry_for=(RuntimeError, ConnectionError, TimeoutError, OSError),
+    max_retries=3,
+    default_retry_delay=30,  # seconds; Celery also applies exponential back-off via retry_backoff
+    retry_backoff=True,
+    retry_backoff_max=120,
+    retry_jitter=True,
+)
 def generate_paper_task(self, session_id: str, specs: dict, user_id: str):
     try:
         print(f"[Celery Worker] Starting session {session_id} for user {user_id}")
@@ -108,5 +118,12 @@ def generate_paper_task(self, session_id: str, specs: dict, user_id: str):
     except Exception as exc:
         import traceback
         traceback.print_exc()
-        publish_progress(session_id, "error", str(exc))
-        raise exc
+        err_msg = str(exc)
+        publish_progress(session_id, "error", err_msg)
+        # Wrap as RuntimeError with context so it:
+        #  (a) is picklable by Celery (no UnpickleableExceptionWrapper)
+        #  (b) includes session_id for quick log correlation
+        #  (c) triggers the autoretry_for chain if it's a transient failure
+        raise RuntimeError(
+            f"[generate_paper_task] session={session_id} failed: {type(exc).__name__}: {exc}"
+        ) from exc
