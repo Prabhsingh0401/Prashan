@@ -12,7 +12,7 @@ LLM_SEMAPHORE = asyncio.Semaphore(5)
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=1, min=2, max=15),
-    retry=retry_if_exception_type((httpx.HTTPStatusError, httpx.TimeoutException))
+    retry=retry_if_exception_type((httpx.HTTPStatusError, httpx.TimeoutException, httpx.ConnectTimeout, httpx.ConnectError))
 )
 async def call_llm(system_prompt: str, user_message: str, model: str, fallback_model: str = None, temperature: float = 0.3) -> str:
     async with LLM_SEMAPHORE:
@@ -21,6 +21,11 @@ async def call_llm(system_prompt: str, user_message: str, model: str, fallback_m
         except httpx.HTTPStatusError as e:
             if e.response.status_code == 429 and fallback_model:
                 print(f"  [LLM CLIENT] Rate limited (429) on {model}. Retrying with fallback: {fallback_model}")
+                return await _call_openrouter(system_prompt, user_message, fallback_model, temperature)
+            raise
+        except (httpx.ConnectTimeout, httpx.ConnectError) as e:
+            if fallback_model:
+                print(f"  [LLM CLIENT] Connection timeout to OpenRouter on {model}. Retrying with fallback: {fallback_model}")
                 return await _call_openrouter(system_prompt, user_message, fallback_model, temperature)
             raise
 
@@ -43,7 +48,8 @@ async def _call_openrouter(system_prompt: str, user_message: str, model: str, te
         "temperature": temperature
     }
 
-    async with httpx.AsyncClient(timeout=120.0) as client:
+    timeout_config = httpx.Timeout(120.0, connect=30.0)
+    async with httpx.AsyncClient(timeout=timeout_config) as client:
         response = await client.post(
             OPENROUTER_BASE_URL,
             headers=headers,
