@@ -6,6 +6,7 @@ pydantic>=2.7.0
 # ── Task Queue (Celery + Upstash Redis broker) ────────────────────────────────
 celery>=5.4.0
 redis>=5.0.0           # includes TLS/rediss:// support via from_url()
+gevent>=24.2.0         # lightweight async worker pool for <120MB RAM footprint
 
 # ── LangGraph Multi-Agent Pipeline ───────────────────────────────────────────
 langgraph>=0.2.0
