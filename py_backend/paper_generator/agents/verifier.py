@@ -27,7 +27,10 @@ def get_embed_client():
             from gradio_client import Client
             hf_token = os.getenv("HF_TOKEN") or os.getenv("hf_token")
             print(f"  [VERIFIER] Connecting to remote embedding API: {embed_url} (authenticated: {bool(hf_token)}) ...")
-            _EMBED_CLIENT = Client(embed_url, hf_token=hf_token)
+            kwargs = {}
+            if hf_token:
+                kwargs["headers"] = {"Authorization": f"Bearer {hf_token}"}
+            _EMBED_CLIENT = Client(embed_url, **kwargs)
     return _EMBED_CLIENT
 
 def get_embed_model():
