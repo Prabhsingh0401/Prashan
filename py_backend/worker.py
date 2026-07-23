@@ -1,11 +1,36 @@
 import os
 import sys
 import json
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 import redis
 from celery import Celery
 
 # Add current dir to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+
+# --- Dummy HTTP server so Render's port scanner is satisfied on a Web Service plan ---
+# Celery itself never opens a port, so without this Render logs
+# "No open ports detected" forever and may eventually restart the service.
+def _run_dummy_server():
+    port = int(os.getenv("PORT", 10000))
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"celery worker alive")
+
+        def log_message(self, *args):
+            pass  # suppress noisy request logs
+
+    HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+
+
+threading.Thread(target=_run_dummy_server, daemon=True).start()
+# --- end dummy server block ---
+
 
 from api_server import GenerateRequest, build_initial_state
 from paper_generator.graph import build_graph
