@@ -25,8 +25,9 @@ def get_embed_client():
         embed_url = os.getenv("EMBEDDING_API_URL")
         if embed_url and "hf.space" in embed_url:
             from gradio_client import Client
-            print(f"  [VERIFIER] Connecting to remote embedding API: {embed_url} ...")
-            _EMBED_CLIENT = Client(embed_url)
+            hf_token = os.getenv("HF_TOKEN") or os.getenv("hf_token")
+            print(f"  [VERIFIER] Connecting to remote embedding API: {embed_url} (authenticated: {bool(hf_token)}) ...")
+            _EMBED_CLIENT = Client(embed_url, hf_token=hf_token)
     return _EMBED_CLIENT
 
 def get_embed_model():
