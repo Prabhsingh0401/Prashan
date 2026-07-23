@@ -16,17 +16,40 @@ import requests
 import time
 import os
 
+_EMBED_CLIENT = None
 _EMBED_MODEL = None
+
+def get_embed_client():
+    global _EMBED_CLIENT
+    if _EMBED_CLIENT is None:
+        embed_url = os.getenv("EMBEDDING_API_URL")
+        if embed_url and "hf.space" in embed_url:
+            from gradio_client import Client
+            print(f"  [VERIFIER] Connecting to remote embedding API: {embed_url} ...")
+            _EMBED_CLIENT = Client(embed_url)
+    return _EMBED_CLIENT
 
 def get_embed_model():
     global _EMBED_MODEL
     if _EMBED_MODEL is None:
         from sentence_transformers import SentenceTransformer
+        print("  [VERIFIER] Loading multilingual-e5-large embedding model locally...")
         _EMBED_MODEL = SentenceTransformer("intfloat/multilingual-e5-large")
     return _EMBED_MODEL
 
 
 def embed_texts(texts: List[str]) -> np.ndarray:
+    client = get_embed_client()
+    if client:
+        try:
+            results = []
+            for text in texts:
+                vec = client.predict(text=text, is_query=False, api_name="/embed")
+                results.append(vec)
+            return np.array(results)
+        except Exception as e:
+            print(f"  [VERIFIER] Remote embedding failed: {e}. Falling back to local.")
+            
     model = get_embed_model()
     vecs = model.encode([f"passage: {t}" for t in texts], normalize_embeddings=True)
     return vecs

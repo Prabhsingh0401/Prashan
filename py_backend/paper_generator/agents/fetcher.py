@@ -18,18 +18,37 @@ from paper_generator.config import (
 )
 from paper_generator.state import PaperGeneratorState, Question, CaseSet, FetchTask
 
+_EMBED_CLIENT = None
 _EMBED_MODEL = None
+
+def get_embed_client():
+    global _EMBED_CLIENT
+    if _EMBED_CLIENT is None:
+        embed_url = os.getenv("EMBEDDING_API_URL")
+        if embed_url and "hf.space" in embed_url:
+            from gradio_client import Client
+            print(f"  [FETCHER] Connecting to remote embedding API: {embed_url} ...")
+            _EMBED_CLIENT = Client(embed_url)
+    return _EMBED_CLIENT
 
 def get_embed_model():
     global _EMBED_MODEL
     if _EMBED_MODEL is None:
         from sentence_transformers import SentenceTransformer
-        print("  [FETCHER] Loading multilingual-e5-large embedding model...")
+        print("  [FETCHER] Loading multilingual-e5-large embedding model locally...")
         _EMBED_MODEL = SentenceTransformer("intfloat/multilingual-e5-large")
     return _EMBED_MODEL
 
 
 def embed_query(text: str) -> list:
+    client = get_embed_client()
+    if client:
+        try:
+            vec = client.predict(text=text, is_query=True, api_name="/embed")
+            return vec
+        except Exception as e:
+            print(f"  [FETCHER] Remote embedding failed: {e}. Falling back to local.")
+            
     model = get_embed_model()
     vec = model.encode(f"query: {text}", normalize_embeddings=True)
     return vec.tolist()
